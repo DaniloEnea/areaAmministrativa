@@ -7,21 +7,24 @@ import { OrganizzazioneComponent } from './organizzazione/organizzazione.compone
 import { PersoneComponent } from './persone/persone.component';
 import { UtentiComponent } from './utenti/utenti.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MaterialModule } from './material/material.module';
+import { NavbarComponent } from './navbar/navbar.component';
+import { ModaleComponent } from './modale/modale.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     OrganizzazioneComponent,
     PersoneComponent,
-    UtentiComponent
+    UtentiComponent,
+    NavbarComponent,
+    ModaleComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    RouterModule.forRoot([
-      {path: 'organizzazione', component : OrganizzazioneComponent}
-    ]),
     BrowserAnimationsModule,
+    MaterialModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
