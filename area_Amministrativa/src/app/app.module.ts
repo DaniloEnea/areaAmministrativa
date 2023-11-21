@@ -21,8 +21,8 @@ import { ModaleDeleteComponent } from './modale-delete/modale-delete.component';
     UtentiComponent,
     NavbarComponent,
     ModaleComponent,
-        ModaleAddComponent
-        ModaleDeleteComponent
+    ModaleAddComponent,
+    ModaleDeleteComponent
   ],
   imports: [
     BrowserModule,
