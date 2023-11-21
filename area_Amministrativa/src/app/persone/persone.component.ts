@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { ModaleDeleteComponent } from "../modale-delete/modale-delete.component";
+import { ModaleUpdatePersoneComponent } from "./modale-update-persone/modale-update-persone.component";
+import { ModaleAddPersoneComponent } from "./modale-add-persone/modale-add-persone.component";
 import { MatDialog } from "@angular/material/dialog";
 
 export interface PeriodicElement {
@@ -34,8 +36,30 @@ export class PersoneComponent {
   protected readonly alert = alert;
   constructor(private dialog: MatDialog) { }
 
-  openDialog(): void {
+  openDeleteDialog(): void {
     const dialogRef = this.dialog.open(ModaleDeleteComponent);
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(`Dialog result: ${result}`);
+    });
+  }
+
+  openAddDialog(): void {
+    const dialogRef = this.dialog.open(ModaleAddPersoneComponent, {
+      width: '60%',   // Set width to 60%  of the window's total width
+      height: '50%',  // Set height to 50% of the window's total height
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(`Dialog result: ${result}`);
+    });
+  }
+
+  openUpdateDialog(): void {
+    const dialogRef = this.dialog.open(ModaleUpdatePersoneComponent, {
+      width: '60%',   // Set width to 60%  of the window's total width
+      height: '50%',  // Set height to 50% of the window's total height
+    });
 
     dialogRef.afterClosed().subscribe((result) => {
       console.log(`Dialog result: ${result}`);

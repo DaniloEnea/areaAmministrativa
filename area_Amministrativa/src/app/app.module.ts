@@ -9,8 +9,11 @@ import { UtentiComponent } from './utenti/utenti.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material/material.module';
 import { NavbarComponent } from './navbar/navbar.component';
-import { ModaleComponent } from './organizzazione/modale-update/modale.component';
-import { ModaleAddComponent } from './utenti/modale-add/modale-add.component';
+import { ModaleUpdateOrgComponent } from './organizzazione/modale-update-org/modale-update-org.component';
+import { ModaleUpdatePersoneComponent } from './persone/modale-update-persone/modale-update-persone.component';
+import { ModaleUpdateUserComponent } from './utenti/modale-update-user/modale-update-user.component';
+import { ModaleAddPersoneComponent } from './persone/modale-add-persone/modale-add-persone.component';
+import { ModaleAddUserComponent } from './utenti/modale-add-user/modale-add-user.component';
 import { ModaleDeleteComponent } from './modale-delete/modale-delete.component';
 
 @NgModule({
@@ -20,8 +23,12 @@ import { ModaleDeleteComponent } from './modale-delete/modale-delete.component';
     PersoneComponent,
     UtentiComponent,
     NavbarComponent,
-    ModaleComponent,
-    ModaleAddComponent,
+    ModaleUpdateOrgComponent,
+    ModaleUpdatePersoneComponent,
+    ModaleUpdateUserComponent,
+    ModaleAddPersoneComponent,
+    ModaleAddUserComponent,
+
     ModaleDeleteComponent
   ],
   imports: [

@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import {MatDialog} from "@angular/material/dialog";
-import {ModaleAddComponent} from "./modale-add/modale-add.component";
+import { ModaleAddUserComponent } from "./modale-add-user/modale-add-user.component";
+import { ModaleUpdateUserComponent } from "./modale-update-user/modale-update-user.component";
+import { ModaleDeleteComponent } from "../modale-delete/modale-delete.component";
 
 export interface UserDTO{
   username: string;
@@ -27,8 +29,27 @@ export class UtentiComponent {
    // modal
  constructor(private dialog: MatDialog) {}
 
-  openDialog(): void {
-    const dialogRef = this.dialog.open(ModaleAddComponent,{
+  openDeleteDialog(): void {
+    const dialogRef = this.dialog.open(ModaleDeleteComponent);
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(`Dialog result: ${result}`);
+    });
+  }
+
+  openUpdateDialog(): void {
+    const dialogRef = this.dialog.open(ModaleUpdateUserComponent, {
+      width: '60%',   // Set width to 60%  of the window's total width
+      height: '50%',  // Set height to 50% of the window's total height
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(`Dialog result: ${result}`);
+    });
+  }
+  
+  openAddDialog(): void {
+    const dialogRef = this.dialog.open(ModaleAddUserComponent,{
       width:'60%',   // Set width to 60%  of the window's total width
       height:'50%',  // Set height to 50% of the window's total height
     });

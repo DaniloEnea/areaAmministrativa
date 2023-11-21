@@ -2,9 +2,12 @@
   <span>Area Amministrativa</span>
 
   <div class="wrap-route">
-      <a mat-button [routerLink]="'/organizzazione'"> Organizzazione </a>
-      <a mat-button [routerLink]="'/persone'"> Persone </a>
-      <a mat-button [routerLink]="'/utenti'"> Utenti </a>
+    <button mat-button [matMenuTriggerFor]="menu">Menu</button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item [routerLink]="'/organizzazione'"> Organizzazione </button>
+      <button mat-menu-item [routerLink]="'/persone'"> Persone </button>
+      <button mat-menu-item [routerLink]="'/utenti'"> Utenti </button>
+    </mat-menu>
   </div>
 
   <button class="right-button" mat-icon-button>

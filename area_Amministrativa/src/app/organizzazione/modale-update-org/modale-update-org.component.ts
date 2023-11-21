@@ -3,12 +3,12 @@ import { MatDialogRef} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-modale-update',
-  templateUrl: './modale.component.html',
-  styleUrls: ['./modale.component.css']
+  templateUrl: './modale-update-org.component.html',
+  styleUrls: ['./modale-update-org.component.css']
 })
-export class ModaleComponent {
+export class ModaleUpdateOrgComponent {
 
-  constructor( private ref: MatDialogRef<ModaleComponent>) {
+  constructor(private ref: MatDialogRef<ModaleUpdateOrgComponent>) {
 
   }
 

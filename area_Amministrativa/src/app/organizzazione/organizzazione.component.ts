@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {ModaleComponent} from "./modale-update/modale.component";
+import { ModaleUpdateOrgComponent } from "./modale-update-org/modale-update-org.component";
 import {MatDialog} from "@angular/material/dialog";
 
 export interface PeriodicElement {
@@ -39,7 +39,7 @@ export class OrganizzazioneComponent {
  constructor(private dialog: MatDialog) {}
 
   openDialog(): void {
-    const dialogRef = this.dialog.open(ModaleComponent,{
+    const dialogRef = this.dialog.open(ModaleUpdateOrgComponent,{
       width:'60%',   // Set width to 60%  of the window's total width
       height:'50%',  // Set height to 50% of the window's total height
     });

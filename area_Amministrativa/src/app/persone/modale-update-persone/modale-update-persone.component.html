@@ -1,0 +1,20 @@
+<h1 mat-dialog-title align="center">Update Person</h1>
+ <div mat-dialog-content style="display: flex; flex-direction: column">
+   <mat-form-field>
+    <mat-label>Name</mat-label>
+    <input formControlName="name" matInput>
+   </mat-form-field>
+   <mat-form-field>
+    <mat-label>Email</mat-label>
+    <input matInput formControlName="email">
+   </mat-form-field>
+   <mat-form-field>
+    <mat-label>Phone</mat-label>
+    <input matInput formControlName="phone">
+   </mat-form-field>
+ </div>
+ <div mat-dialog-actions align="center">
+    <button mat-raised-button type="submit" color="primary">Save</button>
+    <button (click)="closepopup()" mat-raised-button color="warn">Close</button>
+</div>
+

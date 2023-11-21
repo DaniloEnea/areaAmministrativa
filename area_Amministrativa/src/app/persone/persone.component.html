@@ -5,7 +5,7 @@
     <mat-label>Filtra</mat-label>
     <input matInput>
   </mat-form-field> 
-    <button class="button-add" mat-raised-button  color="primary">Add</button>
+    <button class="button-add" mat-raised-button (click)="openAddDialog()" color="primary">Add</button>
 </div>
 
 <div>
@@ -34,8 +34,8 @@
     <ng-container matColumnDef="update">
       <th mat-header-cell *matHeaderCellDef>Action</th>
       <td mat-cell *matCellDef="let element">
-        <button mat-raised-button color="primary"> Update </button>
-        <button mat-raised-button color="warn" (click)="openDialog()"> Delete </button>
+        <button mat-raised-button color="primary" (click)="openUpdateDialog()"> Update </button>
+        <button mat-raised-button color="warn" (click)="openDeleteDialog()"> Delete </button>
       </td>
     </ng-container>
 
