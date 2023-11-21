@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {ModaleComponent} from "../modale/modale.component";
+import {ModaleComponent} from "./modale-update/modale.component";
 import {MatDialog} from "@angular/material/dialog";
 
 export interface PeriodicElement {

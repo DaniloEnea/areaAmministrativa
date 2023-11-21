@@ -9,7 +9,8 @@ import { UtentiComponent } from './utenti/utenti.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material/material.module';
 import { NavbarComponent } from './navbar/navbar.component';
-import { ModaleComponent } from './modale/modale.component';
+import { ModaleComponent } from './organizzazione/modale-update/modale.component';
+import { ModaleAddComponent } from './utenti/modale-add/modale-add.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { ModaleComponent } from './modale/modale.component';
     PersoneComponent,
     UtentiComponent,
     NavbarComponent,
-    ModaleComponent
+    ModaleComponent,
+    ModaleAddComponent
   ],
   imports: [
     BrowserModule,

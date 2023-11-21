@@ -11,3 +11,7 @@ span {
 .right-button{
    margin-left: auto;
 }
+
+.wrap-route {
+  margin-left: 8px;
+}
