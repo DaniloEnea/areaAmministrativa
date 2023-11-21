@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import { MatDialogRef} from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-modale',
+  selector: 'app-modale-update',
   templateUrl: './modale.component.html',
   styleUrls: ['./modale.component.css']
 })

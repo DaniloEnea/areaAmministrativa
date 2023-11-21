@@ -9,7 +9,8 @@ import { UtentiComponent } from './utenti/utenti.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material/material.module';
 import { NavbarComponent } from './navbar/navbar.component';
-import { ModaleComponent } from './modale/modale.component';
+import { ModaleComponent } from './organizzazione/modale-update/modale.component';
+import { ModaleAddComponent } from './utenti/modale-add/modale-add.component';
 import { ModaleDeleteComponent } from './modale-delete/modale-delete.component';
 
 @NgModule({
@@ -20,7 +21,8 @@ import { ModaleDeleteComponent } from './modale-delete/modale-delete.component';
     UtentiComponent,
     NavbarComponent,
     ModaleComponent,
-    ModaleDeleteComponent
+        ModaleAddComponent
+        ModaleDeleteComponent
   ],
   imports: [
     BrowserModule,

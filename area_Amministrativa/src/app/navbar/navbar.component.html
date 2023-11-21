@@ -1,6 +1,12 @@
 <mat-toolbar color="primary" class="custom-toolbar">
   <span>Area Amministrativa</span>
 
+  <div class="wrap-route">
+      <a mat-button [routerLink]="'/organizzazione'"> Organizzazione </a>
+      <a mat-button [routerLink]="'/persone'"> Persone </a>
+      <a mat-button [routerLink]="'/utenti'"> Utenti </a>
+  </div>
+
   <button class="right-button" mat-icon-button>
     <mat-icon
       aria-hidden="false"
