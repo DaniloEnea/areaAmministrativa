@@ -1,0 +1,26 @@
+div {
+  width: 98%;
+  margin-inline: auto;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 2%;
+}
+
+.wrap-button button {
+  margin-right: 5px;
+}
+
+th.th-auto{
+  text-align: center;
+}
+
+div.button-add{
+  text-align:right;
+  margin-bottom: 2%;
+}
+
+div.wrap-button{
+  text-align: center;
+}
