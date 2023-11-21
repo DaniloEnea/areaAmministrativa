@@ -10,6 +10,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material/material.module';
 import { NavbarComponent } from './navbar/navbar.component';
 import { ModaleComponent } from './modale/modale.component';
+import { ModaleDeleteComponent } from './modale-delete/modale-delete.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { ModaleComponent } from './modale/modale.component';
     PersoneComponent,
     UtentiComponent,
     NavbarComponent,
-    ModaleComponent
+    ModaleComponent,
+    ModaleDeleteComponent
   ],
   imports: [
     BrowserModule,

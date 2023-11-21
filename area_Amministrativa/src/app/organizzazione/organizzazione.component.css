@@ -1,5 +1,5 @@
 div{
-  width: 95%;
+  width: 98%;
   margin-inline: auto;
 }
 
@@ -9,7 +9,6 @@ h2 {
 }
 
 button.wrap-update-button {
-  border-radius: 10px;
   color: white;
 }
 

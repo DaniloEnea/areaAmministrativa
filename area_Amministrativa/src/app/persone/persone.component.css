@@ -1,0 +1,27 @@
+div {
+  width: 98%;
+  margin-inline: auto;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 2%;
+}
+
+button{
+    margin-right:10px;
+}
+
+button.wrap-update-button {
+  color: white;
+}
+
+button.wrap-delete-button {
+  color: white;
+}
+
+.button-add{
+    position:absolute;
+    right : 10px;
+}
+
