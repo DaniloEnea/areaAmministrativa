@@ -15,6 +15,7 @@ import { ModaleUpdateUserComponent } from './utenti/modale-update-user/modale-up
 import { ModaleAddPersoneComponent } from './persone/modale-add-persone/modale-add-persone.component';
 import { ModaleAddUserComponent } from './utenti/modale-add-user/modale-add-user.component';
 import { ModaleDeleteComponent } from './modale-delete/modale-delete.component';
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -36,6 +37,8 @@ import { ModaleDeleteComponent } from './modale-delete/modale-delete.component';
     AppRoutingModule,
     BrowserAnimationsModule,
     MaterialModule,
+    ReactiveFormsModule,
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
