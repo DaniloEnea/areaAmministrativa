@@ -2,6 +2,7 @@ import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {UserDTO} from "../utenti.component";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {HttpProviderService} from "../../service/http-provider.service";
 
 
 @Component({
@@ -16,18 +17,15 @@ export class ModaleAddUserComponent {
   constructor(
     public dialogRef: MatDialogRef<ModaleAddUserComponent>,
     @Inject(MAT_DIALOG_DATA) public data: UserDTO,
-    private formBuilder: FormBuilder // Inietta il FormBuilder
+    private formBuilder: FormBuilder,
+    private httpApi: HttpProviderService
   ) {
     // Inizializza il FormGroup con le regole di validazione
     this.newUserForm = this.formBuilder.group({
       username: ['', Validators.required],
       password: ['', Validators.required],
-       role: [''] // Imposta il valore di default
+       role: ['', Validators.required] // Imposta il valore di default
     });
-  }
-
-  onNoClick(): void {
-    this.dialogRef.close();
   }
 
   onAddClick(): void {
@@ -38,9 +36,10 @@ export class ModaleAddUserComponent {
         role: this.newUserForm.value.role
       };
 
-      this.dialogRef.close(newUser);
-      console.log(newUser)
+      // post for create new user
+      this.httpApi.addNewUser(newUser).subscribe();
     }
+  this.closepopup();
   }
 
   closepopup(): void {

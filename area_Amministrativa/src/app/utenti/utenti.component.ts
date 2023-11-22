@@ -5,6 +5,7 @@ import { ModaleUpdateUserComponent } from "./modale-update-user/modale-update-us
 import { ModaleDeleteComponent } from "../modale-delete/modale-delete.component";
 import * as jsonData from '../utenti.json'
 import {MatTableDataSource} from "@angular/material/table";
+import {HttpProviderService} from "../service/http-provider.service";
 
 export interface UserDTO{
   username: string;
@@ -18,14 +19,50 @@ export interface UserDTO{
   styleUrls: ['./utenti.component.css']
 })
 
-export class UtentiComponent {
+export class UtentiComponent implements OnInit{
+  UtentiList: UserDTO[] = [];
   displayedColumns: string[] = ['username', 'password', 'role', 'update'];
-  dataSource = new MatTableDataSource<UserDTO>(jsonData);
-  protected readonly alert = alert;
+  dataSource: MatTableDataSource<UserDTO>;
+
+  constructor(private dialog: MatDialog, private httpApi: HttpProviderService) {
+    this.dataSource = new MatTableDataSource<UserDTO>(this.UtentiList);
+  }
+
+
+  ngOnInit() {
+   this.allUtenti();
+  }
+
+  /* METHOD FOR USER'S */
+
+  //get all user's
+   allUtenti() {
+    this.httpApi.getAllUtente().subscribe({
+      next: (data: any) => {
+        if (data != null && data.body != null) {
+          var resultData = data.body;
+          if (resultData) {
+            this.UtentiList = resultData;
+            this.dataSource.data = [...this.UtentiList]; // Usando lo spread operator per creare un nuovo array
+            console.log(this.UtentiList);
+          }
+        }
+      },
+      error: (error: any) => {
+        if (error) {
+          if (error.status == 404) {
+            if (error.error && error.error.message) {
+              this.UtentiList = [];
+              this.dataSource.data = [...this.UtentiList]; // Usando lo spread operator per creare un nuovo array
+            }
+          }
+        }
+      }
+    });
+  }
+
 
   // modal
- constructor(private dialog: MatDialog) {}
-
   openDeleteDialog(): void {
     const dialogRef = this.dialog.open(ModaleDeleteComponent);
 
