@@ -16,6 +16,8 @@ import { ModaleAddPersoneComponent } from './persone/modale-add-persone/modale-a
 import { ModaleAddUserComponent } from './utenti/modale-add-user/modale-add-user.component';
 import { ModaleDeleteComponent } from './modale-delete/modale-delete.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import { ModaleDetailsOrgComponent } from './organizzazione/modale-details-org/modale-details-org.component';
+import { ModaleDetailsPersoneComponent } from './persone/modale-details-persone/modale-details-persone.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +32,9 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
     ModaleAddPersoneComponent,
     ModaleAddUserComponent,
 
-    ModaleDeleteComponent
+    ModaleDeleteComponent,
+      ModaleDetailsOrgComponent,
+      ModaleDetailsPersoneComponent
   ],
   imports: [
     BrowserModule,
