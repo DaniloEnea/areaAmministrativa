@@ -18,6 +18,7 @@ import { ModaleDeleteComponent } from './modale-delete/modale-delete.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { ModaleDetailsOrgComponent } from './organizzazione/modale-details-org/modale-details-org.component';
 import { ModaleDetailsPersoneComponent } from './persone/modale-details-persone/modale-details-persone.component';
+import {HttpClientModule} from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { ModaleDetailsPersoneComponent } from './persone/modale-details-persone/
     MaterialModule,
     ReactiveFormsModule,
     FormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
