@@ -40,6 +40,48 @@ export class AdminApiService {
     );
   }
 
+      // PUT operations
+    put(url: string, id: number, model :any): Observable<any> {
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        }),
+        observe: 'response' as 'body'
+      };
+      const putUrl = `${url}/${id}`;
+      return this.http.put(putUrl, model, httpOptions).pipe(
+        catchError(this.handleError)
+      );
+    }
+
+  // DELETE operations
+  delete(url: string, id: number): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      }),
+      observe: 'response' as 'body'
+    };
+    const deleteUrl = `${url}/${id}`;
+    return this.http.delete(deleteUrl, httpOptions).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+    // GET BY ID operations
+    getById(url: string, id: number): Observable<any> {
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        }),
+        observe: 'response' as 'body'
+      };
+      const getUrl = `${url}/${id}`;
+      return this.http.get(getUrl, httpOptions).pipe(
+        catchError(this.handleError)
+      );
+    }
+
 
   // functions
   private ReturnResponseData(response: any) {

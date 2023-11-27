@@ -17,19 +17,19 @@ let addPersonUrl = genericUrl + "addPerson"
 let addOrgUrl = genericUrl + "addOrganization"
 
 //details
-let getUtenteByIdUrl = genericUrl + "utenti/"
-let getPersonByIdUrl = genericUrl + "person/"
-let getOrgByIdUrl = genericUrl + "organization/"
+let getUtenteByIdUrl = genericUrl + "utenti"
+let getPersonByIdUrl = genericUrl + "person"
+let getOrgByIdUrl = genericUrl + "organization"
 
 //update
-let updateUtenteUrl = genericUrl + "updateUtenti/"
-let updatePersonUrl = genericUrl + "updatePerson/"
-let updateOrgUrl = genericUrl + "updateOrganization/"
+let updateUtenteUrl = genericUrl + "updateUtenti"
+let updatePersonUrl = genericUrl + "updatePerson"
+let updateOrgUrl = genericUrl + "updateOrganization"
 
 //delete
-let deleteUtenteUrl = genericUrl + "deleteUtenti/"
-let deletePersonUrl = genericUrl + "deletePerson/"
-let deleteOrgUrl = genericUrl + "deleteOrganization/"
+let deleteUtenteUrl = genericUrl + "deleteUtenti"
+let deletePersonUrl = genericUrl + "deletePerson"
+let deleteOrgUrl = genericUrl + "deleteOrganization"
 
 @Injectable({
   providedIn: 'root'
@@ -48,6 +48,11 @@ export class HttpProviderService {
   //POST for add new user
   public addNewUser(model: any) : Observable<any> {
     return this.adminApiServie.post(addUtenteUrl, model)
+  }
+
+  //PUT for change user
+  public updateUser(id: number, model : any) : Observable<any> {
+   return this.adminApiServie.put(updateUtenteUrl,id, model)
   }
 
 

@@ -1,6 +1,6 @@
 import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {UserDTO} from "../utenti.component";
+import {UserDTO, UserDTO1} from "../utenti.component";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {HttpProviderService} from "../../service/http-provider.service";
 
@@ -30,7 +30,7 @@ export class ModaleAddUserComponent {
 
   onAddClick(): void {
     if (this.newUserForm.valid) {
-      const newUser: UserDTO = {
+      const newUser: UserDTO1 = {
         username: this.newUserForm.value.username,
         password: this.newUserForm.value.password,
         role: this.newUserForm.value.role

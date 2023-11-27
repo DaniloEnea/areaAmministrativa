@@ -3,11 +3,17 @@ import {MatDialog} from "@angular/material/dialog";
 import { ModaleAddUserComponent } from "./modale-add-user/modale-add-user.component";
 import { ModaleUpdateUserComponent } from "./modale-update-user/modale-update-user.component";
 import { ModaleDeleteComponent } from "../modale-delete/modale-delete.component";
-import * as jsonData from '../utenti.json'
 import {MatTableDataSource} from "@angular/material/table";
 import {HttpProviderService} from "../service/http-provider.service";
 
 export interface UserDTO{
+  id: number;
+  username: string;
+  password: string;
+  role: string;
+}
+
+export interface UserDTO1{
   username: string;
   password: string;
   role: string;
@@ -62,7 +68,7 @@ export class UtentiComponent implements OnInit{
   }
 
 
-  // modal
+  // modal delete
   openDeleteDialog(): void {
     const dialogRef = this.dialog.open(ModaleDeleteComponent);
 
@@ -71,10 +77,12 @@ export class UtentiComponent implements OnInit{
     });
   }
 
-  openUpdateDialog(): void {
+  openUpdateDialog(user: UserDTO): void {
     const dialogRef = this.dialog.open(ModaleUpdateUserComponent, {
       width: '60%',   // Set width to 60%  of the window's total width
       height: '50%',  // Set height to 50% of the window's total height
+
+       data: { user: user } // Passa l'oggetto UserDTO come parte dei dati del dialogo
     });
 
     dialogRef.afterClosed().subscribe((result) => {
