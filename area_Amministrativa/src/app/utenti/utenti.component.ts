@@ -69,8 +69,10 @@ export class UtentiComponent implements OnInit{
 
 
   // modal delete
-  openDeleteDialog(): void {
-    const dialogRef = this.dialog.open(ModaleDeleteComponent);
+  openDeleteDialog(id: number): void {
+    const dialogRef = this.dialog.open(ModaleDeleteComponent, {
+      data: {userId: id} // passo l'ID
+    });
 
     dialogRef.afterClosed().subscribe((result) => {
       console.log(`Dialog result: ${result}`);

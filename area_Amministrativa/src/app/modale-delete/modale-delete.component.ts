@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import {Component, Inject} from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import {HttpProviderService} from "../service/http-provider.service";
 
 @Component({
   selector: 'app-modale-delete',
@@ -7,8 +8,15 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   styleUrls: ['./modale-delete.component.css']
 })
 export class ModaleDeleteComponent {
-  constructor(private ref: MatDialogRef<ModaleDeleteComponent>) {
+  constructor(private ref: MatDialogRef<ModaleDeleteComponent>,
+              @Inject(MAT_DIALOG_DATA) public data: { userId: number },
+               private httpApi: HttpProviderService) {}
 
+  // delete for call DELETE API
+  confirmForm(): void {
+    this.httpApi.deleteUser(this.data.userId).subscribe()
+    console.log("delete: " + this.data.userId)
+     this.ref.close()
   }
 
   closepopup() {

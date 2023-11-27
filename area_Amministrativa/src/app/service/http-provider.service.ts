@@ -55,5 +55,10 @@ export class HttpProviderService {
    return this.adminApiServie.put(updateUtenteUrl,id, model)
   }
 
+  //DELETE for user
+  public deleteUser(id: number) : Observable<any> {
+    return this.adminApiServie.delete(deleteUtenteUrl, id)
+  }
+
 
 }
