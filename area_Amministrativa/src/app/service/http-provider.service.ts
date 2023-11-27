@@ -40,24 +40,59 @@ export class HttpProviderService {
 
   /* ALL METHOD API FOR USER'S */
 
-  //GET for all user
+  //GET
   public getAllUtente() : Observable<any> {
     return this.adminApiServie.get(getUtenteUrl)
   }
+  public getAllPeople(): Observable<any> {
+    return this.adminApiServie.get(getPersonUrl)
+  }
+  public getAllOrg(): Observable<any> {
+    return this.adminApiServie.get(getOrgUrl)
+  }
 
-  //POST for add new user
+  //GET BY ID
+  public getUtenteByID( id: number): Observable<any> {
+    return this.adminApiServie.getById(getUtenteByIdUrl, id)
+  }
+  public getPersonByID(id: number): Observable<any> {
+    return this.adminApiServie.getById(getPersonByIdUrl, id)
+  }
+  public getOrgByID(id: number): Observable<any> {
+    return this.adminApiServie.getById(getOrgByIdUrl, id)
+  }
+
+  //POST
   public addNewUser(model: any) : Observable<any> {
     return this.adminApiServie.post(addUtenteUrl, model)
   }
+  public addNewPerson(model: any): Observable<any> {
+    return this.adminApiServie.post(addPersonUrl, model)
+  }
+  public addNewOrg(model: any): Observable<any> {
+    return this.adminApiServie.post(addOrgUrl, model)
+  }
 
-  //PUT for change user
+  //PUT
   public updateUser(id: number, model : any) : Observable<any> {
    return this.adminApiServie.put(updateUtenteUrl,id, model)
   }
+  public updatePerson(id: number, model: any): Observable<any> {
+   return this.adminApiServie.put(updatePersonUrl,id, model)
+  }
+  public updateOrg(id: number, model: any): Observable<any> {
+    return this.adminApiServie.put(updateOrgUrl, id, model)
+  }
 
-  //DELETE for user
+  //DELETE
   public deleteUser(id: number) : Observable<any> {
     return this.adminApiServie.delete(deleteUtenteUrl, id)
+  }
+  public deletePerson(id: number): Observable<any> {
+    return this.adminApiServie.delete(deletePersonUrl, id)
+  }
+  public deleteOrg(id: number): Observable<any> {
+    return this.adminApiServie.delete(deleteOrgUrl, id)
   }
 
 
