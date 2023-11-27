@@ -27,7 +27,8 @@ export class ModaleDeleteComponent {
     console.log("delete: " + this.data.Id)
     console.log("type: " + this.data.ClassForm)
 
-     this.ref.close()
+    this.ref.close()
+    window.location.reload();
   }
 
   closepopup() {

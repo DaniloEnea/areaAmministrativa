@@ -39,7 +39,8 @@ export class ModaleAddUserComponent {
       // post for create new user
       this.httpApi.addNewUser(newUser).subscribe();
     }
-  this.closepopup();
+    this.closepopup();
+    window.location.reload();
   }
 
   closepopup(): void {

@@ -47,6 +47,7 @@ export class ModaleUpdateUserComponent implements OnInit{
       this.httpApi.updateUser(this.data.user.id, newUser).subscribe()
 
       this.dialogRef.close(newUser);
+      window.location.reload();
     }
   }
 
