@@ -26,6 +26,7 @@ export interface UserDTO1{
 })
 
 export class UtentiComponent implements OnInit{
+  classForm: string = "User";
   UtentiList: UserDTO[] = [];
   displayedColumns: string[] = ['username', 'password', 'role', 'update'];
   dataSource: MatTableDataSource<UserDTO>;
@@ -71,7 +72,7 @@ export class UtentiComponent implements OnInit{
   // modal delete
   openDeleteDialog(id: number): void {
     const dialogRef = this.dialog.open(ModaleDeleteComponent, {
-      data: {userId: id} // passo l'ID
+      data: { Id: id, ClassForm: this.classForm } // passo l'ID
     });
 
     dialogRef.afterClosed().subscribe((result) => {
