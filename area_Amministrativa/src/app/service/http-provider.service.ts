@@ -4,8 +4,33 @@ import {Observable} from "rxjs";
 
 
 // PATH API
-let getUtenteUrl = "http://localhost:8080/api/utenti"
-let addUtenteUrl = "http://localhost:8080/api/addUtenti"
+let genericUrl = "http://localhost:8080/api/"
+
+//get
+let getUtenteUrl = genericUrl + "utenti"
+let getPersonUrl = genericUrl + "people"
+let getOrgUrl = genericUrl + "organization"
+
+//add
+let addUtenteUrl = genericUrl + "addUtenti"
+let addPersonUrl = genericUrl + "addPerson"
+let addOrgUrl = genericUrl + "addOrganization"
+
+//details
+let getUtenteByIdUrl = genericUrl + "utenti/"
+let getPersonByIdUrl = genericUrl + "person/"
+let getOrgByIdUrl = genericUrl + "organization/"
+
+//update
+let updateUtenteUrl = genericUrl + "updateUtenti/"
+let updatePersonUrl = genericUrl + "updatePerson/"
+let updateOrgUrl = genericUrl + "updateOrganization/"
+
+//delete
+let deleteUtenteUrl = genericUrl + "deleteUtenti/"
+let deletePersonUrl = genericUrl + "deletePerson/"
+let deleteOrgUrl = genericUrl + "deleteOrganization/"
+
 @Injectable({
   providedIn: 'root'
 })
