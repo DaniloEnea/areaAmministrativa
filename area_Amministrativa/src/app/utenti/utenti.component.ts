@@ -83,7 +83,6 @@ export class UtentiComponent implements OnInit{
   openUpdateDialog(user: UserDTO): void {
     const dialogRef = this.dialog.open(ModaleUpdateUserComponent, {
       width: '60%',   // Set width to 60%  of the window's total width
-      height: '50%',  // Set height to 50% of the window's total height
 
        data: { user: user } // Passa l'oggetto UserDTO come parte dei dati del dialogo
     });
@@ -96,7 +95,6 @@ export class UtentiComponent implements OnInit{
   openAddDialog(): void {
     const dialogRef = this.dialog.open(ModaleAddUserComponent,{
       width:'60%',   // Set width to 60%  of the window's total width
-      height:'50%',  // Set height to 50% of the window's total height
     });
 
     dialogRef.afterClosed().subscribe((result) => {

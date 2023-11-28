@@ -1,1 +1,39 @@
-<p>modale-details-persone works!</p>
+<h1 mat-dialog-title align="center" style="font-size:20px; font-weight:bold">Details person</h1>
+<mat-dialog-content>
+  <mat-list>
+    <mat-list-item>
+      <strong>Nome:</strong> {{ data.person.first_name }}
+    </mat-list-item>
+
+    <mat-list-item>
+      <strong>Cognome:</strong> {{ data.person.last_name }}
+    </mat-list-item>
+
+    <mat-list-item>
+      <strong>Codice Fiscale:</strong> {{ data.person.cf }}
+    </mat-list-item>
+
+    <mat-list-item>
+      <strong>Ruolo:</strong> {{ data.person.role }}
+    </mat-list-item>
+
+    <mat-list-item>
+      <strong>Numero di telefono:</strong> {{ data.person.phone_number }}
+    </mat-list-item>
+
+    <mat-list-item>
+      <strong>Email:</strong> {{ data.person.email }}
+    </mat-list-item>
+
+    <mat-list-item>
+      <strong>Seconda Email:</strong> {{ data.person.email_2 }}
+    </mat-list-item>
+
+    <mat-list-item>
+      <strong>Accettazione GDPR:</strong> {{ data.person.gdpr_accepted ? 'Sì' : 'No' }}
+    </mat-list-item>
+  </mat-list>
+  </mat-dialog-content>
+    <mat-dialog-actions align="center">
+      <button mat-raised-button type="button" (click)="closepopup()" color="primary">Close</button>
+    </mat-dialog-actions>

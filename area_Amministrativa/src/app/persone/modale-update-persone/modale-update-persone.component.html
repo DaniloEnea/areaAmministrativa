@@ -1,20 +1,53 @@
-<h1 mat-dialog-title align="center">Update Person</h1>
- <div mat-dialog-content style="display: flex; flex-direction: column">
-   <mat-form-field>
-    <mat-label>Name</mat-label>
-    <input formControlName="name" matInput>
-   </mat-form-field>
-   <mat-form-field>
-    <mat-label>Email</mat-label>
-    <input matInput formControlName="email">
-   </mat-form-field>
-   <mat-form-field>
-    <mat-label>Phone</mat-label>
-    <input matInput formControlName="phone">
-   </mat-form-field>
- </div>
- <div mat-dialog-actions align="center">
-    <button mat-raised-button type="submit" color="primary">Save</button>
-    <button (click)="closepopup()" mat-raised-button color="warn">Close</button>
-</div>
+<h1 mat-dialog-title align="center" style="font-size:20px; font-weight:bold">Update Person</h1>
+<mat-dialog-content>
+  <form [formGroup]="updatePersonForm" class="mat-form">
+
+    <mat-form-field class="full-width">
+      <mat-label>First Name</mat-label>
+      <input formControlName="first_name" matInput>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Last Name</mat-label>
+      <input formControlName="last_name" matInput>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>CF</mat-label>
+      <input matInput formControlName="cf">
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Select a role</mat-label>
+      <mat-select formControlName="role" name="role">
+        <mat-option value="ROLE_ADMIN">ROLE_ADMIN</mat-option>
+        <mat-option value="ROLE_USER">ROLE_USER</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Phone number</mat-label>
+      <input matInput formControlName="phone_number">
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email">
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Secondary email</mat-label>
+      <input matInput formControlName="email_2">
+    </mat-form-field>
+
+    <mat-checkbox formControlName="gdpr_accepted">Is GDPR accepted</mat-checkbox>
+
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+  <button mat-raised-button type="button" color="primary" (click)="onUpdateClick()">Save</button>
+  <button mat-raised-button type="button" (click)="closepopup()" color="warn">Close</button>
+</mat-dialog-actions>
 

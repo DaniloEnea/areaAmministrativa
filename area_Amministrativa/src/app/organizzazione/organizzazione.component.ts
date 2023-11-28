@@ -37,7 +37,6 @@ export class OrganizzazioneComponent {
   openDialog(): void {
     const dialogRef = this.dialog.open(ModaleUpdateOrgComponent,{
       width:'60%',   // Set width to 60%  of the window's total width
-      height:'60%',  // Set height to 50% of the window's total height
     });
 
     dialogRef.afterClosed().subscribe((result) => {
