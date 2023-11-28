@@ -1,20 +1,71 @@
-<h1 mat-dialog-title align="center">Update Organization</h1>
- <div mat-dialog-content style="display: flex; flex-direction: column">
-   <mat-form-field>
-    <mat-label>Name</mat-label>
-    <input formControlName="name" matInput>
-   </mat-form-field>
-   <mat-form-field>
-    <mat-label>Email</mat-label>
-    <input matInput formControlName="email">
-   </mat-form-field>
-   <mat-form-field>
-    <mat-label>Phone</mat-label>
-    <input matInput formControlName="phone">
-   </mat-form-field>
- </div>
- <div mat-dialog-actions align="center">
-    <button mat-raised-button type="submit" color="primary">Save</button>
-    <button (click)="closepopup()" mat-raised-button color="warn">Close</button>
-</div>
+<h1 mat-dialog-title align="center" style="font-size:20px; font-weight:bold">Update Organization</h1>
+<mat-dialog-content>
+  <form [formGroup]="updateOrgForm" class="mat-form">
 
+    <mat-form-field class="full-width">
+      <mat-label>Name</mat-label>
+      <input formControlName="name" matInput>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>P. IVA</mat-label>
+      <input formControlName="vat" matInput>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Indirizzo</mat-label>
+      <input matInput formControlName="street_address">
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Città</mat-label>
+      <input matInput formControlName="city">
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Regione</mat-label>
+      <input matInput formControlName="province_state">
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Paese</mat-label>
+      <input matInput formControlName="country">
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>CAP</mat-label>
+      <input matInput type="number" formControlName="zip_code">
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Info aggiuntive</mat-label>
+      <input matInput formControlName="additional_info">
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Sito Web</mat-label>
+      <input matInput formControlName="website">
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email">
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Dominio</mat-label>
+      <input matInput formControlName="domain">
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>PEC</mat-label>
+      <input matInput formControlName="pec">
+    </mat-form-field>
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+  <button mat-raised-button type="button" color="primary" (click)="onUpdateClick()">Save</button>
+  <button mat-raised-button type="button" (click)="closepopup()" color="warn">Close</button>
+</mat-dialog-actions>
