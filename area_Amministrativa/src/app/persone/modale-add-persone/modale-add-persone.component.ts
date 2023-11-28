@@ -22,8 +22,8 @@ export class ModaleAddPersoneComponent {
       first_name: ['', Validators.required],
       last_name: ['', Validators.required],
       cf: ['', Validators.required],
-      role: ['', Validators.required], // Imposta il valore di default
-      phone_number: [, Validators.required],
+      role: ['', Validators.required],
+      phone_number: [Validators.required],
       email: ['', Validators.required],
       email_2: [''],
       gdpr_accepted: [false],
