@@ -1,14 +1,21 @@
 <h2>Lista Persone</h2>
 <br>
 <div>
-  <mat-form-field>
-    <mat-label>Filtra</mat-label>
-    <input matInput>
-  </mat-form-field> 
-    <button class="button-add" mat-raised-button (click)="openAddDialog()" color="primary">Add</button>
+  <button class="button-add" mat-raised-button (click)="openAddDialog()" color="primary">Add</button>
+</div>
+<br>
+<div *ngIf="dataSource.data.length === 0; else PersonsTable">
+      <h3 align="center">Non ci persone</h3>
 </div>
 
+<ng-template #PersonsTable>
 <div>
+
+    <mat-form-field>
+    <mat-label>Filtra</mat-label>
+    <input matInput>
+  </mat-form-field>
+
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
     <ng-container matColumnDef="id">
@@ -70,6 +77,6 @@
     </tr>
   </table>
 </div>
-
+</ng-template>
 
 
