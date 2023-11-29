@@ -23,7 +23,7 @@ export class ModaleAddPersoneComponent {
       last_name: ['', Validators.required],
       cf: ['', Validators.required],
       role: ['', Validators.required],
-      phone_number: [Validators.required],
+      phone_number: ['', Validators.required],
       email: ['', Validators.required],
       email_2: [''],
       gdpr_accepted: [false],
