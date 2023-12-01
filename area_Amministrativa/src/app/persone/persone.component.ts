@@ -13,7 +13,7 @@ export interface PersonDTO {
   first_name: string;
   last_name: string;
   cf: string;
-  role: string;
+  work_role: string;
   phone_number: string;
   email: string;
   email_2: string;
@@ -23,7 +23,7 @@ export interface PersonDTO1 {
   first_name: string;
   last_name: string;
   cf: string;
-  role: string;
+  work_role: string;
   phone_number: string;
   email: string;
   email_2: string;

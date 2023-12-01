@@ -2,23 +2,23 @@
 <mat-dialog-content>
   <mat-list>
     <mat-list-item>
-      <strong>Nome:</strong> {{ data.person.first_name }}
+      <strong>First name:</strong> {{ data.person.first_name }}
     </mat-list-item>
 
     <mat-list-item>
-      <strong>Cognome:</strong> {{ data.person.last_name }}
+      <strong>Last name:</strong> {{ data.person.last_name }}
     </mat-list-item>
 
     <mat-list-item>
-      <strong>Codice Fiscale:</strong> {{ data.person.cf }}
+      <strong>CF:</strong> {{ data.person.cf }}
     </mat-list-item>
 
     <mat-list-item>
-      <strong>Ruolo:</strong> {{ data.person.role }}
+      <strong>Work role:</strong> {{ data.person.work_role }}
     </mat-list-item>
 
     <mat-list-item>
-      <strong>Numero di telefono:</strong> {{ data.person.phone_number }}
+      <strong>Phone number:</strong> {{ data.person.phone_number }}
     </mat-list-item>
 
     <mat-list-item>
@@ -26,11 +26,11 @@
     </mat-list-item>
 
     <mat-list-item>
-      <strong>Seconda Email:</strong> {{ data.person.email_2 }}
+      <strong>Secondary email:</strong> {{ data.person.email_2 }}
     </mat-list-item>
 
     <mat-list-item>
-      <strong>Accettazione GDPR:</strong> {{ data.person.gdpr_accepted ? 'Sì' : 'No' }}
+      <strong>Is GDPR accetped?:</strong> {{ data.person.gdpr_accepted ? 'Yes' : 'No' }}
     </mat-list-item>
   </mat-list>
   </mat-dialog-content>

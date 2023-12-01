@@ -1,10 +1,10 @@
-    <h2>Utente</h2>
+    <h2>User</h2>
     <div class="button-add">
       <button mat-raised-button color="primary" (click)="openAddDialog()">Add</button>
     </div>
 
     <div *ngIf="dataSource.data.length === 0; else usersTable">
-      <h3 align="center">Non ci sono utenti</h3>
+      <h3 align="center">There are no users</h3>
     </div>
 
     <ng-template #usersTable>

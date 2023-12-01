@@ -1,18 +1,18 @@
-<h2>Lista Persone</h2>
+<h2>People List</h2>
 <br>
 <div>
   <button class="button-add" mat-raised-button (click)="openAddDialog()" color="primary">Add</button>
 </div>
 <br>
 <div *ngIf="dataSource.data.length === 0; else PersonsTable">
-      <h3 align="center">Non ci sono persone</h3>
+      <h3 align="center">There are no people </h3>
 </div>
 
 <ng-template #PersonsTable>
 <div>
 
     <mat-form-field>
-    <mat-label>Filtra</mat-label>
+    <mat-label>Filter</mat-label>
     <input matInput>
   </mat-form-field>
 
@@ -24,12 +24,12 @@
     </ng-container>
 
     <ng-container matColumnDef="first_name">
-      <th mat-header-cell *matHeaderCellDef> Nome </th>
+      <th mat-header-cell *matHeaderCellDef> First name </th>
       <td mat-cell *matCellDef="let element"> {{element.first_name}} </td>
     </ng-container>
 
     <ng-container matColumnDef="last_name">
-      <th mat-header-cell *matHeaderCellDef> Cognome </th>
+      <th mat-header-cell *matHeaderCellDef> Last name </th>
       <td mat-cell *matCellDef="let element"> {{element.last_name}} </td>
     </ng-container>
 
@@ -38,13 +38,13 @@
       <td mat-cell *matCellDef="let element"> {{element.cf}} </td>
     </ng-container>
 
-    <ng-container matColumnDef="role">
-      <th mat-header-cell *matHeaderCellDef> Role </th>
-      <td mat-cell *matCellDef="let element"> {{element.role}} </td>
+    <ng-container matColumnDef="work_role">
+      <th mat-header-cell *matHeaderCellDef> Work role </th>
+      <td mat-cell *matCellDef="let element"> {{element.work_role}} </td>
     </ng-container>
 
     <ng-container matColumnDef="phone_number">
-      <th mat-header-cell *matHeaderCellDef> Telefono </th>
+      <th mat-header-cell *matHeaderCellDef> Phone number </th>
       <td mat-cell *matCellDef="let element"> {{element.phone_number}} </td>
     </ng-container>
 
@@ -54,7 +54,7 @@
     </ng-container>
 
     <ng-container matColumnDef="email_2">
-      <th mat-header-cell *matHeaderCellDef> Email Secondaria </th>
+      <th mat-header-cell *matHeaderCellDef> Secondary email </th>
       <td mat-cell *matCellDef="let element"> {{element.email_2}} </td>
     </ng-container>
 

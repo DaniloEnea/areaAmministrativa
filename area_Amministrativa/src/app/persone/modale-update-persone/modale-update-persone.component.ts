@@ -21,7 +21,7 @@ export class ModaleUpdatePersoneComponent {
         first_name: [this.data.person.first_name, Validators.required],
         last_name: [this.data.person.last_name, Validators.required],
         cf: [this.data.person.cf, Validators.required],
-        role: [this.data.person.role, Validators.required], // Imposta il valore di default
+        work_role: [this.data.person.work_role, Validators.required], // Imposta il valore di default
         phone_number: [this.data.person.phone_number, Validators.required],
         email: [this.data.person.email, Validators.required],
         email_2: [this.data.person.email_2],
@@ -35,7 +35,7 @@ export class ModaleUpdatePersoneComponent {
         first_name: this.updatePersonForm.value.first_name,
         last_name: this.updatePersonForm.value.last_name,
         cf: this.updatePersonForm.value.cf,
-        role: this.updatePersonForm.value.role,
+        work_role: this.updatePersonForm.value.work_role,
         phone_number: this.updatePersonForm.value.phone_number,
         email: this.updatePersonForm.value.email,
         email_2: this.updatePersonForm.value.email_2,

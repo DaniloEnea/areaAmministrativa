@@ -20,7 +20,7 @@ export class ModaleDetailsPersoneComponent {
       first_name: [this.data.person.first_name],
       last_name: [this.data.person.last_name],
       cf: [this.data.person.cf],
-      role: [this.data.person.role], // Imposta il valore di default
+      work_role: [this.data.person.work_role], // Imposta il valore di default
       phone_number: [this.data.person.phone_number],
       email: [this.data.person.email],
       email_2: [this.data.person.email_2],

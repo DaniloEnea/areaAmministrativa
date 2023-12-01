@@ -1,21 +1,21 @@
 <mat-toolbar color="primary" class="custom-toolbar">
-  <span>Area Amministrativa</span>
+  <span>Admin area</span>
 
   <div class="wrap-route">
     <button mat-button [matMenuTriggerFor]="menu">Menu</button>
     <mat-menu #menu="matMenu">
-      <button mat-menu-item [routerLink]="'/organizzazione'"> Organizzazione </button>
-      <button mat-menu-item [routerLink]="'/persone'"> Persone </button>
-      <button mat-menu-item [routerLink]="'/utenti'"> Utente </button>
+      <button mat-menu-item [routerLink]="'/organizzazione'"> Organization </button>
+      <button mat-menu-item [routerLink]="'/persone'"> People </button>
+      <button mat-menu-item [routerLink]="'/utenti'"> Users </button>
     </mat-menu>
   </div>
 
-  <button class="right-button" mat-icon-button>
+  <a class="right-button" mat-icon-button href="https://www.google.com/">
     <mat-icon
       aria-hidden="false"
       aria-label="logout icon"
       fontIcon="logout"
       color="accent"
     ></mat-icon>
-  </button>
+  </a>
 </mat-toolbar>
