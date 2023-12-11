@@ -41,7 +41,7 @@ export class AdminApiService {
   }
 
       // PUT operations
-    put(url: string, id: number, model :any): Observable<any> {
+    put(url: string, id: string, model :any): Observable<any> {
       const httpOptions = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json'
@@ -55,7 +55,7 @@ export class AdminApiService {
     }
 
   // DELETE operations
-  delete(url: string, id: number): Observable<any> {
+  delete(url: string, id: string): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
@@ -63,6 +63,20 @@ export class AdminApiService {
       observe: 'response' as 'body'
     };
     const deleteUrl = `${url}/${id}`;
+    return this.http.delete(deleteUrl, httpOptions).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  // DELETE fisic operations 
+  deleteFisic(url: string, id: string): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      }),
+      observe: 'response' as 'body'
+    };
+    const deleteUrl = `${url}/${id}?logicalDelete=false`;
     return this.http.delete(deleteUrl, httpOptions).pipe(
       catchError(this.handleError)
     );

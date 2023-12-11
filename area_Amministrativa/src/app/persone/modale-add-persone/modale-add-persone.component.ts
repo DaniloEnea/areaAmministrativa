@@ -19,30 +19,43 @@ export class ModaleAddPersoneComponent {
     private httpApi: HttpProviderService) {
 
     this.newPersonForm = this.formBuilder.group({
-      first_name: ['', Validators.required],
-      last_name: ['', Validators.required],
+      //id: ['3fa85f64-5717-4562-b3fc-2c963f66afa6'],
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      //organizationId: ['3fa85f64-5717-4562-b3fc-2c963f66afa6'],
       cf: ['', Validators.required],
-      work_role: ['', Validators.required],
-      phone_number: ['', Validators.required],
+      workRole: ['', Validators.required],
+      phone: ['', Validators.required],
       email: ['', Validators.required],
-      email_2: [''],
-      gdpr_accepted: [false],
+      secondEmail: [''],
+      isGDPRTermsAccepted: [false],
+      isOtherProcessingPurposesAccepted: [true],
+      isServiceProcessingPurposesAccepted: [true],
+      IsValid: [true],
+      IsDeleted: [false],
     });
   }
 
   onAddClick(): void {
     if (this.newPersonForm.valid) {
+        console.log("test 1")
       const newPerson: PersonDTO1 = {
-        first_name: this.newPersonForm.value.first_name,
-        last_name: this.newPersonForm.value.last_name,
+        firstName: this.newPersonForm.value.firstName,
+        lastName: this.newPersonForm.value.lastName,
         cf: this.newPersonForm.value.cf,
-        work_role: this.newPersonForm.value.work_role,
-        phone_number: this.newPersonForm.value.phone_number,
+        workRole: this.newPersonForm.value.workRole,
+        phone: this.newPersonForm.value.phone,
         email: this.newPersonForm.value.email,
-        email_2: this.newPersonForm.value.email_2,
-        gdpr_accepted: this.newPersonForm.value.gdpr_accepted,
+        secondEmail: this.newPersonForm.value.secondEmail,
+        isGDPRTermsAccepted: this.newPersonForm.value.isGDPRTermsAccepted,
+        isOtherProcessingPurposesAccepted: this.newPersonForm.value.isOtherProcessingPurposesAccepted,
+        isServiceProcessingPurposesAccepted: this.newPersonForm.value.isServiceProcessingPurposesAccepted,
+        IsValid: this.newPersonForm.value.IsValid,
+        IsDeleted: this.newPersonForm.value.IsDeleted
       };
-
+      console.log(newPerson)
+      
+        console.log("test 1")
       // post for create new user
       this.httpApi.addNewPerson(newPerson).subscribe();
     }

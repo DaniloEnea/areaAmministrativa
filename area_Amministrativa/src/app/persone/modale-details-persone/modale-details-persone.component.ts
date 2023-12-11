@@ -17,14 +17,14 @@ export class ModaleDetailsPersoneComponent {
     private httpApi: HttpProviderService) {
 
     this.detailsPersonForm = this.formBuilder.group({
-      first_name: [this.data.person.first_name],
-      last_name: [this.data.person.last_name],
+      firstName: [this.data.person.firstName],
+      lastName: [this.data.person.lastName],
       cf: [this.data.person.cf],
-      work_role: [this.data.person.work_role], // Imposta il valore di default
-      phone_number: [this.data.person.phone_number],
+      workRole: [this.data.person.workRole], // Imposta il valore di default
+      phone: [this.data.person.phone],
       email: [this.data.person.email],
-      email_2: [this.data.person.email_2],
-      gdpr_accepted: [this.data.person.gdpr_accepted],
+      email_2: [this.data.person.secondEmail],
+      isGDPRTermsAccepted: [this.data.person.isGDPRTermsAccepted],
     });
   }
 

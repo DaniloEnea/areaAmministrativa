@@ -18,31 +18,44 @@ export class ModaleUpdatePersoneComponent {
       private httpApi: HttpProviderService) {
 
       this.updatePersonForm = this.formBuilder.group({
-        first_name: [this.data.person.first_name, Validators.required],
-        last_name: [this.data.person.last_name, Validators.required],
+        //id: ['3fa85f64-5717-4562-b3fc-2c963f66afa6'],
+        firstName: [this.data.person.firstName, Validators.required],
+        lastName: [this.data.person.lastName, Validators.required],
+        //organizationId: ['3fa85f64-5717-4562-b3fc-2c963f66afa6'],
         cf: [this.data.person.cf, Validators.required],
-        work_role: [this.data.person.work_role, Validators.required], // Imposta il valore di default
-        phone_number: [this.data.person.phone_number, Validators.required],
+        workRole: [this.data.person.workRole, Validators.required],
+        phone: [this.data.person.phone, Validators.required],
         email: [this.data.person.email, Validators.required],
-        email_2: [this.data.person.email_2],
-        gdpr_accepted: [this.data.person.gdpr_accepted],
+        secondEmail: [this.data.person.secondEmail],
+        isGDPRTermsAccepted: [this.data.person.isGDPRTermsAccepted],
+        isOtherProcessingPurposesAccepted: [true],
+        isServiceProcessingPurposesAccepted: [true],
+        IsValid: [true],
+        IsDeleted: [false],
       });
     }
 
   onUpdateClick(): void {
     if (this.updatePersonForm.valid) {
-      const updatePerson: PersonDTO1 = {
-        first_name: this.updatePersonForm.value.first_name,
-        last_name: this.updatePersonForm.value.last_name,
+      const updatePerson: PersonDTO = {
+        id: this.data.person.id,
+        firstName: this.updatePersonForm.value.firstName,
+        lastName: this.updatePersonForm.value.lastName,
+        organizationId: this.data.person.organizationId,
         cf: this.updatePersonForm.value.cf,
-        work_role: this.updatePersonForm.value.work_role,
-        phone_number: this.updatePersonForm.value.phone_number,
+        workRole: this.updatePersonForm.value.workRole,
+        phone: this.updatePersonForm.value.phone,
         email: this.updatePersonForm.value.email,
-        email_2: this.updatePersonForm.value.email_2,
-        gdpr_accepted: this.updatePersonForm.value.gdpr_accepted,
+        secondEmail: this.updatePersonForm.value.secondEmail,
+        isGDPRTermsAccepted: this.updatePersonForm.value.isGDPRTermsAccepted,
+        isOtherProcessingPurposesAccepted: this.updatePersonForm.value.isOtherProcessingPurposesAccepted,
+        isServiceProcessingPurposesAccepted: this.updatePersonForm.value.isServiceProcessingPurposesAccepted,
+        IsValid: this.updatePersonForm.value.IsValid,
+        IsDeleted: this.updatePersonForm.value.IsDeleted
       };
 
-      // post for create new user
+      //post for create new user
+      console.log(this.data.person.id)
       this.httpApi.updatePerson(this.data.person.id, updatePerson).subscribe();
       this.dialogRef.close(updatePerson);
       window.location.reload();

@@ -9,19 +9,19 @@ import {HttpProviderService} from "../service/http-provider.service";
 })
 export class ModaleDeleteComponent {
   constructor(private ref: MatDialogRef<ModaleDeleteComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { Id: number, ClassForm : string },
+    @Inject(MAT_DIALOG_DATA) public data: { Id: string, ClassForm : string },
                private httpApi: HttpProviderService) {}
 
   // delete for call DELETE API
   confirmForm(): void {
     if (this.data.ClassForm == "User") {
-      this.httpApi.deleteUser(this.data.Id).subscribe()
+      //this.httpApi.deleteUser(this.data.Id).subscribe()
     }
     else if (this.data.ClassForm == "People") {
       this.httpApi.deletePerson(this.data.Id).subscribe()
     }
     else if (this.data.ClassForm == "Organization") {
-      this.httpApi.deleteOrg(this.data.Id).subscribe()
+      //this.httpApi.deleteOrg(this.data.Id).subscribe()
     }
 
     console.log("delete: " + this.data.Id)

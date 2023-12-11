@@ -2,11 +2,11 @@
 <mat-dialog-content>
   <mat-list>
     <mat-list-item>
-      <strong>First name:</strong> {{ data.person.first_name }}
+      <strong>First name:</strong> {{ data.person.firstName }}
     </mat-list-item>
 
     <mat-list-item>
-      <strong>Last name:</strong> {{ data.person.last_name }}
+      <strong>Last name:</strong> {{ data.person.lastName }}
     </mat-list-item>
 
     <mat-list-item>
@@ -14,11 +14,11 @@
     </mat-list-item>
 
     <mat-list-item>
-      <strong>Work role:</strong> {{ data.person.work_role }}
+      <strong>Work role:</strong> {{ data.person.workRole }}
     </mat-list-item>
 
     <mat-list-item>
-      <strong>Phone number:</strong> {{ data.person.phone_number }}
+      <strong>Phone number:</strong> {{ data.person.phone }}
     </mat-list-item>
 
     <mat-list-item>
@@ -26,12 +26,17 @@
     </mat-list-item>
 
     <mat-list-item>
-      <strong>Secondary email:</strong> {{ data.person.email_2 }}
+      <strong>Secondary email:</strong> {{ data.person.secondEmail }}
     </mat-list-item>
 
     <mat-list-item>
-      <strong>Is GDPR accetped?:</strong> {{ data.person.gdpr_accepted ? 'Yes' : 'No' }}
+      <strong>Password:</strong>
     </mat-list-item>
+
+    <mat-list-item>
+      <strong>Is GDPR accetped?:</strong> {{ data.person.isGDPRTermsAccepted ? 'Yes' : 'No' }}
+    </mat-list-item>
+
   </mat-list>
   </mat-dialog-content>
     <mat-dialog-actions align="center">

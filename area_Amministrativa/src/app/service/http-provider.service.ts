@@ -8,27 +8,28 @@ let genericUrl = "http://localhost:8080/api/"
 
 //get
 let getUtenteUrl = genericUrl + "utenti"
-let getPersonUrl = genericUrl + "people"
+//let getPersonUrl = genericUrl + "people"
+let getPersonUrl = "https://localhost:7131/api/People"
 let getOrgUrl = genericUrl + "organization"
 
 //add
 let addUtenteUrl = genericUrl + "addUtenti"
-let addPersonUrl = genericUrl + "addPerson"
+let addPersonUrl = "https://localhost:7131/api/People"
 let addOrgUrl = genericUrl + "addOrganization"
 
-//details
-let getUtenteByIdUrl = genericUrl + "utenti"
-let getPersonByIdUrl = genericUrl + "person"
-let getOrgByIdUrl = genericUrl + "organization"
+/*details*/
+//let getUtenteByIdUrl = genericUrl + "utenti"
+//let getPersonByIdUrl = genericUrl + "person"
+//let getOrgByIdUrl = genericUrl + "organization"
 
 //update
 let updateUtenteUrl = genericUrl + "updateUtenti"
-let updatePersonUrl = genericUrl + "updatePerson"
+let updatePersonUrl = "https://localhost:7131/api/People"
 let updateOrgUrl = genericUrl + "updateOrganization"
 
 //delete
 let deleteUtenteUrl = genericUrl + "deleteUtenti"
-let deletePersonUrl = genericUrl + "deletePerson"
+let deletePersonUrl = "https://localhost:7131/api/People"
 let deleteOrgUrl = genericUrl + "deleteOrganization"
 
 @Injectable({
@@ -52,15 +53,15 @@ export class HttpProviderService {
   }
 
   //GET BY ID
-  public getUtenteByID( id: number): Observable<any> {
-    return this.adminApiServie.getById(getUtenteByIdUrl, id)
-  }
-  public getPersonByID(id: number): Observable<any> {
-    return this.adminApiServie.getById(getPersonByIdUrl, id)
-  }
-  public getOrgByID(id: number): Observable<any> {
-    return this.adminApiServie.getById(getOrgByIdUrl, id)
-  }
+  //public getUtenteByID( id: number): Observable<any> {
+  //  return this.adminApiServie.getById(getUtenteByIdUrl, id)
+  //}
+  //public getPersonByID(id: number): Observable<any> {
+  //  return this.adminApiServie.getById(getPersonByIdUrl, id)
+  //}
+  //public getOrgByID(id: number): Observable<any> {
+  //  return this.adminApiServie.getById(getOrgByIdUrl, id)
+  //}
 
   //POST
   public addNewUser(model: any) : Observable<any> {
@@ -74,26 +75,26 @@ export class HttpProviderService {
   }
 
   //PUT
-  public updateUser(id: number, model : any) : Observable<any> {
-   return this.adminApiServie.put(updateUtenteUrl,id, model)
-  }
-  public updatePerson(id: number, model: any): Observable<any> {
+  //public updateUser(id: number, model : any) : Observable<any> {
+  // return this.adminApiServie.put(updateUtenteUrl,id, model)
+  //}
+  public updatePerson(id: string, model: any): Observable<any> {
    return this.adminApiServie.put(updatePersonUrl,id, model)
   }
-  public updateOrg(id: number, model: any): Observable<any> {
-    return this.adminApiServie.put(updateOrgUrl, id, model)
-  }
+  //public updateOrg(id: number, model: any): Observable<any> {
+  //  return this.adminApiServie.put(updateOrgUrl, id, model)
+  //}
 
   //DELETE
-  public deleteUser(id: number) : Observable<any> {
-    return this.adminApiServie.delete(deleteUtenteUrl, id)
+  //public deleteUser(id: number) : Observable<any> {
+  //  return this.adminApiServie.delete(deleteUtenteUrl, id)
+  //}
+  public deletePerson(id: string): Observable<any> {
+    return this.adminApiServie.deleteFisic(deletePersonUrl, id)
   }
-  public deletePerson(id: number): Observable<any> {
-    return this.adminApiServie.delete(deletePersonUrl, id)
-  }
-  public deleteOrg(id: number): Observable<any> {
-    return this.adminApiServie.delete(deleteOrgUrl, id)
-  }
+  //public deleteOrg(id: number): Observable<any> {
+  //  return this.adminApiServie.delete(deleteOrgUrl, id)
+  //}
 
 
 }

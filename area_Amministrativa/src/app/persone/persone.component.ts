@@ -9,25 +9,34 @@ import { ModaleDetailsPersoneComponent } from './modale-details-persone/modale-d
 
 
 export interface PersonDTO {
-  id: number;
-  first_name: string;
-  last_name: string;
-  cf: string;
-  work_role: string;
-  phone_number: string;
+  id: string;
+  firstName: string;
+  lastName: string;
+  organizationId: string;
+  workRole: string;
+  phone: string;
   email: string;
-  email_2: string;
-  gdpr_accepted: boolean;
+  secondEmail: string;
+  cf: string;
+  isGDPRTermsAccepted: boolean;
+  isServiceProcessingPurposesAccepted: boolean;
+  isOtherProcessingPurposesAccepted: boolean;
+  IsValid: boolean;
+  IsDeleted: boolean;
 }
 export interface PersonDTO1 {
-  first_name: string;
-  last_name: string;
-  cf: string;
-  work_role: string;
-  phone_number: string;
+  firstName: string;
+  lastName: string;
+  workRole: string;
+  phone: string;
   email: string;
-  email_2: string;
-  gdpr_accepted: boolean;
+  secondEmail: string;
+  cf: string;
+  isGDPRTermsAccepted: boolean;
+  isServiceProcessingPurposesAccepted: boolean;
+  isOtherProcessingPurposesAccepted: boolean;
+  IsValid: boolean;
+  IsDeleted: boolean;
 }
 
 @Component({
@@ -39,7 +48,7 @@ export interface PersonDTO1 {
 export class PersoneComponent {
   classForm: string = "People";
   PeopleList: PersonDTO[] = [];
-  displayedColumns: string[] = ['first_name', 'last_name', 'phone_number', 'email', 'update'];
+  displayedColumns: string[] = ['firstName', 'lastName', 'phone', 'workRole', 'email', 'update'];
   dataSource = new MatTableDataSource<PersonDTO>;
 
   constructor(private dialog: MatDialog, private httpApi: HttpProviderService) {
@@ -59,6 +68,7 @@ export class PersoneComponent {
             this.PeopleList = resultData;
             this.dataSource.data = [...this.PeopleList];
             console.log(this.PeopleList);
+            
           }
         }
       },

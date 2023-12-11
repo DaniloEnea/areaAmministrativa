@@ -51,7 +51,7 @@ export class ModaleUpdateOrgComponent {
       };
 
       // post for create new user
-      this.httpApi.updateOrg(this.data.org.id, updateOrg).subscribe();
+      //this.httpApi.updateOrg(this.data.org.id, updateOrg).subscribe();
       this.dialogRef.close(updateOrg);
       window.location.reload();
     }

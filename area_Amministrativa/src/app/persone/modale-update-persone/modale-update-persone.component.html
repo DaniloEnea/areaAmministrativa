@@ -3,41 +3,21 @@
   <form [formGroup]="updatePersonForm" class="mat-form">
 
     <mat-form-field class="full-width">
-      <mat-label>First Name</mat-label>
-      <input formControlName="first_name" matInput>
-    </mat-form-field>
-
-    <mat-form-field class="full-width">
-      <mat-label>Last Name</mat-label>
-      <input formControlName="last_name" matInput>
-    </mat-form-field>
-
-    <mat-form-field class="full-width">
-      <mat-label>CF</mat-label>
-      <input matInput formControlName="cf">
-    </mat-form-field>
-
-    <mat-form-field class="full-width">
-      <mat-label>Select a role</mat-label>
-      <input matInput formControlName="work_role">
+      <mat-label>Work role</mat-label>
+      <input matInput formControlName="workRole">
     </mat-form-field>
 
     <mat-form-field class="full-width">
       <mat-label>Phone number</mat-label>
-      <input matInput formControlName="phone_number" type="number">
-    </mat-form-field>
-
-    <mat-form-field class="full-width">
-      <mat-label>Email</mat-label>
-      <input matInput formControlName="email" type="email">
+      <input matInput formControlName="phone">
     </mat-form-field>
 
     <mat-form-field class="full-width">
       <mat-label>Secondary email</mat-label>
-      <input matInput formControlName="email_2">
+      <input matInput formControlName="secondEmail">
     </mat-form-field>
 
-    <mat-checkbox formControlName="gdpr_accepted">Is GDPR accepted</mat-checkbox>
+    <!--<mat-checkbox formControlName="gdpr_accepted">Is GDPR accepted</mat-checkbox>-->
 
 
   </form>

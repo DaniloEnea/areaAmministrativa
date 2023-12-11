@@ -27,7 +27,7 @@ export interface OrganizationDTO1 {
   city: string;
   province_state: string;
   country: string;
-  zip_code: number;
+  zip_code: string;
   additional_info: string;
   website: string;
   email: string;
