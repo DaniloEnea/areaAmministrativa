@@ -38,16 +38,16 @@ import {ToastrModule} from "ngx-toastr";
       ModaleDetailsOrgComponent,
       ModaleDetailsPersoneComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    MaterialModule,
-    ReactiveFormsModule,
-    FormsModule,
-    HttpClientModule,
-    ToastrModule.forRoot()
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        MaterialModule,
+        ReactiveFormsModule,
+        FormsModule,
+        HttpClientModule,
+        ToastrModule.forRoot()
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })
