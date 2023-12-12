@@ -17,18 +17,21 @@ export class ModaleDetailsOrgComponent {
     private httpApi: HttpProviderService) {
 
     this.updateOrgForm = this.formBuilder.group({
-      name: [this.data.org.name, Validators.required],
-      vat: [this.data.org.vat, Validators.required],
-      street_address: [this.data.org.street_address, Validators.required],
-      city: [this.data.org.city, Validators.required],
-      province_state: [this.data.org.province_state, Validators.required],
-      country: [this.data.org.country, Validators.required],
-      zip_code: [this.data.org.zip_code, Validators.required],
-      additional_info: [this.data.org.additional_info, Validators.required],
-      website: [this.data.org.website, Validators.required],
-      email: [this.data.org.email, Validators.required],
-      domain: [this.data.org.domain, Validators.required],
+      name: [this.data.org.name],
+      vat: [this.data.org.vatNumber],
+      streetAddress: [this.data.org.streetAddress],
+      city: [this.data.org.city],
+      province_State: [this.data.org.province_State],
+      country: [this.data.org.country],
+      zipCode: [this.data.org.zipCode],
+      additionalInformation: [this.data.org.additionalInformation],
+      webSite: [this.data.org.webSite],
+      emailAddress: [this.data.org.emailAddress],
+      emailDomain: [this.data.org.emailDomain],
       pec: [this.data.org.pec],
+      billingCode: [this.data.org.billingCode],
+      isSupplier: [this.data.org.isSupplier],
+      isCustomer: [this.data.org.isCustomer]
     });
   }
 

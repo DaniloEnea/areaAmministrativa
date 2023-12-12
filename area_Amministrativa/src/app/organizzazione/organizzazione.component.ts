@@ -6,33 +6,43 @@ import { HttpProviderService } from "../service/http-provider.service";
 import { ModaleDetailsOrgComponent } from './modale-details-org/modale-details-org.component';
 
 export interface OrganizationDTO {
-  id: number;
+  id: string;
   name: string;
-  vat: string;
-  street_address: string;
+  vatNumber: string;
+  streetAddress: string;
   city: string;
-  province_state: string;
+  province_State: string;
   country: string;
-  zip_code: number;
-  additional_info: string;
-  website: string;
-  email: string;
-  domain: string;
+  zipCode: string;
+  additionalInformation: string;
+  webSite: string;
+  emailAddress: string;
+  emailDomain: string;
   pec: string;
+  billingCode: string;
+  isSupplier: boolean;
+  isCustomer: boolean;
+  IsValid: boolean;
+  IsDeleted: boolean;
 }
 export interface OrganizationDTO1 {
   name: string;
-  vat: string;
-  street_address: string;
+  vatNumber: string;
+  streetAddress: string;
   city: string;
-  province_state: string;
+  province_State: string;
   country: string;
-  zip_code: string;
-  additional_info: string;
-  website: string;
-  email: string;
-  domain: string;
+  zipCode: string;
+  additionalInformation: string;
+  webSite: string;
+  emailAddress: string;
+  emailDomain: string;
   pec: string;
+  billingCode: string;
+  isSupplier: boolean;
+  isCustomer: boolean;
+  IsValid: boolean;
+  IsDeleted: boolean;
 }
 
 @Component({
@@ -44,7 +54,7 @@ export interface OrganizationDTO1 {
 
 export class OrganizzazioneComponent {
   OrgList: OrganizationDTO[] = [];
-  displayedColumns: string[] = ['name', 'street_address', 'country', 'email', 'domain', 'update'];
+  displayedColumns: string[] = ['name', 'streetAddress', 'country', 'emailAddress', 'emailDomain', 'update'];
   dataSource = new MatTableDataSource<OrganizationDTO>(this.OrgList);
 
   // modal

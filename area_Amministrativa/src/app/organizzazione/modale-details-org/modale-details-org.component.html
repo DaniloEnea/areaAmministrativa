@@ -1,16 +1,17 @@
 <h1 mat-dialog-title align="center" style="font-size:20px; font-weight:bold">Details organization</h1>
 <mat-dialog-content>
   <mat-list>
+
     <mat-list-item>
       <strong>Org name:</strong> {{ data.org.name }}
     </mat-list-item>
 
     <mat-list-item>
-      <strong>VAT:</strong> {{ data.org.vat }}
+      <strong>VAT:</strong> {{ data.org.vatNumber }}
     </mat-list-item>
 
     <mat-list-item>
-      <strong>Street address:</strong> {{ data.org.street_address }}
+      <strong>Street address:</strong> {{ data.org.streetAddress }}
     </mat-list-item>
 
     <mat-list-item>
@@ -18,7 +19,7 @@
     </mat-list-item>
 
     <mat-list-item>
-      <strong>Provice state:</strong> {{ data.org.province_state }}
+      <strong>Provice state:</strong> {{ data.org.province_State }}
     </mat-list-item>
 
     <mat-list-item>
@@ -26,27 +27,39 @@
     </mat-list-item>
 
     <mat-list-item>
-      <strong>Zip code:</strong> {{ data.org.zip_code }}
+      <strong>Zip code:</strong> {{ data.org.zipCode }}
     </mat-list-item>
 
     <mat-list-item>
-      <strong>Additional info:</strong> {{ data.org.additional_info }}
+      <strong>Additional info:</strong> {{ data.org.additionalInformation }}
     </mat-list-item>
 
     <mat-list-item>
-      <strong>Website:</strong> {{ data.org.website }}
+      <strong>Website:</strong> {{ data.org.webSite }}
     </mat-list-item>
 
     <mat-list-item>
-      <strong>Email:</strong> {{ data.org.email }}
+      <strong>Email:</strong> {{ data.org.emailAddress }}
     </mat-list-item>
 
     <mat-list-item>
-      <strong>Domain:</strong> {{ data.org.domain }}
+      <strong>Domain:</strong> {{ data.org.emailDomain }}
     </mat-list-item>
 
     <mat-list-item>
       <strong>PEC:</strong> {{ data.org.pec }}
+    </mat-list-item>
+
+    <mat-list-item>
+      <strong>Billing code:</strong> {{ data.org.billingCode }}
+    </mat-list-item>
+
+    <mat-list-item>
+      <strong>Is Supplier?:</strong> {{ data.org.isSupplier? 'Yes' : 'No' }}
+    </mat-list-item>
+
+    <mat-list-item>
+      <strong>Is Customer?:</strong> {{ data.org.isCustomer? 'Yes' : 'No' }}
     </mat-list-item>
 
   </mat-list>

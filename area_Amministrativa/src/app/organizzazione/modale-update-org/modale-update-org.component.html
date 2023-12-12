@@ -9,12 +9,12 @@
 
     <mat-form-field class="full-width">
       <mat-label>VAT</mat-label>
-      <input formControlName="vat" matInput>
+      <input formControlName="vatNumber" matInput>
     </mat-form-field>
 
     <mat-form-field class="full-width">
       <mat-label>Street address</mat-label>
-      <input matInput formControlName="street_address">
+      <input matInput formControlName="streetAddress">
     </mat-form-field>
 
     <mat-form-field class="full-width">
@@ -24,7 +24,7 @@
 
     <mat-form-field class="full-width">
       <mat-label>Province state</mat-label>
-      <input matInput formControlName="province_state">
+      <input matInput formControlName="province_State">
     </mat-form-field>
 
     <mat-form-field class="full-width">
@@ -34,33 +34,42 @@
 
     <mat-form-field class="full-width">
       <mat-label>Zip code</mat-label>
-      <input matInput type="number" formControlName="zip_code">
+      <input matInput type="number" formControlName="zipCode">
     </mat-form-field>
 
     <mat-form-field class="full-width">
       <mat-label>Additional info</mat-label>
-      <input matInput formControlName="additional_info">
+      <input matInput formControlName="additionalInformation">
     </mat-form-field>
 
     <mat-form-field class="full-width">
       <mat-label>Website</mat-label>
-      <input matInput formControlName="website">
+      <input matInput formControlName="webSite">
     </mat-form-field>
 
     <mat-form-field class="full-width">
       <mat-label>Email</mat-label>
-      <input matInput formControlName="email">
+      <input matInput formControlName="emailAddress">
     </mat-form-field>
 
     <mat-form-field class="full-width">
       <mat-label>Domain</mat-label>
-      <input matInput formControlName="domain">
+      <input matInput formControlName="emailDomain">
     </mat-form-field>
 
     <mat-form-field class="full-width">
       <mat-label>PEC</mat-label>
       <input matInput formControlName="pec">
     </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Billing Code</mat-label>
+      <input matInput formControlName="billingCode">
+    </mat-form-field>
+
+    <mat-checkbox formControlName="isSupplier">Is Supplier?</mat-checkbox>
+
+    <mat-checkbox formControlName="isCustomer">Is Customer?</mat-checkbox>
 
   </form>
 </mat-dialog-content>

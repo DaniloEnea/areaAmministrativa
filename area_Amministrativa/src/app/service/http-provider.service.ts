@@ -10,7 +10,8 @@ let genericUrl = "http://localhost:8080/api/"
 let getUtenteUrl = genericUrl + "utenti"
 //let getPersonUrl = genericUrl + "people"
 let getPersonUrl = "https://localhost:7131/api/People"
-let getOrgUrl = genericUrl + "organization"
+let getOrgUrl = "https://localhost:7017/api/Organizations"
+//let getOrgUrl = genericUrl + "organization"
 
 //add
 let addUtenteUrl = genericUrl + "addUtenti"
@@ -25,12 +26,12 @@ let addOrgUrl = genericUrl + "addOrganization"
 //update
 let updateUtenteUrl = genericUrl + "updateUtenti"
 let updatePersonUrl = "https://localhost:7131/api/People"
-let updateOrgUrl = genericUrl + "updateOrganization"
+let updateOrgUrl = "https://localhost:7017/api/Organizations"
 
 //delete
 let deleteUtenteUrl = genericUrl + "deleteUtenti"
 let deletePersonUrl = "https://localhost:7131/api/People"
-let deleteOrgUrl = genericUrl + "deleteOrganization"
+let deleteOrgUrl = "https://localhost:7017/api/Organizations"
 
 @Injectable({
   providedIn: 'root'
@@ -81,9 +82,9 @@ export class HttpProviderService {
   public updatePerson(id: string, model: any): Observable<any> {
    return this.adminApiServie.put(updatePersonUrl,id, model)
   }
-  //public updateOrg(id: number, model: any): Observable<any> {
-  //  return this.adminApiServie.put(updateOrgUrl, id, model)
-  //}
+  public updateOrg(id: string, model: any): Observable<any> {
+    return this.adminApiServie.put(updateOrgUrl, id, model)
+  }
 
   //DELETE
   //public deleteUser(id: number) : Observable<any> {
@@ -92,9 +93,9 @@ export class HttpProviderService {
   public deletePerson(id: string): Observable<any> {
     return this.adminApiServie.deleteFisic(deletePersonUrl, id)
   }
-  //public deleteOrg(id: number): Observable<any> {
-  //  return this.adminApiServie.delete(deleteOrgUrl, id)
-  //}
+  public deleteOrg(id: string): Observable<any> {
+    return this.adminApiServie.delete(deleteOrgUrl, id)
+  }
 
 
 }

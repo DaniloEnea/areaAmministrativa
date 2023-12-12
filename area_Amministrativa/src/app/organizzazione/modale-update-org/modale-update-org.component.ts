@@ -19,39 +19,53 @@ export class ModaleUpdateOrgComponent {
 
     this.updateOrgForm = this.formBuilder.group({
       name: [this.data.org.name, Validators.required],
-      vat: [this.data.org.vat, Validators.required],
-      street_address: [this.data.org.street_address, Validators.required],
+      vatNumber: [this.data.org.vatNumber, Validators.required],
+      streetAddress: [this.data.org.streetAddress, Validators.required],
       city: [this.data.org.city, Validators.required],
-      province_state: [this.data.org.province_state, Validators.required],
+      province_State: [this.data.org.province_State, Validators.required],
       country: [this.data.org.country, Validators.required],
-      zip_code: [this.data.org.zip_code, Validators.required],
-      additional_info: [this.data.org.additional_info, Validators.required],
-      website: [this.data.org.website, Validators.required],
-      email: [this.data.org.email, Validators.required],
-      domain: [this.data.org.domain, Validators.required],
-      pec: [this.data.org.pec],
+      zipCode: [this.data.org.zipCode, Validators.required],
+      additionalInformation: [this.data.org.additionalInformation, Validators.required],
+      webSite: [this.data.org.webSite, Validators.required],
+      emailAddress: [this.data.org.emailAddress, Validators.required],
+      emailDomain: [this.data.org.emailDomain, Validators.required],
+      pec: [this.data.org.pec, Validators.required],
+      billingCode: [this.data.org.billingCode, Validators.required],
+      isSupplier: [this.data.org.isSupplier, Validators.required],
+      isCustomer: [this.data.org.isCustomer, Validators.required],
+      IsValid: [true],
+      IsDeleted: [false]
     });
   }
 
   onUpdateClick(): void {
     if (this.updateOrgForm.valid) {
-      const updateOrg: OrganizationDTO1 = {
+      console.log(this.data.org.id)
+      const updateOrg: OrganizationDTO = {
+        id: this.data.org.id,
         name: this.updateOrgForm.value.name,
-        vat: this.updateOrgForm.value.vat,
-        street_address: this.updateOrgForm.value.street_address,
+        vatNumber: this.updateOrgForm.value.vatNumber,
+        streetAddress: this.updateOrgForm.value.streetAddress,
         city: this.updateOrgForm.value.city,
-        province_state: this.updateOrgForm.value.province_state,
+        province_State: this.updateOrgForm.value.province_State,
         country: this.updateOrgForm.value.country,
-        zip_code: this.updateOrgForm.value.zip_code,
-        additional_info: this.updateOrgForm.value.additional_info,
-        website: this.updateOrgForm.value.website,
-        email: this.updateOrgForm.value.email,
-        domain: this.updateOrgForm.value.domain,
+        zipCode: this.updateOrgForm.value.zipCode,
+        additionalInformation: this.updateOrgForm.value.additionalInformation,
+        webSite: this.updateOrgForm.value.webSite,
+        emailAddress: this.updateOrgForm.value.emailAddress,
+        emailDomain: this.updateOrgForm.value.emailDomain,
         pec: this.updateOrgForm.value.pec,
+        billingCode: this.updateOrgForm.value.billingCode,
+        isSupplier: this.updateOrgForm.value.isSupplier,
+        isCustomer: this.updateOrgForm.value.isCustomer,
+        IsValid: this.updateOrgForm.value.isValid,
+        IsDeleted: this.updateOrgForm.value.isDeleted
       };
 
+
+
       // post for create new user
-      //this.httpApi.updateOrg(this.data.org.id, updateOrg).subscribe();
+      this.httpApi.updateOrg(this.data.org.id, updateOrg).subscribe();
       this.dialogRef.close(updateOrg);
       window.location.reload();
     }

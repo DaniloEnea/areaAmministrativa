@@ -7,20 +7,24 @@
 <ng-template #OrgTable>
   <div>
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef> ID </th>
+        <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+      </ng-container>
 
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef> Org name </th>
         <td mat-cell *matCellDef="let element"> {{element.name}} </td>
       </ng-container>
 
-      <ng-container matColumnDef="vat">
+      <ng-container matColumnDef="vatNumber">
         <th mat-header-cell *matHeaderCellDef> VAT </th>
-        <td mat-cell *matCellDef="let element"> {{element.vat}} </td>
+        <td mat-cell *matCellDef="let element"> {{element.vatNumber}} </td>
       </ng-container>
 
-      <ng-container matColumnDef="street_address">
+      <ng-container matColumnDef="streetAddress">
         <th mat-header-cell *matHeaderCellDef> Street address </th>
-        <td mat-cell *matCellDef="let element"> {{element.street_address}} </td>
+        <td mat-cell *matCellDef="let element"> {{element.streetAddress}} </td>
       </ng-container>
 
       <ng-container matColumnDef="city">
@@ -28,9 +32,9 @@
         <td mat-cell *matCellDef="let element"> {{element.city}} </td>
       </ng-container>
 
-      <ng-container matColumnDef="province_state">
+      <ng-container matColumnDef="province_State">
         <th mat-header-cell *matHeaderCellDef> Province state </th>
-        <td mat-cell *matCellDef="let element"> {{element.province_state}} </td>
+        <td mat-cell *matCellDef="let element"> {{element.province_State}} </td>
       </ng-container>
 
       <ng-container matColumnDef="country">
@@ -38,34 +42,49 @@
         <td mat-cell *matCellDef="let element"> {{element.country}} </td>
       </ng-container>
 
-      <ng-container matColumnDef="zip_code">
+      <ng-container matColumnDef="zipCode">
         <th mat-header-cell *matHeaderCellDef> Zip code </th>
-        <td mat-cell *matCellDef="let element"> {{element.zip_code}} </td>
+        <td mat-cell *matCellDef="let element"> {{element.zipCode}} </td>
       </ng-container>
 
-      <ng-container matColumnDef="additional_info">
+      <ng-container matColumnDef="additionalInformation">
         <th mat-header-cell *matHeaderCellDef> Additional info </th>
-        <td mat-cell *matCellDef="let element"> {{element.additional_info}} </td>
+        <td mat-cell *matCellDef="let element"> {{element.additionalInformation}} </td>
       </ng-container>
 
-      <ng-container matColumnDef="website">
+      <ng-container matColumnDef="webSite">
         <th mat-header-cell *matHeaderCellDef> Website </th>
-        <td mat-cell *matCellDef="let element"> {{element.website}} </td>
+        <td mat-cell *matCellDef="let element"> {{element.webSite}} </td>
       </ng-container>
 
-      <ng-container matColumnDef="email">
+      <ng-container matColumnDef="emailAddress">
         <th mat-header-cell *matHeaderCellDef> Email </th>
-        <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+        <td mat-cell *matCellDef="let element"> {{element.emailAddress}} </td>
       </ng-container>
 
-      <ng-container matColumnDef="domain">
+      <ng-container matColumnDef="emailDomain">
         <th mat-header-cell *matHeaderCellDef> Domain </th>
-        <td mat-cell *matCellDef="let element"> {{element.domain}} </td>
+        <td mat-cell *matCellDef="let element"> {{element.emailDomain}} </td>
       </ng-container>
 
       <ng-container matColumnDef="pec">
         <th mat-header-cell *matHeaderCellDef> PEC </th>
         <td mat-cell *matCellDef="let element"> {{element.pec}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="billingCode">
+        <th mat-header-cell *matHeaderCellDef> Billing code </th>
+        <td mat-cell *matCellDef="let element"> {{element.billingCode}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="isSupplier">
+        <th mat-header-cell *matHeaderCellDef> Is Supplier </th>
+        <td mat-cell *matCellDef="let element"> {{element.isSupplier? 'Yes' : 'No' }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="isCustomer">
+        <th mat-header-cell *matHeaderCellDef> Is Customer </th>
+        <td mat-cell *matCellDef="let element"> {{element.isCustomer? 'Yes' : 'No' }} </td>
       </ng-container>
 
       <ng-container matColumnDef="update">
