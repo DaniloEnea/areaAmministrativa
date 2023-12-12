@@ -1,8 +1,9 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
-import { PersonDTO, PersonDTO1 } from "../persone.component";
+import { PersonDTO } from "../persone.component";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { HttpProviderService } from "../../service/http-provider.service";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-modale-update',
@@ -10,12 +11,12 @@ import { HttpProviderService } from "../../service/http-provider.service";
   styleUrls: ['./modale-update-persone.component.css']
 })
 export class ModaleUpdatePersoneComponent {
-  
+
     updatePersonForm: FormGroup;
     constructor(public dialogRef: MatDialogRef<ModaleUpdatePersoneComponent>,
       @Inject(MAT_DIALOG_DATA) public data: { person: PersonDTO },
       private formBuilder: FormBuilder,
-      private httpApi: HttpProviderService) {
+      private httpApi: HttpProviderService, private toastr: ToastrService) {
 
       this.updatePersonForm = this.formBuilder.group({
         //id: ['3fa85f64-5717-4562-b3fc-2c963f66afa6'],
@@ -56,9 +57,23 @@ export class ModaleUpdatePersoneComponent {
 
       //post for create new user
       console.log(this.data.person.id)
-      this.httpApi.updatePerson(this.data.person.id, updatePerson).subscribe();
+      this.httpApi.updatePerson(this.data.person.id, updatePerson).subscribe(
+        (response) => {
+          // show the successful message
+          this.toastr.success("Data updated successfully", "Success");
+          setTimeout(() => {
+                window.location.reload();
+              }, 1000)
+        },
+        (error) => {
+           // show the error
+          this.toastr.error('Something is wrong', 'Error');
+          setTimeout(() => {
+                window.location.reload();
+              }, 1000)
+        }
+      );
       this.dialogRef.close(updatePerson);
-      window.location.reload();
     }
   }
 
