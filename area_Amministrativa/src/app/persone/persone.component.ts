@@ -68,7 +68,7 @@ export class PersoneComponent {
             this.PeopleList = resultData;
             this.dataSource.data = [...this.PeopleList];
             console.log(this.PeopleList);
-            
+
           }
         }
       },

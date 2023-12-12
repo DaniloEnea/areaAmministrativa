@@ -19,6 +19,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { ModaleDetailsOrgComponent } from './organizzazione/modale-details-org/modale-details-org.component';
 import { ModaleDetailsPersoneComponent } from './persone/modale-details-persone/modale-details-persone.component';
 import {HttpClientModule} from "@angular/common/http";
+import {ToastrModule} from "ngx-toastr";
 
 @NgModule({
   declarations: [
@@ -37,15 +38,16 @@ import {HttpClientModule} from "@angular/common/http";
       ModaleDetailsOrgComponent,
       ModaleDetailsPersoneComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    MaterialModule,
-    ReactiveFormsModule,
-    FormsModule,
-    HttpClientModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        MaterialModule,
+        ReactiveFormsModule,
+        FormsModule,
+        HttpClientModule,
+        ToastrModule.forRoot()
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })
