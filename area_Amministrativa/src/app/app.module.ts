@@ -33,10 +33,9 @@ import {ToastrModule} from "ngx-toastr";
     ModaleUpdateUserComponent,
     ModaleAddPersoneComponent,
     ModaleAddUserComponent,
-
     ModaleDeleteComponent,
-      ModaleDetailsOrgComponent,
-      ModaleDetailsPersoneComponent
+    ModaleDetailsOrgComponent,
+    ModaleDetailsPersoneComponent
   ],
     imports: [
         BrowserModule,

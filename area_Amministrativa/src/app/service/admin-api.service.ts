@@ -29,7 +29,7 @@ export class AdminApiService {
   post(url: string, model:any): Observable<any> {
     const httpOptions = {
       headers : new HttpHeaders( {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       }),
       observe: "response" as 'body'
     };
@@ -68,7 +68,7 @@ export class AdminApiService {
     );
   }
 
-  // DELETE fisic operations 
+  // DELETE fisic operations
   deleteFisic(url: string, id: string): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({

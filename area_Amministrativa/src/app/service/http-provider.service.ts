@@ -33,6 +33,9 @@ let deleteUtenteUrl = genericUrl + "deleteUtenti"
 let deletePersonUrl = "https://localhost:7131/api/People"
 let deleteOrgUrl = "https://localhost:7017/api/Organizations"
 
+//login
+let loginUrl = "http://localhost:9000/api/auth/login"
+
 @Injectable({
   providedIn: 'root'
 })
@@ -73,6 +76,10 @@ export class HttpProviderService {
   }
   public addNewOrg(model: any): Observable<any> {
     return this.adminApiServie.post(addOrgUrl, model)
+  }
+
+  public login(model:any): Observable<any> {
+    return this.adminApiServie.post(loginUrl, model)
   }
 
   //PUT
