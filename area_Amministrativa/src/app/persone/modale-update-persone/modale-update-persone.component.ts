@@ -56,21 +56,18 @@ export class ModaleUpdatePersoneComponent {
       };
 
       //post for create new user
-      console.log(this.data.person.id)
       this.httpApi.updatePerson(this.data.person.id, updatePerson).subscribe(
         (response) => {
           // show the successful message
           this.toastr.success("Data updated successfully", "Success");
           setTimeout(() => {
                 window.location.reload();
-              }, 1000)
+              }, 1500)
         },
         (error) => {
            // show the error
           this.toastr.error('Something is wrong', 'Error');
-          setTimeout(() => {
-                window.location.reload();
-              }, 1000)
+          setTimeout(() => {}, 1500)
         }
       );
       this.dialogRef.close(updatePerson);

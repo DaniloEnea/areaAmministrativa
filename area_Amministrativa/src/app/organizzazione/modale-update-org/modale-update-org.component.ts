@@ -3,6 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { OrganizationDTO, OrganizationDTO1 } from "../organizzazione.component";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { HttpProviderService } from "../../service/http-provider.service";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: 'app-modale-update',
@@ -15,7 +16,7 @@ export class ModaleUpdateOrgComponent {
   constructor(public dialogRef: MatDialogRef<ModaleUpdateOrgComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { org: OrganizationDTO },
     private formBuilder: FormBuilder,
-    private httpApi: HttpProviderService) {
+    private httpApi: HttpProviderService, private toastr: ToastrService) {
 
     this.updateOrgForm = this.formBuilder.group({
       name: [this.data.org.name, Validators.required],
@@ -65,9 +66,17 @@ export class ModaleUpdateOrgComponent {
 
 
       // post for create new user
-      this.httpApi.updateOrg(this.data.org.id, updateOrg).subscribe();
+      this.httpApi.updateOrg(this.data.org.id, updateOrg).subscribe((response) => {
+        this.toastr.success("Data updated successfully", "Success");
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500)
+      },
+        (error) => {
+          this.toastr.error('Something is wrong', 'Error');
+          setTimeout(() => { }, 1500)
+        });
       this.dialogRef.close(updateOrg);
-      window.location.reload();
     }
   }
   closepopup() {
