@@ -66,6 +66,7 @@ export class ModaleAddPersoneComponent {
         },
         error: err => {
           this.toastr.error('Something is wrong', 'Error');
+          setTimeout(() => { }, 1500)
         }
       });
     }
