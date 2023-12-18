@@ -96,6 +96,19 @@ export class AdminApiService {
       );
     }
 
+    /*getFiltered(url:string, endUrl: string): Observable<any>{
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        }),
+        observe: 'response' as 'body'
+      };
+      const getUrl = `${url}?${endUrl}`;
+      console.log(getUrl);
+      return this.http.get(getUrl, httpOptions).pipe(
+        catchError(this.handleError));
+    }*/
+
 
   // functions
   private ReturnResponseData(response: any) {
