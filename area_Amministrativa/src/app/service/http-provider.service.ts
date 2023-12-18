@@ -79,7 +79,7 @@ export class HttpProviderService {
   }
 
   public login(model:any): Observable<any> {
-    return this.adminApiServie.post(loginUrl, model)
+    return this.adminApiServie.postWithCc(loginUrl, model)
   }
 
   //PUT

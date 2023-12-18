@@ -11,12 +11,17 @@
 
 <ng-template #PersonsTable>
 <div>
+    <div class="box-filter">
+    <mat-form-field>
+      <mat-label>Filter for name</mat-label>
+      <input #filterFirstNameInput matInput [(ngModel)]="filterFirstName" (input)="applyFilter()" placeholder="name">
+    </mat-form-field>
 
     <mat-form-field>
-    <mat-label>Filter</mat-label>
-    <input matInput>
-  </mat-form-field>
-
+      <mat-label>Filter for last name</mat-label>
+      <input #filterLastNameInput matInput [(ngModel)]="filterLastName" (input)="applyFilter()" placeholder="last name">
+    </mat-form-field>
+    </div>
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
       <ng-container matColumnDef="id">
