@@ -46,11 +46,11 @@ export class AreaLoginComponent {
       console.log(newLogin)
       this.httpApi.login(newLogin).subscribe({
         next: value => {
-          console.log("funziona")
+          console.log(value.body)
           this.router.navigate([('/persone')]).then(r => null);
         },
         error: err => {
-           console.log("eeeeee")
+           console.log(err)
         }
       })
     }

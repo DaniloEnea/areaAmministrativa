@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { ModaleDeleteComponent } from "../modale-delete/modale-delete.component";
-import { ModaleUpdatePersoneComponent } from "./modale-update-persone/modale-update-persone.component";
-import { ModaleAddPersoneComponent } from "./modale-add-persone/modale-add-persone.component";
-import { MatDialog } from "@angular/material/dialog";
-import { MatTableDataSource } from "@angular/material/table";
-import { HttpProviderService } from "../service/http-provider.service";
+import {Component, ViewChild} from '@angular/core';
+import {ModaleDeleteComponent} from "../modale-delete/modale-delete.component";
+import {ModaleUpdatePersoneComponent} from "./modale-update-persone/modale-update-persone.component";
+import {ModaleAddPersoneComponent} from "./modale-add-persone/modale-add-persone.component";
+import {MatDialog} from "@angular/material/dialog";
+import {MatTableDataSource} from "@angular/material/table";
+import {HttpProviderService} from "../service/http-provider.service";
 import { ModaleDetailsPersoneComponent } from './modale-details-persone/modale-details-persone.component';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+//import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {MatInput} from "@angular/material/input";
 
 /*export interface FilterDTO {
   first_name: string;
@@ -51,8 +52,12 @@ export interface PersonDTO1 {
 })
 
 export class PersoneComponent {
-  filterUrl: string = '';
-  //filterForm: FormGroup;
+  @ViewChild('filterFirstName') filterFirstNameInput: MatInput | undefined; // Riferimento all'input di firstName
+  @ViewChild('filterLastName') filterLastNameInput: MatInput | undefined; // Riferimento all'input di lastName
+
+  filterFirstName = ''; // Aggiungi questa linea per il valore del filtro per firstName
+  filterLastName = ''; // Aggiungi questa linea per il valore del filtro per lastName
+  //filterForm: FormGroup
   classForm: string = "People";
   PeopleList: PersonDTO[] = [];
   displayedColumns: string[] = ['firstName', 'lastName', 'phone', 'workRole', 'email', 'update'];
@@ -85,6 +90,26 @@ export class PersoneComponent {
     }
   }*/
 
+  ngAfterViewInit() {
+    // Imposta la funzione di filtro personalizzata per il dataSource
+    this.dataSource.filterPredicate = this.customFilterPredicate();
+  }
+
+  customFilterPredicate() {
+    return (data: PersonDTO, filter: string): boolean => {
+      const searchText = JSON.parse(filter);
+      return (
+        data.firstName.toLowerCase().includes(searchText.firstName) &&
+        data.lastName.toLowerCase().includes(searchText.lastName)
+      );
+    };
+  }
+
+  applyFilter() {
+    // Applica il filtro in base alle proprietà firstName e lastName
+    const filterValue = { firstName: this.filterFirstName.toLowerCase(), lastName: this.filterLastName.toLowerCase() };
+    this.dataSource.filter = JSON.stringify(filterValue);
+  }
   allPeople() {
     this.httpApi.getAllPeople().subscribe({
       next: (data: any) => {
