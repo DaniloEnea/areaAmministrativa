@@ -1,0 +1,20 @@
+mat-sidenav {
+  background-color: #3f51b5;
+  height: 100%;
+  width: 200px;
+}
+
+div.wrap-button {
+    text-align: center;
+}
+
+button {
+  width:150px;
+  margin-top: 20px;
+  color: white;
+}
+
+mat-sidenav-container {
+  height: 100%;
+}
+

@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
+import { SidenavService } from '../service/SidenavService';
 
 @Component({
   selector: 'app-navbar',
@@ -6,5 +8,12 @@ import { Component } from '@angular/core';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent {
+  
+  constructor(private sidenavService: SidenavService) {
 
+  }
+
+  toggleSidenav() {
+    this.sidenavService.toggle();
+  }
 }

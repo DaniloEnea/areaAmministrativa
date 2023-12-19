@@ -8,6 +8,7 @@ import {HttpProviderService} from "../service/http-provider.service";
 import { ModaleDetailsPersoneComponent } from './modale-details-persone/modale-details-persone.component';
 //import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {MatInput} from "@angular/material/input";
+import { FormBuilder } from '@angular/forms';
 
 /*export interface FilterDTO {
   first_name: string;
