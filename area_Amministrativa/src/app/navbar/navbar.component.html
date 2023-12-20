@@ -1,20 +1,13 @@
 <mat-toolbar color="primary" class="custom-toolbar">
+  <button mat-icon-button (click)="toggleSidenav()">
+    <mat-icon>menu</mat-icon>
+  </button>
   <span>Admin area</span>
 
-  <div class="wrap-route">
-    <button mat-button [matMenuTriggerFor]="menu">Menu</button>
-    <mat-menu #menu="matMenu">
-      <button mat-menu-item [routerLink]="'/organizzazione'"> Organization </button>
-      <button mat-menu-item [routerLink]="'/persone'"> People </button>
-    </mat-menu>
-  </div>
-
   <a class="right-button" mat-icon-button [routerLink]="'/login'">
-    <mat-icon
-      aria-hidden="false"
-      aria-label="logout icon"
-      fontIcon="logout"
-      color="accent"
-    ></mat-icon>
+    <mat-icon aria-hidden="false"
+              aria-label="logout icon"
+              fontIcon="logout"
+              color="accent"></mat-icon>
   </a>
 </mat-toolbar>

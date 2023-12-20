@@ -7,7 +7,7 @@ import {AreaLoginComponent} from "./area-login/area-login.component";
 
 // vari path
 const routes: Routes = [
-  {path: 'login', component: AreaLoginComponent},
+  {path: '', component: AreaLoginComponent},
   {path: 'organizzazione', component : OrganizzazioneComponent},
   {path: 'utenti', component : UtentiComponent},
   {path: 'persone', component : PersoneComponent}

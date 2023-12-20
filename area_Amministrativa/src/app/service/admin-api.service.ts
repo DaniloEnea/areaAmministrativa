@@ -44,7 +44,7 @@ export class AdminApiService {
     const httpOptions = {
       headers : new HttpHeaders( {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer eyJraWQiOiJiZWNjNTU4MC1iNjg4LTRkNTItYTAwMS03NDQwYTZhZTgyNGMiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJjbGllbnQtYW5ndWxhciIsImF1ZCI6ImNsaWVudC1hbmd1bGFyIiwibmJmIjoxNzAyNTYyNDU0LCJUZXN0IjoiVGVzdCBBY2Nlc3MgVG9rZW4iLCJzY29wZSI6WyJjbGllbnQucmVhZCIsImNsaWVudC53cml0ZSJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgyODIiLCJleHAiOjE3MDI1NjI3NTQsImlhdCI6MTcwMjU2MjQ1NCwidXNlciI6ImNsaWVudC1hbmd1bGFyIiwiYXV0aG9yaXRpZXMiOltdfQ.LGQvQxO0KZNPzCLj_6Ei-mHyE3Xk1BrwqcUwsIQMa10HykVwf0t1RglpFnL9xXgKqFGeduoSK54Ge44iUCQdiIkl8Tu8rA84xQjtIwFXnJvGEcGbxaXlaKnufpH5alGeB1Svp57iXEtAgM1I5Ipw1NjZ9SKCEA3YEdQO5e86OThW6tJ5PZxQkmV2hivYQWRsjXd162yC8-ATrxZNEmtpqB0nfd6MjGtVoQ1Dy9QdHaRNd1rdCY0HFQ-6eKKmjP7hbouwiWAUidN_R_byrv_hWEu2hSr_7ywbAwFo1teJ88ie9AzuYgL4FnQqnD5lSAqEfFEaoe89WB_dvjhGNOzi7A'
+        'Authorization': 'Bearer eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJiM2QyN2Y5Yi1kMjFkLTMyN2MtMTY0ZS03ZmI2Nzc2Zjg3YjkiLCJyb2xlIjoiUk9MRV9BRE1JTiIsImlzcyI6Im15QXBwIiwibmFtZSI6ImRhbmlsbyIsImV4cCI6MTcwMzA2OTQyNiwiaWF0IjoxNzAzMDY4NTI2fQ.lw9tokl90r3m8KBYtm-ttbddE1PdcD0xZxhPjQK8QfEmUEmapj_6vBRK1B0Fx-2BU000ruqwn7C2ppCJYWcl6ixqn0Jitk-Un86yI_cWjSpWhkyt4fa4Dk7npuLtuvR6sLu2Q0rH3S9OxuwKDpXWcPv8w0OB3VSE3pD5VsOS7Z62k-_hfIBJArQ2Ir5LIoe_7LEGvOuRV-7ZRNrPLdho4Y21X8G1J1kQ6B_zKnJI2moSxkInxyuEdP-akIJLxiKotKb7q-a-9eZ1Fc8dhoEckmLRC2S5nPRWnsEq2gwSgPgWNiJs6K8waqx97GqKTKgXjRxr_0-LQ6jbl0eSzHSDMw'
       }),
       observe: "response" as 'body'
     };
@@ -110,6 +110,19 @@ export class AdminApiService {
         catchError(this.handleError)
       );
     }
+
+    /*getFiltered(url:string, endUrl: string): Observable<any>{
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        }),
+        observe: 'response' as 'body'
+      };
+      const getUrl = `${url}?${endUrl}`;
+      console.log(getUrl);
+      return this.http.get(getUrl, httpOptions).pipe(
+        catchError(this.handleError));
+    }*/
 
 
   // functions

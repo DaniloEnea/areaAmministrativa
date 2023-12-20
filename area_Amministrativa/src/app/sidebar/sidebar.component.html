@@ -1,0 +1,15 @@
+<mat-sidenav-container>
+  <mat-sidenav #sidenav mode="over" class="custom-sidenav">
+    <mat-list>
+      <div class="wrap-button">
+        <button mat-raised-button color="warn" [routerLink]="'/organizzazione'"> Organization </button>
+      </div>
+      <div class="wrap-button">
+        <button mat-raised-button color="warn" [routerLink]="'/persone'"> People </button>
+      </div>
+    </mat-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <router-outlet class="body"></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

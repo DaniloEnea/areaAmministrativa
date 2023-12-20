@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ModaleUpdateOrgComponent } from "./modale-update-org/modale-update-org.component";
 import { MatDialog } from "@angular/material/dialog";
 import { MatTableDataSource } from "@angular/material/table";
 import { HttpProviderService } from "../service/http-provider.service";
 import { ModaleDetailsOrgComponent } from './modale-details-org/modale-details-org.component';
+import { MatInput } from '@angular/material/input';
 
 export interface OrganizationDTO {
   id: string;
@@ -53,6 +54,9 @@ export interface OrganizationDTO1 {
 
 
 export class OrganizzazioneComponent {
+  @ViewChild('filterName') filterNameInput!: MatInput;
+
+  filterName = '';
   OrgList: OrganizationDTO[] = [];
   displayedColumns: string[] = ['name', 'streetAddress', 'country', 'emailAddress', 'emailDomain', 'update'];
   dataSource = new MatTableDataSource<OrganizationDTO>(this.OrgList);
@@ -64,6 +68,24 @@ export class OrganizzazioneComponent {
 
   ngOnInit() {
     this.allOrg();
+  }
+
+  ngAfterViewInit() {
+    this.dataSource.filterPredicate = this.customFilterPredicate();
+  }
+
+  customFilterPredicate() {
+    return (data: OrganizationDTO, filter: string): boolean => {
+      const searchText = JSON.parse(filter);
+      return (
+        data.name.toLowerCase().includes(searchText.name)
+      );
+    };
+  }
+
+  applyFilter() {
+    const filterValue = { name: this.filterName.toLowerCase() };
+    this.dataSource.filter = JSON.stringify(filterValue);
   }
 
   allOrg() {

@@ -9,6 +9,8 @@ import { UtentiComponent } from './utenti/utenti.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material/material.module';
 import { NavbarComponent } from './navbar/navbar.component';
+import { SidebarComponent } from './sidebar/sidebar.component';
+import { SidenavService } from './service/SidenavService';
 import { ModaleUpdateOrgComponent } from './organizzazione/modale-update-org/modale-update-org.component';
 import { ModaleUpdatePersoneComponent } from './persone/modale-update-persone/modale-update-persone.component';
 import { ModaleUpdateUserComponent } from './utenti/modale-update-user/modale-update-user.component';
@@ -28,6 +30,7 @@ import {ToastrModule} from "ngx-toastr";
     PersoneComponent,
     UtentiComponent,
     NavbarComponent,
+    SidebarComponent,
     ModaleUpdateOrgComponent,
     ModaleUpdatePersoneComponent,
     ModaleUpdateUserComponent,
@@ -47,7 +50,12 @@ import {ToastrModule} from "ngx-toastr";
         HttpClientModule,
         ToastrModule.forRoot()
     ],
-  providers: [],
+  providers: [
+    SidenavService
+  ],
+  exports: [
+    SidebarComponent
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

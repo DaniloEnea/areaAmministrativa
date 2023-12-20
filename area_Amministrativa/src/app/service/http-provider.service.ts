@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {AdminApiService} from "./admin-api.service";
 import {Observable} from "rxjs";
 
-
+var tempFilterUrl : string;
 // PATH API
 let genericUrl = "http://localhost:8080/api/"
 
@@ -35,6 +35,9 @@ let deleteOrgUrl = "https://localhost:7017/api/Organizations"
 
 //login
 let loginUrl = "http://localhost:9000/api/auth/login"
+
+//filer
+let personFilterUrl = "https://localhost:7131/api/People/GetPeopleByFiltering"
 
 @Injectable({
   providedIn: 'root'
@@ -104,5 +107,23 @@ export class HttpProviderService {
     return this.adminApiServie.delete(deleteOrgUrl, id)
   }
 
+  //Filter
+  /*public filterPeople(endUrl: string) {
+    return this.adminApiServie.getFiltered(personFilterUrl, endUrl)
+  }*/
+
+  /*public filterPeople(first_name:string, last_name:string) {
+
+      if(!(first_name==null)) {
+        tempFilterUrl = "name=" + first_name
+        if(!(last_name==null)){
+          tempFilterUrl = tempFilterUrl + "&"
+        }
+      }
+      if(!(last_name==null)) {
+        tempFilterUrl = tempFilterUrl +"last_name=" + last_name
+      }
+    return this.adminApiServie.getFiltered(personFilterUrl, tempFilterUrl)
+  }*/
 
 }

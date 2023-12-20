@@ -5,9 +5,15 @@ import {ModaleAddPersoneComponent} from "./modale-add-persone/modale-add-persone
 import {MatDialog} from "@angular/material/dialog";
 import {MatTableDataSource} from "@angular/material/table";
 import {HttpProviderService} from "../service/http-provider.service";
-import {ModaleDetailsPersoneComponent} from './modale-details-persone/modale-details-persone.component';
+import { ModaleDetailsPersoneComponent } from './modale-details-persone/modale-details-persone.component';
+//import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {MatInput} from "@angular/material/input";
+import { FormBuilder } from '@angular/forms';
 
+/*export interface FilterDTO {
+  first_name: string;
+  last_name: string;
+}*/
 
 export interface PersonDTO {
   id: string;
@@ -27,7 +33,7 @@ export interface PersonDTO {
 }
 export interface PersonDTO1 {
   firstName: string;
-  lastName: string;
+  lastName: string; 
   workRole: string;
   phone: string;
   email: string;
@@ -52,19 +58,38 @@ export class PersoneComponent {
 
   filterFirstName = ''; // Aggiungi questa linea per il valore del filtro per firstName
   filterLastName = ''; // Aggiungi questa linea per il valore del filtro per lastName
-
+  //filterForm: FormGroup
   classForm: string = "People";
   PeopleList: PersonDTO[] = [];
   displayedColumns: string[] = ['firstName', 'lastName', 'phone', 'workRole', 'email', 'update'];
   dataSource = new MatTableDataSource<PersonDTO>;
 
-  constructor(private dialog: MatDialog, private httpApi: HttpProviderService) {
+  constructor(private dialog: MatDialog, private formBuilder: FormBuilder, private httpApi: HttpProviderService) {
     this.dataSource = new MatTableDataSource<PersonDTO>(this.PeopleList);
+    /*this.filterForm = this.formBuilder.group({
+      first_name: [null],
+      last_name: [null]
+    });*/
   }
 
   ngOnInit() {
     this.allPeople();
   }
+
+  /*applyFilter() {
+    console.log(this.filterForm.value.first_name)
+    if (this.filterForm.valid) {
+
+      this.httpApi.filterPeople(this.filterForm.value.first_name, this.filterForm.value.last_name).subscribe({
+        next: value=> {
+          this.dataSource = new MatTableDataSource<PersonDTO>(value.body);
+        },
+        error: err => {
+          console.log("error")
+        }
+      })
+    }
+  }*/
 
   ngAfterViewInit() {
     // Imposta la funzione di filtro personalizzata per il dataSource
