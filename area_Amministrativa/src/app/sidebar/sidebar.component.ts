@@ -16,7 +16,9 @@ export class SidebarComponent{
   
   ngOnInit() {
     this.sidenavService.isOpen$.subscribe(() => {
-      this.sidenav.toggle();
+      if (this.sidenav) {
+        this.sidenav.toggle();
+      }
     });
   }
 }
