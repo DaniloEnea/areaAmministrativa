@@ -4,6 +4,10 @@ mat-sidenav {
   width: 200px;
 }
 
+.custom-sidenav {
+  margin-top: 64px;
+}
+
 div.wrap-button {
     text-align: center;
 }
