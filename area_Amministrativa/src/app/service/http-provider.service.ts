@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import {AdminApiService} from "./admin-api.service";
-import {Observable} from "rxjs";
+import {mergeMap, Observable, of} from "rxjs";
 
 var tempFilterUrl : string;
 // PATH API
 let genericUrl = "http://localhost:8080/api/"
+let apiCredentials = "http://localhost:8282/oauth2/token"
 
 //get
 let getUtenteUrl = genericUrl + "utenti"
@@ -81,8 +82,18 @@ export class HttpProviderService {
     return this.adminApiServie.post(addOrgUrl, model)
   }
 
-  public login(model:any): Observable<any> {
-    return this.adminApiServie.postWithCc(loginUrl, model)
+ public login(model: any): Observable<any> {
+    return this.adminApiServie.postUrlEncoded(apiCredentials).pipe(
+      mergeMap((value: any) => {
+        const accessToken = value.body.access_token;
+
+        return of(accessToken);
+      }),
+      mergeMap((accessToken: string) => {
+        // Chiamata successiva con l'access token
+        return this.adminApiServie.postWithCc(loginUrl, model, accessToken);
+      })
+    );
   }
 
   //PUT
