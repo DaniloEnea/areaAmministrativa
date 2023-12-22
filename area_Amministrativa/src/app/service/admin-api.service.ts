@@ -8,6 +8,7 @@ import {catchError, map, Observable, throwError} from "rxjs";
 })
 export class AdminApiService {
 
+  bearerToken: string = "eyJraWQiOiIzNTk2NWZmOS04MGYwLTRjMTItYjRkMS05OTk1YmVjZjFlNzYiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJjbGllbnQtYW5ndWxhciIsImF1ZCI6ImNsaWVudC1hbmd1bGFyIiwibmJmIjoxNzAzMTY4MDE1LCJzY29wZSI6WyJjbGllbnQucmVhZCIsImNsaWVudC53cml0ZSJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgyODIiLCJleHAiOjE3MDMxNjgzMTUsImlhdCI6MTcwMzE2ODAxNX0.LUC93ycRK8f9GPZyWx_kq6BREDxYb2eQzeoI1hOPDdjI8bkTUlV305s_3YXZPtGpSf5HxTa7DqAuJmlnfODN4iDuwj0hWxUYNW3p6KrU6Me9rie_kBfHB8ToHMMV9V4RzKfSEbyoo5wdHztzAr6SmRetEYM6s7dBSf6EgVt8eELhI1bXhaCPeul3QrepWdeepERqKjnrZhULa1OPBIjoA9-g8d4X-AlOhJEdSYy8Lf21SkNL5ZAfJhUqAKLRk6zn9P3UxDO-2mlHZtJ1mx9U2JWAEB913HlwE4wEchQ_pkShrUDXHLRrh-B26CqgcOrfhzCoj28bQ3ROajMGX0b6rg"
   constructor(private http: HttpClient) { }
 
   /*  ALL METHOD API  */
@@ -40,11 +41,12 @@ export class AdminApiService {
     );
   }
 
-    postWithCc(url: string, model:any): Observable<any> {
+  postWithCc(url: string, model: any): Observable<any> {
+
     const httpOptions = {
       headers : new HttpHeaders( {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJiM2QyN2Y5Yi1kMjFkLTMyN2MtMTY0ZS03ZmI2Nzc2Zjg3YjkiLCJyb2xlIjoiUk9MRV9BRE1JTiIsImlzcyI6Im15QXBwIiwibmFtZSI6ImRhbmlsbyIsImV4cCI6MTcwMzA2OTQyNiwiaWF0IjoxNzAzMDY4NTI2fQ.lw9tokl90r3m8KBYtm-ttbddE1PdcD0xZxhPjQK8QfEmUEmapj_6vBRK1B0Fx-2BU000ruqwn7C2ppCJYWcl6ixqn0Jitk-Un86yI_cWjSpWhkyt4fa4Dk7npuLtuvR6sLu2Q0rH3S9OxuwKDpXWcPv8w0OB3VSE3pD5VsOS7Z62k-_hfIBJArQ2Ir5LIoe_7LEGvOuRV-7ZRNrPLdho4Y21X8G1J1kQ6B_zKnJI2moSxkInxyuEdP-akIJLxiKotKb7q-a-9eZ1Fc8dhoEckmLRC2S5nPRWnsEq2gwSgPgWNiJs6K8waqx97GqKTKgXjRxr_0-LQ6jbl0eSzHSDMw'
+        'Authorization': 'Bearer ' + this.bearerToken
       }),
       observe: "response" as 'body'
     };
