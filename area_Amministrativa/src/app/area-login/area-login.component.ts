@@ -46,7 +46,7 @@ export class AreaLoginComponent {
       console.log(newLogin)
       this.httpApi.login(newLogin).subscribe({
         next: value => {
-          console.log(value.body)
+          localStorage.setItem("accessToken", value.body.accessToken);
           this.router.navigate([('/persone')]).then(r => null);
         },
         error: err => {
