@@ -12,6 +12,7 @@
 mat-card-title,
 mat-card-content {
   display: flex;
+  margin-top:10px;
   justify-content: center;
 }
 
