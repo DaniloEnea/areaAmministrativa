@@ -21,4 +21,8 @@ export class SidebarComponent{
       }
     });
   }
+
+  onClick() {
+    this.sidenav.toggle();
+  }
 }

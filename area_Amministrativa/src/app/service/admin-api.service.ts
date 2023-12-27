@@ -8,7 +8,9 @@ import {catchError, map, Observable, throwError} from "rxjs";
 })
 export class AdminApiService {
 
-  bearerToken: string = "eyJraWQiOiIzNTk2NWZmOS04MGYwLTRjMTItYjRkMS05OTk1YmVjZjFlNzYiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJjbGllbnQtYW5ndWxhciIsImF1ZCI6ImNsaWVudC1hbmd1bGFyIiwibmJmIjoxNzAzMTY4MDE1LCJzY29wZSI6WyJjbGllbnQucmVhZCIsImNsaWVudC53cml0ZSJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgyODIiLCJleHAiOjE3MDMxNjgzMTUsImlhdCI6MTcwMzE2ODAxNX0.LUC93ycRK8f9GPZyWx_kq6BREDxYb2eQzeoI1hOPDdjI8bkTUlV305s_3YXZPtGpSf5HxTa7DqAuJmlnfODN4iDuwj0hWxUYNW3p6KrU6Me9rie_kBfHB8ToHMMV9V4RzKfSEbyoo5wdHztzAr6SmRetEYM6s7dBSf6EgVt8eELhI1bXhaCPeul3QrepWdeepERqKjnrZhULa1OPBIjoA9-g8d4X-AlOhJEdSYy8Lf21SkNL5ZAfJhUqAKLRk6zn9P3UxDO-2mlHZtJ1mx9U2JWAEB913HlwE4wEchQ_pkShrUDXHLRrh-B26CqgcOrfhzCoj28bQ3ROajMGX0b6rg"
+  //inserire token qui
+  bearerToken: string = ""
+
   constructor(private http: HttpClient) { }
 
   /*  ALL METHOD API  */
