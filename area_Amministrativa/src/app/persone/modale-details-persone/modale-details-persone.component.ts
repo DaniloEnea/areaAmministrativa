@@ -25,6 +25,8 @@ export class ModaleDetailsPersoneComponent {
       email: [this.data.person.email],
       email_2: [this.data.person.secondEmail],
       isGDPRTermsAccepted: [this.data.person.isGDPRTermsAccepted],
+      isOtherProcessingPurposesAccepted: [this.data.person.isOtherProcessingPurposesAccepted],
+      isServiceProcessingPurposesAccepted: [this.data.person.isServiceProcessingPurposesAccepted]
     });
   }
 

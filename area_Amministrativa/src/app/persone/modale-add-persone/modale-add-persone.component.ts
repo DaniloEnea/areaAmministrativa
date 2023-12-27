@@ -31,7 +31,7 @@ export class ModaleAddPersoneComponent {
       secondEmail: [''],
       isGDPRTermsAccepted: [false],
       isOtherProcessingPurposesAccepted: [true],
-      isServiceProcessingPurposesAccepted: [true],
+      isServiceProcessingPurposesAccepted: [false],
       IsValid: [true],
       IsDeleted: [false],
     });

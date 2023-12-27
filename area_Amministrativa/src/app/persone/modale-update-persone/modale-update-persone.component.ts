@@ -29,10 +29,10 @@ export class ModaleUpdatePersoneComponent {
         email: [this.data.person.email, Validators.required],
         secondEmail: [this.data.person.secondEmail],
         isGDPRTermsAccepted: [this.data.person.isGDPRTermsAccepted],
-        isOtherProcessingPurposesAccepted: [true],
-        isServiceProcessingPurposesAccepted: [true],
-        IsValid: [true],
-        IsDeleted: [false],
+        isOtherProcessingPurposesAccepted: [this.data.person.isOtherProcessingPurposesAccepted],
+        isServiceProcessingPurposesAccepted: [this.data.person.isServiceProcessingPurposesAccepted],
+        IsValid: [this.data.person.IsValid],
+        IsDeleted: [this.data.person.IsDeleted],
       });
     }
 

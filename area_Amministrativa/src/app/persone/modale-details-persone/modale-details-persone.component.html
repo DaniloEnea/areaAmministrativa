@@ -30,11 +30,15 @@
     </mat-list-item>
 
     <mat-list-item>
-      <strong>Password:</strong>
+      <strong>Is GDPR accetped?:</strong> {{ data.person.isGDPRTermsAccepted ? 'Yes' : 'No' }}
     </mat-list-item>
 
     <mat-list-item>
-      <strong>Is GDPR accetped?:</strong> {{ data.person.isGDPRTermsAccepted ? 'Yes' : 'No' }}
+      <strong>is Service Processing Purposes Accepted?:</strong> {{ data.person.isServiceProcessingPurposesAccepted ? 'Yes' : 'No' }}
+    </mat-list-item>
+
+    <mat-list-item>
+      <strong>is Other Processing Purposes Accepted?:</strong> {{ data.person.isOtherProcessingPurposesAccepted ? 'Yes' : 'No' }}
     </mat-list-item>
 
   </mat-list>
