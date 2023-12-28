@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import {JwtHelperService} from "@auth0/angular-jwt";
 import { BehaviorSubject } from 'rxjs';
+import {ToastrService} from "ngx-toastr";
 
 
 @Injectable({
@@ -9,29 +10,41 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class AuthService {
 
-  private loggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public loggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   get isLoggedIn() {
     return this.loggedIn.asObservable();
   }
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private toastr: ToastrService) { }
 
     jwtHelper = new JwtHelperService();
 
     public isAuthenticated(): boolean {
       const token = localStorage.getItem('accessToken');
-      // Check whether the token is expired and return
-      // true or false
-      this.loggedIn.next(true);
+
+      // get role
+      localStorage.setItem('ROLE', this.getRoleFromJwt());
+
       return !this.jwtHelper.isTokenExpired(token);
+    }
+
+    public getRoleFromJwt(): string {
+      const token = localStorage.getItem('accessToken');
+      // verifica se il token non è null
+      if (token) {
+        const decodedJwt = this.jwtHelper.decodeToken(token);
+        return decodedJwt.role;
+      }
+      return '';
     }
 
   logout() {
     localStorage.removeItem("accessToken");
+    localStorage.removeItem("ROLE")
     this.loggedIn.next(false);
     this.router.navigate([('')]);
-    console.log("logout successful");
+    this.toastr.success("Logout successful", "Success")
   }
-    
+
 }

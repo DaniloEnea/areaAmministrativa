@@ -9,8 +9,16 @@ import {isAuthGuardComponent} from "./auth-guard/auth-guard.component";
 // vari path
 const routes: Routes = [
   {path: '', component: AreaLoginComponent},
-  {path: 'organizzazione', component : OrganizzazioneComponent, canActivate: [isAuthGuardComponent]},
-  {path: 'persone', component : PersoneComponent, canActivate: [isAuthGuardComponent]}
+  {path: 'organizzazione', component : OrganizzazioneComponent,
+      canActivate: [isAuthGuardComponent],
+      data: {
+      role: 'ROLE_ADMIN'
+    }},
+  {path: 'persone', component : PersoneComponent,
+      canActivate: [isAuthGuardComponent],
+      data: {
+      role: 'ROLE_ADMIN'
+    }}
 ];
 
 @NgModule({

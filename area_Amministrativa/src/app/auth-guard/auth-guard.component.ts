@@ -8,15 +8,32 @@ import {AuthService} from "../service/auth.service";
 class AuthGuardComponent{
    constructor(public auth: AuthService, public router: Router) {
    }
+
   canActive(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): boolean {
-     if (!this.auth.isAuthenticated()) {
-      this.router.navigate(['']);
-      return false;
-    }
-    return true;
+     return this.checkUserLogin(route, state);
   }
+
+   checkUserLogin(route: ActivatedRouteSnapshot, url: any): boolean {
+    if (this.auth.isAuthenticated()) {
+      const userRole = this.auth.getRoleFromJwt();
+      if (userRole == "ROLE_ADMIN")
+      {
+        this.auth.loggedIn.next(true);
+      }
+      if (route.data['role'] && route.data['role'].indexOf(userRole) === -1) {
+        this.router.navigate(['']);
+        return false;
+      }
+      return true;
+    }
+
+    this.router.navigate(['']);
+    return false;
+  }
+
+
 }
   export const isAuthGuardComponent: CanActivateFn = (route: ActivatedRouteSnapshot,state: RouterStateSnapshot):boolean => {
   return inject(AuthGuardComponent).canActive(route, state);
