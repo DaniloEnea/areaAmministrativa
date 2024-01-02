@@ -25,6 +25,11 @@ export class AuthService {
 
       // get role
       localStorage.setItem('ROLE', this.getRoleFromJwt());
+      if (this.jwtHelper.isTokenExpired(token)) {
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("ROLE")
+        this.loggedIn.next(false);
+      }
 
       return !this.jwtHelper.isTokenExpired(token);
     }
