@@ -5,6 +5,7 @@ import {UtentiComponent} from "./utenti/utenti.component";
 import {PersoneComponent} from "./persone/persone.component";
 import {AreaLoginComponent} from "./area-login/area-login.component";
 import {isAuthGuardComponent} from "./auth-guard/auth-guard.component";
+import {MyAccountComponent} from "./my-account/my-account.component";
 
 // vari path
 const routes: Routes = [
@@ -18,7 +19,12 @@ const routes: Routes = [
       canActivate: [isAuthGuardComponent],
       data: {
       role: 'ROLE_ADMIN'
-    }}
+    }},
+  {path: 'my-account', component: MyAccountComponent,
+      canActivate: [isAuthGuardComponent],
+      data: {
+      role: 'ROLE_ADMIN'
+      }}
 ];
 
 @NgModule({

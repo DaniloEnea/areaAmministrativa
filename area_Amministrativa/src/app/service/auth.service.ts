@@ -44,6 +44,16 @@ export class AuthService {
       return '';
     }
 
+    public getUsernameFromJwt(): string {
+      const token = localStorage.getItem('accessToken');
+
+      if(token) {
+        const decodedJwt = this.jwtHelper.decodeToken(token);
+        return  decodedJwt.name
+      }
+      return '';
+    }
+
   logout() {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("ROLE")
