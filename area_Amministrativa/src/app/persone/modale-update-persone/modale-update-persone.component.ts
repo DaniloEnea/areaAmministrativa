@@ -31,8 +31,8 @@ export class ModaleUpdatePersoneComponent {
         isGDPRTermsAccepted: [this.data.person.isGDPRTermsAccepted],
         isOtherProcessingPurposesAccepted: [this.data.person.isOtherProcessingPurposesAccepted],
         isServiceProcessingPurposesAccepted: [this.data.person.isServiceProcessingPurposesAccepted],
-        IsValid: [this.data.person.IsValid],
-        IsDeleted: [this.data.person.IsDeleted],
+        IsValid: [true],
+        IsDeleted: [false],
       });
     }
 
