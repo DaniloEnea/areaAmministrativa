@@ -13,17 +13,17 @@ const routes: Routes = [
   {path: 'organizzazione', component : OrganizzazioneComponent,
       canActivate: [isAuthGuardComponent],
       data: {
-      role: 'ROLE_ADMIN'
+      role: 'ROLE_SA'
     }},
   {path: 'persone', component : PersoneComponent,
       canActivate: [isAuthGuardComponent],
       data: {
-      role: 'ROLE_ADMIN'
+      role: 'ROLE_SA'
     }},
   {path: 'my-account', component: MyAccountComponent,
       canActivate: [isAuthGuardComponent],
       data: {
-      role: 'ROLE_ADMIN'
+      role: 'ROLE_SA'
       }}
 ];
 
