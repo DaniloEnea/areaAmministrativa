@@ -5,6 +5,8 @@ import { MatTableDataSource } from "@angular/material/table";
 import { HttpProviderService } from "../service/http-provider.service";
 import { ModaleDetailsOrgComponent } from './modale-details-org/modale-details-org.component';
 import { MatInput } from '@angular/material/input';
+import { AuthService } from "../service/auth.service";
+import { ToastrService } from "ngx-toastr";
 
 export interface OrganizationDTO {
   id: string;
@@ -62,7 +64,7 @@ export class OrganizzazioneComponent {
   dataSource = new MatTableDataSource<OrganizationDTO>(this.OrgList);
 
   // modal
-  constructor(private dialog: MatDialog, private httpApi: HttpProviderService) {
+  constructor(public auth: AuthService, private dialog: MatDialog, private httpApi: HttpProviderService, private toastr: ToastrService) {
     this.dataSource = new MatTableDataSource<OrganizationDTO>(this.OrgList);
   }
 
@@ -115,26 +117,44 @@ export class OrganizzazioneComponent {
 
 
   openUpdateDialog(org: OrganizationDTO): void {
-    const dialogRef = this.dialog.open(ModaleUpdateOrgComponent, {
-      width: '60%',
+    if (this.auth.isAuthenticated()) {
+      const dialogRef = this.dialog.open(ModaleUpdateOrgComponent, {
+        width: '60%',
 
-      data: { org: org }
-    });
+        data: { org: org }
+      });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log(`Dialog result: ${result}`);
-    });
+      dialogRef.afterClosed().subscribe((result) => {
+        console.log(`Dialog result: ${result}`);
+      });
+    }
+    else {
+      this.toastr.error("Token is expired", "Error")
+      setTimeout(() => {
+        window.location.reload();
+      }, 500)
+
+    }
   }
 
   openDetailsDialog(org: OrganizationDTO): void {
-    const dialogRef = this.dialog.open(ModaleDetailsOrgComponent, {
-      width: '60%',
+    if (this.auth.isAuthenticated()) {
+      const dialogRef = this.dialog.open(ModaleDetailsOrgComponent, {
+        width: '60%',
 
-      data: { org: org }
-    });
+        data: { org: org }
+      });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log(`Dialog result: ${result}`);
-    });
+      dialogRef.afterClosed().subscribe((result) => {
+        console.log(`Dialog result: ${result}`);
+      });
+    }
+    else {
+      this.toastr.error("Token is expired", "Error")
+      setTimeout(() => {
+        window.location.reload();
+      }, 500)
+
+    }
   }
 }

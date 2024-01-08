@@ -4,6 +4,7 @@ import { OrganizationDTO, OrganizationDTO1 } from "../organizzazione.component";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { HttpProviderService } from "../../service/http-provider.service";
 import { ToastrService } from "ngx-toastr";
+import { AuthService } from "../../service/auth.service";
 
 @Component({
   selector: 'app-modale-update',
@@ -13,7 +14,7 @@ import { ToastrService } from "ngx-toastr";
 export class ModaleUpdateOrgComponent {
 
   updateOrgForm: FormGroup;
-  constructor(public dialogRef: MatDialogRef<ModaleUpdateOrgComponent>,
+  constructor(public auth: AuthService,public dialogRef: MatDialogRef<ModaleUpdateOrgComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { org: OrganizationDTO },
     private formBuilder: FormBuilder,
     private httpApi: HttpProviderService, private toastr: ToastrService) {
@@ -40,43 +41,52 @@ export class ModaleUpdateOrgComponent {
   }
 
   onUpdateClick(): void {
-    if (this.updateOrgForm.valid) {
-      console.log(this.data.org.id)
-      const updateOrg: OrganizationDTO = {
-        id: this.data.org.id,
-        name: this.updateOrgForm.value.name,
-        vatNumber: this.updateOrgForm.value.vatNumber,
-        streetAddress: this.updateOrgForm.value.streetAddress,
-        city: this.updateOrgForm.value.city,
-        province_State: this.updateOrgForm.value.province_State,
-        country: this.updateOrgForm.value.country,
-        zipCode: this.updateOrgForm.value.zipCode,
-        additionalInformation: this.updateOrgForm.value.additionalInformation,
-        webSite: this.updateOrgForm.value.webSite,
-        emailAddress: this.updateOrgForm.value.emailAddress,
-        emailDomain: this.updateOrgForm.value.emailDomain,
-        pec: this.updateOrgForm.value.pec,
-        billingCode: this.updateOrgForm.value.billingCode,
-        isSupplier: this.updateOrgForm.value.isSupplier,
-        isCustomer: this.updateOrgForm.value.isCustomer,
-        IsValid: this.updateOrgForm.value.isValid,
-        IsDeleted: this.updateOrgForm.value.isDeleted
-      };
+    if (this.auth.isAuthenticated()) {
+      if (this.updateOrgForm.valid) {
+        console.log(this.data.org.id)
+        const updateOrg: OrganizationDTO = {
+          id: this.data.org.id,
+          name: this.updateOrgForm.value.name,
+          vatNumber: this.updateOrgForm.value.vatNumber,
+          streetAddress: this.updateOrgForm.value.streetAddress,
+          city: this.updateOrgForm.value.city,
+          province_State: this.updateOrgForm.value.province_State,
+          country: this.updateOrgForm.value.country,
+          zipCode: this.updateOrgForm.value.zipCode,
+          additionalInformation: this.updateOrgForm.value.additionalInformation,
+          webSite: this.updateOrgForm.value.webSite,
+          emailAddress: this.updateOrgForm.value.emailAddress,
+          emailDomain: this.updateOrgForm.value.emailDomain,
+          pec: this.updateOrgForm.value.pec,
+          billingCode: this.updateOrgForm.value.billingCode,
+          isSupplier: this.updateOrgForm.value.isSupplier,
+          isCustomer: this.updateOrgForm.value.isCustomer,
+          IsValid: this.updateOrgForm.value.isValid,
+          IsDeleted: this.updateOrgForm.value.isDeleted
+        };
 
 
 
-      // post for create new user
-      this.httpApi.updateOrg(this.data.org.id, updateOrg).subscribe((response) => {
-        this.toastr.success("Data updated successfully", "Success");
-        setTimeout(() => {
-          window.location.reload();
-        }, 1500)
-      },
-        (error) => {
-          this.toastr.error('Something is wrong', 'Error');
-          setTimeout(() => { }, 1500)
-        });
-      this.dialogRef.close(updateOrg);
+        // post for create new user
+        this.httpApi.updateOrg(this.data.org.id, updateOrg).subscribe((response) => {
+          this.toastr.success("Data updated successfully", "Success");
+          setTimeout(() => {
+            window.location.reload();
+          }, 1500)
+        },
+          (error) => {
+            this.toastr.error('Something is wrong', 'Error');
+            setTimeout(() => { }, 1500)
+          });
+        this.dialogRef.close(updateOrg);
+      }
+    }
+    else {
+      this.toastr.error("Token is expired", "Error")
+      setTimeout(() => {
+        window.location.reload();
+      }, 500)
+
     }
   }
   closepopup() {

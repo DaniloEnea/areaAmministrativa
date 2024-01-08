@@ -9,6 +9,8 @@ import { ModaleDetailsPersoneComponent } from './modale-details-persone/modale-d
 //import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {MatInput} from "@angular/material/input";
 import { FormBuilder } from '@angular/forms';
+import { AuthService } from "../service/auth.service";
+import { ToastrService } from "ngx-toastr";
 
 /*export interface FilterDTO {
   first_name: string;
@@ -64,7 +66,7 @@ export class PersoneComponent {
   displayedColumns: string[] = ['firstName', 'lastName', 'phone', 'workRole', 'email', 'update'];
   dataSource = new MatTableDataSource<PersonDTO>;
 
-  constructor(private dialog: MatDialog, private formBuilder: FormBuilder, private httpApi: HttpProviderService) {
+  constructor(public auth: AuthService, private dialog: MatDialog, private formBuilder: FormBuilder, private httpApi: HttpProviderService, private toastr: ToastrService) {
     this.dataSource = new MatTableDataSource<PersonDTO>(this.PeopleList);
     /*this.filterForm = this.formBuilder.group({
       first_name: [null],
@@ -149,37 +151,63 @@ export class PersoneComponent {
 
 
   openAddDialog(): void {
-    const dialogRef = this.dialog.open(ModaleAddPersoneComponent, {
-      width: '60%',
-    });
+    if (this.auth.isAuthenticated()) {
+      const dialogRef = this.dialog.open(ModaleAddPersoneComponent, {
+        width: '60%',
+      });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log(`Dialog result: ${result}`);
-    });
+      dialogRef.afterClosed().subscribe((result) => {
+        console.log(`Dialog result: ${result}`);
+      });
+    }
+    else {
+      this.toastr.error("Token is expired", "Error")
+      setTimeout(() => {
+        window.location.reload();
+      }, 500)
+
+    }
   }
 
 
   openUpdateDialog(person: PersonDTO): void {
-    const dialogRef = this.dialog.open(ModaleUpdatePersoneComponent, {
-      width: '60%',
+    if (this.auth.isAuthenticated()) {
+      const dialogRef = this.dialog.open(ModaleUpdatePersoneComponent, {
+        width: '60%',
 
-      data: { person: person }
-    });
+        data: { person: person }
+      });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log(`Dialog result: ${result}`);
-    });
+      dialogRef.afterClosed().subscribe((result) => {
+        console.log(`Dialog result: ${result}`);
+      });
+    }
+    else {
+      this.toastr.error("Token is expired", "Error")
+      setTimeout(() => {
+        window.location.reload();
+      }, 500)
+
+    }
   }
 
   openDetailsDialog(person: PersonDTO): void {
-    const dialogRef = this.dialog.open(ModaleDetailsPersoneComponent, {
-      width: '60%',
+    if (this.auth.isAuthenticated()) {
+      const dialogRef = this.dialog.open(ModaleDetailsPersoneComponent, {
+        width: '60%',
 
-      data: { person: person }
-    });
+        data: { person: person }
+      });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log(`Dialog result: ${result}`);
-    });
+      dialogRef.afterClosed().subscribe((result) => {
+        console.log(`Dialog result: ${result}`);
+      });
+    }
+    else {
+      this.toastr.error("Token is expired", "Error")
+      setTimeout(() => {
+        window.location.reload();
+      }, 500)
+    }
   }
 }

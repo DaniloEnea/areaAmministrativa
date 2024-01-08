@@ -37,6 +37,9 @@ let deleteOrgUrl = "https://localhost:7017/api/Organizations"
 //login
 let loginUrl = "http://localhost:9000/api/auth/login"
 
+//reset password
+let resetPwdUrl = "http://localhost:9000/api/admin/changePassword"
+
 //filer
 let personFilterUrl = "https://localhost:7131/api/People/GetPeopleByFiltering"
 
@@ -45,19 +48,19 @@ let personFilterUrl = "https://localhost:7131/api/People/GetPeopleByFiltering"
 })
 export class HttpProviderService {
 
-  constructor(private adminApiServie: AdminApiService) { }
+  constructor(private adminApiService: AdminApiService) { }
 
   /* ALL METHOD API FOR USER'S */
 
   //GET
   public getAllUtente() : Observable<any> {
-    return this.adminApiServie.get(getUtenteUrl)
+    return this.adminApiService.get(getUtenteUrl)
   }
   public getAllPeople(): Observable<any> {
-    return this.adminApiServie.get(getPersonUrl)
+    return this.adminApiService.get(getPersonUrl)
   }
   public getAllOrg(): Observable<any> {
-    return this.adminApiServie.get(getOrgUrl)
+    return this.adminApiService.get(getOrgUrl)
   }
 
   //GET BY ID
@@ -73,17 +76,18 @@ export class HttpProviderService {
 
   //POST
   public addNewUser(model: any) : Observable<any> {
-    return this.adminApiServie.post(addUtenteUrl, model)
+    return this.adminApiService.post(addUtenteUrl, model)
   }
   public addNewPerson(model: any): Observable<any> {
-    return this.adminApiServie.post(addPersonUrl, model)
+    return this.adminApiService.post(addPersonUrl, model)
   }
   public addNewOrg(model: any): Observable<any> {
-    return this.adminApiServie.post(addOrgUrl, model)
+    return this.adminApiService.post(addOrgUrl, model)
   }
 
+  //LOGIN
  public login(model: any): Observable<any> {
-    return this.adminApiServie.postUrlEncoded(apiCredentials).pipe(
+   return this.adminApiService.postUrlEncoded(apiCredentials).pipe(
       mergeMap((value: any) => {
         const accessToken = value.body.access_token;
 
@@ -91,9 +95,14 @@ export class HttpProviderService {
       }),
       mergeMap((accessToken: string) => {
         // Chiamata successiva con l'access token
-        return this.adminApiServie.postWithCc(loginUrl, model, accessToken);
+        return this.adminApiService.postWithCc(loginUrl, model, accessToken);
       })
     );
+  }
+
+  //reset_password
+  public resetPwd(username: string, password: any) {
+    return this.adminApiService.put(resetPwdUrl, username, password)
   }
 
   //PUT
@@ -101,10 +110,10 @@ export class HttpProviderService {
   // return this.adminApiServie.put(updateUtenteUrl,id, model)
   //}
   public updatePerson(id: string, model: any): Observable<any> {
-   return this.adminApiServie.put(updatePersonUrl,id, model)
+    return this.adminApiService.put(updatePersonUrl,id, model)
   }
   public updateOrg(id: string, model: any): Observable<any> {
-    return this.adminApiServie.put(updateOrgUrl, id, model)
+    return this.adminApiService.put(updateOrgUrl, id, model)
   }
 
   //DELETE
@@ -112,10 +121,10 @@ export class HttpProviderService {
   //  return this.adminApiServie.delete(deleteUtenteUrl, id)
   //}
   public deletePerson(id: string): Observable<any> {
-    return this.adminApiServie.deleteFisic(deletePersonUrl, id)
+    return this.adminApiService.deleteFisic(deletePersonUrl, id)
   }
   public deleteOrg(id: string): Observable<any> {
-    return this.adminApiServie.delete(deleteOrgUrl, id)
+    return this.adminApiService.delete(deleteOrgUrl, id)
   }
 
   //Filter
