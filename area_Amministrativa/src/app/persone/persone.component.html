@@ -3,7 +3,7 @@
 <h2 style="margin-top: 95px">People List</h2>
 <br>
 <div>
-  <button class="button-add" mat-mini-fab (click)="openAddDialog()" color="primary">
+  <button class="button-add" mat-mini-fab (click)="openAddDialog()" color="primary" matTooltip="Add">
     <mat-icon>add</mat-icon>
   </button>
 </div>
@@ -12,110 +12,109 @@
   <h3 align="center">There are no people </h3>
 </div>
 
-<ng-template #PersonsTable>
-  <div>
+  <ng-template #PersonsTable>
+    <div>
 
-    <mat-form-field class="input-filter" appearance="outline">
-      <mat-label>Filter for name</mat-label>
-      <input #filterFirstNameInput matInput [(ngModel)]="filterFirstName" (input)="applyFilter()" placeholder="First name">
-    </mat-form-field>
+      <mat-form-field class="input-filter" appearance="outline">
+        <mat-label>Filter for name</mat-label>
+        <input #filterFirstNameInput matInput [(ngModel)]="filterFirstName" (input)="applyFilter()" placeholder="First name">
+      </mat-form-field>
 
-    <mat-form-field class="input-filter" appearance="outline">
-      <mat-label>Filter for last name</mat-label>
-      <input #filterLastNameInput matInput [(ngModel)]="filterLastName" (input)="applyFilter()" placeholder="Last name">
-    </mat-form-field>
+      <mat-form-field class="input-filter" appearance="outline">
+        <mat-label>Filter for last name</mat-label>
+        <input #filterLastNameInput matInput [(ngModel)]="filterLastName" (input)="applyFilter()" placeholder="Last name">
+      </mat-form-field>
 
-    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
-      <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef> ID </th>
-        <td mat-cell *matCellDef="let element"> {{element.id}} </td>
-      </ng-container>
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef> ID </th>
+            <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+          </ng-container>
 
-      <ng-container matColumnDef="firstName">
-        <th mat-header-cell *matHeaderCellDef> First name </th>
-        <td mat-cell *matCellDef="let element"> {{element.firstName}} </td>
-      </ng-container>
+          <ng-container matColumnDef="firstName">
+            <th mat-header-cell *matHeaderCellDef> First name </th>
+            <td mat-cell *matCellDef="let element"> {{element.firstName}} </td>
+          </ng-container>
 
-      <ng-container matColumnDef="lastName">
-        <th mat-header-cell *matHeaderCellDef> Last name </th>
-        <td mat-cell *matCellDef="let element"> {{element.lastName}} </td>
-      </ng-container>
+          <ng-container matColumnDef="lastName">
+            <th mat-header-cell *matHeaderCellDef> Last name </th>
+            <td mat-cell *matCellDef="let element"> {{element.lastName}} </td>
+          </ng-container>
 
-      <ng-container matColumnDef="organizationId">
-        <th mat-header-cell *matHeaderCellDef> Last name </th>
-        <td mat-cell *matCellDef="let element"> {{element.organizationId}} </td>
-      </ng-container>
+          <ng-container matColumnDef="organizationId">
+            <th mat-header-cell *matHeaderCellDef> Last name </th>
+            <td mat-cell *matCellDef="let element"> {{element.organizationId}} </td>
+          </ng-container>
 
-      <ng-container matColumnDef="workRole">
-        <th mat-header-cell *matHeaderCellDef> Work role </th>
-        <td mat-cell *matCellDef="let element"> {{element.workRole}} </td>
-      </ng-container>
+          <ng-container matColumnDef="workRole">
+            <th mat-header-cell *matHeaderCellDef> Work role </th>
+            <td mat-cell *matCellDef="let element"> {{element.workRole}} </td>
+          </ng-container>
 
-      <ng-container matColumnDef="phone">
-        <th mat-header-cell *matHeaderCellDef> Phone number </th>
-        <td mat-cell *matCellDef="let element"> {{element.phone}} </td>
-      </ng-container>
+          <ng-container matColumnDef="phone">
+            <th mat-header-cell *matHeaderCellDef> Phone number </th>
+            <td mat-cell *matCellDef="let element"> {{element.phone}} </td>
+          </ng-container>
 
-      <ng-container matColumnDef="email">
-        <th mat-header-cell *matHeaderCellDef> Email </th>
-        <td mat-cell *matCellDef="let element"> {{element.email}} </td>
-      </ng-container>
+          <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef> Email </th>
+            <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+          </ng-container>
 
-      <ng-container matColumnDef="secondEmail">
-        <th mat-header-cell *matHeaderCellDef> Secondary email </th>
-        <td mat-cell *matCellDef="let element"> {{element.secondEmail}} </td>
-      </ng-container>
+          <ng-container matColumnDef="secondEmail">
+            <th mat-header-cell *matHeaderCellDef> Secondary email </th>
+            <td mat-cell *matCellDef="let element"> {{element.secondEmail}} </td>
+          </ng-container>
 
-      <ng-container matColumnDef="cf">
-        <th mat-header-cell *matHeaderCellDef> CF </th>
-        <td mat-cell *matCellDef="let element"> {{element.cf}} </td>
-      </ng-container>
+          <ng-container matColumnDef="cf">
+            <th mat-header-cell *matHeaderCellDef> CF </th>
+            <td mat-cell *matCellDef="let element"> {{element.cf}} </td>
+          </ng-container>
 
-      <ng-container matColumnDef="isGDPRTermsAccepted">
-        <th mat-header-cell *matHeaderCellDef> GDPR </th>
-        <td mat-cell *matCellDef="let element"> {{element.isGDPRTermsAccepted}} </td>
-      </ng-container>
+          <ng-container matColumnDef="isGDPRTermsAccepted">
+            <th mat-header-cell *matHeaderCellDef> GDPR </th>
+            <td mat-cell *matCellDef="let element"> {{element.isGDPRTermsAccepted}} </td>
+          </ng-container>
 
-      <ng-container matColumnDef="isServiceProcessingPurposesAccepted">
-        <th mat-header-cell *matHeaderCellDef> GDPR </th>
-        <td mat-cell *matCellDef="let element"> {{element.isServiceProcessingPurposesAccepted}} </td>
-      </ng-container>
+          <ng-container matColumnDef="isServiceProcessingPurposesAccepted">
+            <th mat-header-cell *matHeaderCellDef> GDPR </th>
+            <td mat-cell *matCellDef="let element"> {{element.isServiceProcessingPurposesAccepted}} </td>
+          </ng-container>
 
-      <ng-container matColumnDef="isOtherProcessingPurposesAccepted">
-        <th mat-header-cell *matHeaderCellDef> GDPR </th>
-        <td mat-cell *matCellDef="let element"> {{element.isOtherProcessingPurposesAccepted}} </td>
-      </ng-container>
+          <ng-container matColumnDef="isOtherProcessingPurposesAccepted">
+            <th mat-header-cell *matHeaderCellDef> GDPR </th>
+            <td mat-cell *matCellDef="let element"> {{element.isOtherProcessingPurposesAccepted}} </td>
+          </ng-container>
 
-      <ng-container matColumnDef="update">
-        <th mat-header-cell *matHeaderCellDef></th>
-        <td mat-cell *matCellDef="let element">
+          <ng-container matColumnDef="update">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element">
 
-          <button mat-mini-fab (click)="openDetailsDialog(element)" color="accent">
-            <mat-icon>search</mat-icon>
-          </button>
+              <button mat-mini-fab (click)="openDetailsDialog(element)" color="accent" matTooltip="Inspect">
+                <mat-icon>search</mat-icon>
+              </button>
 
-          <button mat-mini-fab (click)="openUpdateDialog(element)" color="primary">
-            <mat-icon>edit</mat-icon>
-          </button>
+              <button mat-mini-fab (click)="openUpdateDialog(element)" color="primary" matTooltip="Edit">
+                <mat-icon>edit</mat-icon>
+              </button>
 
-          <button mat-mini-fab (click)="openDeleteDialog(element.id)" color="warn">
-            <mat-icon>delete</mat-icon>
-          </button>
+              <button mat-mini-fab (click)="openDeleteDialog(element.id)" color="warn" matTooltip="Delete">
+                <mat-icon>delete</mat-icon>
+              </button>
 
-          <button class="reset_pwd" mat-mini-fab>
-            <mat-icon>lock_reset</mat-icon>
-          </button>
+              <button class="reset_pwd" mat-mini-fab matTooltip="Reset password">
+                <mat-icon>lock_reset</mat-icon>
+              </button>
 
-        </td>
-      </ng-container>
+            </td>
+          </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;">
-      </tr>
-    </table>
-  </div>
-</ng-template>
-
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+          </tr>
+      </table>
+    </div>
+  </ng-template>
 
 

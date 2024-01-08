@@ -12,8 +12,9 @@ span {
   z-index: 1000;
 }
 
-button{
-    margin-right:10px;
+button {
+  font-size: 25px;
+  margin-right: 10px;
 }
 
 .right-button {

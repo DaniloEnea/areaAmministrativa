@@ -49,7 +49,7 @@ export class AreaLoginComponent {
         next: value => {
           localStorage.setItem("accessToken", value.body.accessToken);
           this.toastr.success("Login successful", "Success")
-          this.router.navigate([('/persone')]).then(r => null);
+          this.router.navigate([('')]).then(r => null);
         },
         error: err => {
           this.toastr.error("Incorrect username or password", "Error")

@@ -1,10 +1,16 @@
+
 <mat-toolbar color="primary" class="custom-toolbar" *ngIf="isLoggedIn$ | async as isLoggedIn">
   <button mat-icon-button (click)="toggleSidenav()">
     <mat-icon>menu</mat-icon>
   </button>
-  <span>Admin area</span>
+  <button mat-button [routerLink]="''">Admin area</button>
 
-  <button class="right-button" mat-icon-button (click)="logout()">
+  <button mat-icon-button [routerLink]="'/my-account'" class="right-button" matTooltip="Account">
+    <mat-icon fontIcon="person" color="accent"></mat-icon>
+  </button>
+
+
+  <button mat-icon-button (click)="logout()" matTooltip="Logout">
     <mat-icon aria-hidden="false"
               aria-label="logout icon"
               fontIcon="logout"

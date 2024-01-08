@@ -9,6 +9,7 @@ import { UtentiComponent } from './utenti/utenti.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material/material.module';
 import { NavbarComponent } from './navbar/navbar.component';
+import { HomepageComponent } from './homepage/homepage.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { SidenavService } from './service/SidenavService';
 import { ModaleUpdateOrgComponent } from './organizzazione/modale-update-org/modale-update-org.component';
@@ -31,6 +32,7 @@ import {ToastrModule} from "ngx-toastr";
     UtentiComponent,
     NavbarComponent,
     SidebarComponent,
+    HomepageComponent,
     ModaleUpdateOrgComponent,
     ModaleUpdatePersoneComponent,
     ModaleUpdateUserComponent,

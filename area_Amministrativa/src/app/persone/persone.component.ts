@@ -3,7 +3,7 @@ import {ModaleDeleteComponent} from "../modale-delete/modale-delete.component";
 import {ModaleUpdatePersoneComponent} from "./modale-update-persone/modale-update-persone.component";
 import {ModaleAddPersoneComponent} from "./modale-add-persone/modale-add-persone.component";
 import {MatDialog} from "@angular/material/dialog";
-import {MatTableDataSource} from "@angular/material/table";
+import { MatTableDataSource } from "@angular/material/table";
 import {HttpProviderService} from "../service/http-provider.service";
 import { ModaleDetailsPersoneComponent } from './modale-details-persone/modale-details-persone.component';
 //import { FormBuilder, FormGroup, Validators } from '@angular/forms';

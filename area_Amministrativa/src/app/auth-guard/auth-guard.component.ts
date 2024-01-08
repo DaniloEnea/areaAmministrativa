@@ -23,13 +23,13 @@ class AuthGuardComponent{
         this.auth.loggedIn.next(true);
       }
       if (route.data['role'] && route.data['role'].indexOf(userRole) === -1) {
-        this.router.navigate(['']);
+        this.router.navigate(['login']);
         return false;
       }
       return true;
     }
 
-    this.router.navigate(['']);
+    this.router.navigate(['login']);
     return false;
   }
 

@@ -58,7 +58,7 @@ export class AuthService {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("ROLE")
     this.loggedIn.next(false);
-    this.router.navigate([('')]);
+    this.router.navigate([('login')]);
     this.toastr.success("Logout successful", "Success")
   }
 
