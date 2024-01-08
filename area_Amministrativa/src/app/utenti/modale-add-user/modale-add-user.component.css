@@ -1,0 +1,9 @@
+.mat-form {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;  /* Aggiungi un margine tra le colonne, se desiderato */
+}
+
+.full-width {
+  width: 100%;
+}

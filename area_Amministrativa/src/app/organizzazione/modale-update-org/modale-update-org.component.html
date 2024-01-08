@@ -1,0 +1,80 @@
+<h1 mat-dialog-title align="center" style="font-size:20px; font-weight:bold">Update Organization</h1>
+<mat-dialog-content>
+  <form [formGroup]="updateOrgForm" class="mat-form">
+
+    <mat-form-field class="full-width">
+      <mat-label>Org name</mat-label>
+      <input formControlName="name" matInput>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>VAT</mat-label>
+      <input formControlName="vatNumber" matInput>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Street address</mat-label>
+      <input matInput formControlName="streetAddress">
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>City</mat-label>
+      <input matInput formControlName="city">
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Province state</mat-label>
+      <input matInput formControlName="province_State">
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Country</mat-label>
+      <input matInput formControlName="country">
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Zip code</mat-label>
+      <input matInput type="number" formControlName="zipCode">
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Additional info</mat-label>
+      <input matInput formControlName="additionalInformation">
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Website</mat-label>
+      <input matInput formControlName="webSite">
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Email</mat-label>
+      <input matInput type="email" formControlName="emailAddress" type="email">
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Domain</mat-label>
+      <input matInput formControlName="emailDomain">
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>PEC</mat-label>
+      <input matInput formControlName="pec">
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Billing Code</mat-label>
+      <input matInput formControlName="billingCode">
+    </mat-form-field>
+
+    <mat-checkbox formControlName="isSupplier">Is Supplier?</mat-checkbox>
+
+    <mat-checkbox formControlName="isCustomer">Is Customer?</mat-checkbox>
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+  <button mat-raised-button type="button" color="primary" (click)="onUpdateClick()">Save</button>
+  <button mat-raised-button type="button" (click)="closepopup()" color="warn">Close</button>
+</mat-dialog-actions>

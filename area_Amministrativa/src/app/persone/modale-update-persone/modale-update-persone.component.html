@@ -1,0 +1,30 @@
+<h1 mat-dialog-title align="center" style="font-size:20px; font-weight:bold">Update Person</h1>
+<mat-dialog-content>
+  <form [formGroup]="updatePersonForm" class="mat-form">
+
+    <mat-form-field class="full-width">
+      <mat-label>Work role</mat-label>
+      <input matInput formControlName="workRole">
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Phone number</mat-label>
+      <input matInput formControlName="phone">
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Secondary email</mat-label>
+      <input matInput formControlName="secondEmail" type="email">
+    </mat-form-field>
+
+    <!--<mat-checkbox formControlName="gdpr_accepted">Is GDPR accepted</mat-checkbox>-->
+
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+  <button mat-raised-button type="button" color="primary" (click)="onUpdateClick()">Save</button>
+  <button mat-raised-button type="button" (click)="closepopup()" color="warn">Close</button>
+</mat-dialog-actions>
+

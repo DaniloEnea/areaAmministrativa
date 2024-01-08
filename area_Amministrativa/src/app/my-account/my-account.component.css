@@ -1,0 +1,14 @@
+.acc-container {
+  margin-top: 12%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.title {
+  margin-top: 50px;
+}
+
+mat-icon {
+  transform: scale(8);
+}

@@ -1,0 +1,47 @@
+<h1 mat-dialog-title align="center" style="font-size:20px; font-weight:bold">Add Person</h1>
+<mat-dialog-content>
+  <form [formGroup]="newPersonForm" class="mat-form">
+
+    <mat-form-field class="full-width">
+      <mat-label>First Name</mat-label>
+      <input formControlName="firstName" matInput>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Last Name</mat-label>
+      <input formControlName="lastName" matInput>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>CF</mat-label>
+      <input matInput formControlName="cf">
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Select a role</mat-label>
+      <input matInput formControlName="workRole">
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Phone number</mat-label>
+      <input matInput formControlName="phone" maxlength="10"/>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" type="email">
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Secondary email</mat-label>
+      <input matInput formControlName="secondEmail" type="email">
+    </mat-form-field>
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+  <button mat-raised-button type="button" color="primary" (click)="onAddClick()">Save</button>
+  <button mat-raised-button type="button" (click)="closepopup()" color="warn">Close</button>
+</mat-dialog-actions>
+
