@@ -58,6 +58,21 @@ export class AdminApiService {
     );
   }
 
+  putWithCc(url: string,id: string, model: any, accessToken: string): Observable<any> {
+    const httpOptions = {
+      headers : new HttpHeaders( {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + accessToken
+      }),
+      observe: "response" as 'body'
+    };
+    const putUrl = `${url}/${id}`;
+    return this.http.put(putUrl, model, httpOptions).pipe(
+      map((response : any) => this.ReturnResponseData(response)),
+      catchError(this.handleError)
+    );
+  }
+
  postUrlEncoded(url: string): Observable<any> {
     // Converti l'oggetto in formato URL-encoded
     const body = new HttpParams()

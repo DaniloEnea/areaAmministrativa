@@ -20,7 +20,7 @@ export interface SendPasswordDTO {
   styleUrl: './reset-password.component.css'
 })
 export class ResetPasswordComponent {
-  
+
   PasswordDTOForm: FormGroup;
 
   constructor(public auth: AuthService, private toastr: ToastrService, private ref: MatDialogRef<ResetPasswordComponent>, private formBuilder: FormBuilder,
@@ -43,21 +43,26 @@ export class ResetPasswordComponent {
             password: this.PasswordDTOForm.value.password
           };
 
-          this.httpApi.resetPwd(this.data.Username, changePassword).subscribe()
-          this.toastr.success("Password changed correctly", "Success")
+          this.httpApi.resetPwd(this.data.Username, changePassword).subscribe(
+            {
+              next: value => {
+                this.toastr.success("Password changed correctly", "Success")
+              },
+              error: err => {
+                this.toastr.success("Something goes wrong", "Error")
+              }
+            }
+          )
           this.ref.close()
-        }
-        else {
+        } else {
           this.toastr.error("Passwords don't match", "Error")
         }
-
       }
-      else {
-        this.toastr.error("Token is expired", "Error")
-        setTimeout(() => {
-          window.location.reload();
-        }, 500)
-      }
+    } else {
+      this.toastr.error("Token is expired", "Error")
+      setTimeout(() => {
+        window.location.reload();
+      }, 500)
     }
   }
 

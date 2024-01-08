@@ -102,7 +102,17 @@ export class HttpProviderService {
 
   //reset_password
   public resetPwd(username: string, password: any) {
-    return this.adminApiService.put(resetPwdUrl, username, password)
+    return this.adminApiService.postUrlEncoded(apiCredentials).pipe(
+      mergeMap((value: any) => {
+        const accessToken = value.body.access_token;
+
+        return of(accessToken);
+      }),
+      mergeMap((accessToken: string) => {
+        // Chiamata successiva con l'access token
+        return this.adminApiService.putWithCc(resetPwdUrl,username, password, accessToken);
+      })
+    );
   }
 
   //PUT
