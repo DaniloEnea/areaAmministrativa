@@ -33,6 +33,9 @@ export class MyAccountComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       console.log(`Dialog result: ${result}`);
+      setTimeout(() => {
+        this.authService.logout();
+      }, 1000)
     });
   }
 }
