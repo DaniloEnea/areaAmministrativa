@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
-import {MatCardModule} from "@angular/material/card";
+import { MatCardModule } from "@angular/material/card";
+import { MatIconModule } from '@angular/material/icon';
 import {MatButtonModule} from "@angular/material/button";
 import {MatInputModule} from "@angular/material/input";
 import {NgIf} from "@angular/common";
@@ -18,6 +19,7 @@ export interface LoginDTO {
   imports: [
     MatCardModule,
     MatButtonModule,
+    MatIconModule,
     MatInputModule,
     NgIf,
     ReactiveFormsModule
@@ -27,6 +29,7 @@ export interface LoginDTO {
 })
 export class AreaLoginComponent {
 
+  hide : boolean = true;
   loginForm: FormGroup;
   constructor(private formBuilder: FormBuilder, private httpApi: HttpProviderService,
               private router: Router, private toastr: ToastrService) {
@@ -35,6 +38,10 @@ export class AreaLoginComponent {
       username: ['', Validators.required],
       password: ['', Validators.required]
     });
+  }
+
+  get visibilityIcon(): string {
+    return this.hide ? 'visibility_off' : 'visibility';
   }
 
   submit() {
@@ -58,5 +65,7 @@ export class AreaLoginComponent {
       })
     }
   }
+
+
 
 }

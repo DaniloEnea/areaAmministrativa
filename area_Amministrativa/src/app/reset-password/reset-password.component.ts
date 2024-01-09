@@ -20,7 +20,8 @@ export interface SendPasswordDTO {
   styleUrl: './reset-password.component.css'
 })
 export class ResetPasswordComponent {
-
+  hide1: boolean = true;
+  hide2: boolean = true;
   PasswordDTOForm: FormGroup;
 
   constructor(public auth: AuthService, private toastr: ToastrService, private ref: MatDialogRef<ResetPasswordComponent>, private formBuilder: FormBuilder,
@@ -33,6 +34,12 @@ export class ResetPasswordComponent {
     });
   }
 
+  get visibilityIconPwd(): string {
+    return this.hide1 ? 'visibility_off' : 'visibility';
+  }
+  get visibilityIconCheckPwd(): string {
+    return this.hide2 ? 'visibility_off' : 'visibility';
+  }
 
   changePwd(): void {
     if (this.auth.isAuthenticated()) {
