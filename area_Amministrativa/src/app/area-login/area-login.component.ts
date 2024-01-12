@@ -8,6 +8,7 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/
 import {HttpProviderService} from "../service/http-provider.service";
 import {Router} from "@angular/router";
 import {ToastrService} from "ngx-toastr";
+import {AuthService} from "../service/auth.service";
 
 export interface LoginDTO {
   username: string,
@@ -32,7 +33,7 @@ export class AreaLoginComponent {
   hide : boolean = true;
   loginForm: FormGroup;
   constructor(private formBuilder: FormBuilder, private httpApi: HttpProviderService,
-              private router: Router, private toastr: ToastrService) {
+              private router: Router, private toastr: ToastrService, private authService: AuthService) {
 
     this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],
@@ -55,8 +56,15 @@ export class AreaLoginComponent {
       this.httpApi.login(newLogin).subscribe({
         next: value => {
           localStorage.setItem("accessToken", value.body.accessToken);
-          this.toastr.success("Login successful", "Success")
-          this.router.navigate([('')]).then(r => null);
+          if(this.authService.isAuthenticated()) {
+            this.toastr.success("Login successful", "Success")
+            this.router.navigate([('')]).then(r => null);
+          }
+          else {
+             this.toastr.error("Unauthorized", "Error");
+             localStorage.removeItem('accessToken');
+             localStorage.removeItem('ROLE');
+          }
         },
         error: err => {
           this.toastr.error("Incorrect username or password", "Error")
