@@ -35,7 +35,7 @@ export interface PersonDTO {
 }
 export interface PersonDTO1 {
   firstName: string;
-  lastName: string; 
+  lastName: string;
   workRole: string;
   phone: string;
   email: string;
@@ -210,4 +210,21 @@ export class PersoneComponent {
       }, 500)
     }
   }
+
+  resetPassword(email: string): void {
+    // check if user is already authenticated
+    if (this.auth.isAuthenticated()) {
+        this.httpApi.resetPwdByEmail(email, null).subscribe(
+          {
+            next: value => {
+              this.toastr.success("We have sent a reset password link to your email. Please check.", "Success")
+            },
+            error: err => {
+              this.toastr.error("Something is error",  "Error")
+            }
+          }
+        )
+    }
+  }
+
 }
