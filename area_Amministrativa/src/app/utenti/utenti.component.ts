@@ -44,7 +44,7 @@ export class UtentiComponent implements OnInit{
 
   //get all user's
    allUtenti() {
-    this.httpApi.getAllUtente().subscribe({
+    this.httpApi.getAllUsers().subscribe({
       next: (data: any) => {
         if (data != null && data.body != null) {
           var resultData = data.body;

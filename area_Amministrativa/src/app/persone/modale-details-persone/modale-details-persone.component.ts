@@ -12,7 +12,7 @@ import { HttpProviderService } from "../../service/http-provider.service";
 export class ModaleDetailsPersoneComponent {
   detailsPersonForm: FormGroup;
   constructor(public dialogRef: MatDialogRef<ModaleDetailsPersoneComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { person: PersonDTO },
+    @Inject(MAT_DIALOG_DATA) public data: { person: PersonDTO1 },
     private formBuilder: FormBuilder,
     private httpApi: HttpProviderService) {
 
@@ -26,7 +26,8 @@ export class ModaleDetailsPersoneComponent {
       email_2: [this.data.person.secondEmail],
       isGDPRTermsAccepted: [this.data.person.isGDPRTermsAccepted],
       isOtherProcessingPurposesAccepted: [this.data.person.isOtherProcessingPurposesAccepted],
-      isServiceProcessingPurposesAccepted: [this.data.person.isServiceProcessingPurposesAccepted]
+      isServiceProcessingPurposesAccepted: [this.data.person.isServiceProcessingPurposesAccepted],
+      roles: [this.data.person.roles]
     });
   }
 

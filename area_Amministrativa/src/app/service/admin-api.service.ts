@@ -58,6 +58,21 @@ export class AdminApiService {
     );
   }
 
+  getWithCc(url: string, accessToken: string): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + accessToken
+      }),
+      observe: "response" as 'body'
+    };
+
+    return this.http.get(url, httpOptions).pipe(
+      map((response: any) => this.ReturnResponseData(response)),
+      catchError(this.handleError)
+    );
+  }
+
   putWithCc(url: string,id: string, model: any, accessToken: string): Observable<any> {
     const httpOptions = {
       headers : new HttpHeaders( {
@@ -80,6 +95,25 @@ export class AdminApiService {
       .set('client_id', 'client-angular')
       .set('client_secret', 'secret')
       .set('scope', 'client.write');
+
+    // Imposta le intestazioni per il tipo di contenuto
+    const headers = new HttpHeaders()
+      .set('Content-Type', 'application/x-www-form-urlencoded');
+
+    // Effettua la richiesta POST
+    return this.http.post(url, body.toString(), { headers, observe: 'response' }).pipe(
+      map((response: any) => this.ReturnResponseData(response)),
+      catchError(this.handleError)
+    );
+  }
+
+  getUrlEncoded(url: string): Observable<any> {
+    // Converti l'oggetto in formato URL-encoded
+    const body = new HttpParams()
+      .set('grant_type', 'client_credentials')
+      .set('client_id', 'client-angular')
+      .set('client_secret', 'secret')
+      .set('scope', 'client.read');
 
     // Imposta le intestazioni per il tipo di contenuto
     const headers = new HttpHeaders()

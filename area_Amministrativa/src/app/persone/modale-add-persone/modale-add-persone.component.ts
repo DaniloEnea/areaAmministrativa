@@ -1,10 +1,11 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
-import { PersonDTO, PersonDTO1 } from "../persone.component";
+import { PersonDTO, PersonDTO1, PersonDTO2 } from "../persone.component";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { HttpProviderService } from "../../service/http-provider.service";
 import { ToastrService } from "ngx-toastr";
 import { AuthService } from "../../service/auth.service";
+
 
 @Component({
   selector: 'app-modale-add',
@@ -14,35 +15,41 @@ import { AuthService } from "../../service/auth.service";
 
 export class ModaleAddPersoneComponent {
 
+  test: string[] = [
+    'ROLE_USER',
+    'ROLE_ADMIN'
+  ]
+
   newPersonForm: FormGroup;
   constructor(public auth: AuthService, public dialogRef: MatDialogRef<ModaleAddPersoneComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: PersonDTO,
+    @Inject(MAT_DIALOG_DATA) public data: PersonDTO1,
     private formBuilder: FormBuilder,
     private httpApi: HttpProviderService, private toastr: ToastrService) {
 
     this.newPersonForm = this.formBuilder.group({
-      //id: ['3fa85f64-5717-4562-b3fc-2c963f66afa6'],
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      //organizationId: ['3fa85f64-5717-4562-b3fc-2c963f66afa6'],
       cf: ['', Validators.required],
       workRole: ['', Validators.required],
       phone: ['', Validators.required],
       email: ['', Validators.required],
-      secondEmail: [''],
+      secondEmail: [null],
       isGDPRTermsAccepted: [false],
       isOtherProcessingPurposesAccepted: [true],
       isServiceProcessingPurposesAccepted: [false],
-      IsValid: [true],
-      IsDeleted: [false],
+      roles: [this.test]
     });
+  }
+
+  gg(): string {
+    return "gg"
   }
 
   onAddClick(): void {
     if (this.auth.isAuthenticated()) {
       if (this.newPersonForm.valid) {
         console.log("test 1")
-        const newPerson: PersonDTO1 = {
+        const newPerson: PersonDTO2 = {
           firstName: this.newPersonForm.value.firstName,
           lastName: this.newPersonForm.value.lastName,
           cf: this.newPersonForm.value.cf,
@@ -53,8 +60,9 @@ export class ModaleAddPersoneComponent {
           isGDPRTermsAccepted: this.newPersonForm.value.isGDPRTermsAccepted,
           isOtherProcessingPurposesAccepted: this.newPersonForm.value.isOtherProcessingPurposesAccepted,
           isServiceProcessingPurposesAccepted: this.newPersonForm.value.isServiceProcessingPurposesAccepted,
-          IsValid: this.newPersonForm.value.IsValid,
-          IsDeleted: this.newPersonForm.value.IsDeleted
+          roles: 
+            this.newPersonForm.value.roles
+         
         };
         console.log(newPerson)
 

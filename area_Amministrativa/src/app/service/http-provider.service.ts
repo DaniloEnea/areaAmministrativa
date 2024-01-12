@@ -8,7 +8,8 @@ let genericUrl = "http://localhost:8080/api/"
 let apiCredentials = "http://localhost:8282/oauth2/token"
 
 //get
-let getUtenteUrl = genericUrl + "utenti"
+//let getUtenteUrl = genericUrl + "utenti"
+let getUtenteUrl = "http://localhost:9000/api/global/getAllUsers"
 //let getPersonUrl = genericUrl + "people"
 let getPersonUrl = "https://localhost:7131/api/People"
 let getOrgUrl = "https://localhost:7017/api/Organizations"
@@ -16,7 +17,7 @@ let getOrgUrl = "https://localhost:7017/api/Organizations"
 
 //add
 let addUtenteUrl = genericUrl + "addUtenti"
-let addPersonUrl = "https://localhost:7131/api/People"
+let addPersonUrl = "https://localhost:7131/api/People/CreatePU"
 let addOrgUrl = genericUrl + "addOrganization"
 
 /*details*/
@@ -25,8 +26,10 @@ let addOrgUrl = genericUrl + "addOrganization"
 //let getOrgByIdUrl = genericUrl + "organization"
 
 //update
+
 let updateUtenteUrl = genericUrl + "updateUtenti"
 let updatePersonUrl = "https://localhost:7131/api/People"
+let updatePersonRoleUrl = "https://localhost:9000/api/Admin/changeRole"
 let updateOrgUrl = "https://localhost:7017/api/Organizations"
 
 //delete
@@ -53,9 +56,36 @@ export class HttpProviderService {
   /* ALL METHOD API FOR USER'S */
 
   //GET
-  public getAllUtente() : Observable<any> {
-    return this.adminApiService.get(getUtenteUrl)
+  public getAllUsers(): Observable<any> {
+    return this.adminApiService.getUrlEncoded(apiCredentials).pipe(
+      mergeMap((value: any) => {
+        const accessToken = value.body.access_token;
+
+        return of(accessToken);
+      }),
+      mergeMap((accessToken: string) => {
+        // Chiamata successiva con l'access token
+        return this.adminApiService.getWithCc(getUtenteUrl, accessToken);
+      })
+    );
   }
+
+  public changeRole(username: string, roles: any ): Observable<any> {
+    return this.adminApiService.getUrlEncoded(apiCredentials).pipe(
+      mergeMap((value: any) => {
+        const accessToken = value.body.access_token;
+
+        return of(accessToken);
+      }),
+      mergeMap((accessToken: string) => {
+
+        // Chiamata successiva con l'access token
+        return this.adminApiService.putWithCc(updatePersonRoleUrl, username, roles, accessToken);
+
+      })
+    );
+  }
+
   public getAllPeople(): Observable<any> {
     return this.adminApiService.get(getPersonUrl)
   }

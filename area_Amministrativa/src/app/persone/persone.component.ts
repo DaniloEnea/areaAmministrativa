@@ -17,6 +17,13 @@ import { ToastrService } from "ngx-toastr";
   last_name: string;
 }*/
 
+export interface UserDTO {
+  personId: string;
+  username: string;
+  roles: any[];
+}
+
+
 export interface PersonDTO {
   id: string;
   firstName: string;
@@ -34,6 +41,21 @@ export interface PersonDTO {
   IsDeleted: boolean;
 }
 export interface PersonDTO1 {
+  id: string;
+  firstName: string;
+  lastName: string;
+  workRole: string;
+  phone: string;
+  email: string;
+  secondEmail: string;
+  cf: string;
+  isGDPRTermsAccepted: boolean;
+  isServiceProcessingPurposesAccepted: boolean;
+  isOtherProcessingPurposesAccepted: boolean;
+  roles: string[];
+}
+
+export interface PersonDTO2 {
   firstName: string;
   lastName: string; 
   workRole: string;
@@ -44,8 +66,7 @@ export interface PersonDTO1 {
   isGDPRTermsAccepted: boolean;
   isServiceProcessingPurposesAccepted: boolean;
   isOtherProcessingPurposesAccepted: boolean;
-  IsValid: boolean;
-  IsDeleted: boolean;
+  roles: string[];
 }
 
 @Component({
@@ -62,12 +83,12 @@ export class PersoneComponent {
   filterLastName = ''; // Aggiungi questa linea per il valore del filtro per lastName
   //filterForm: FormGroup
   classForm: string = "People";
-  PeopleList: PersonDTO[] = [];
-  displayedColumns: string[] = ['firstName', 'lastName', 'phone', 'workRole', 'email', 'update'];
-  dataSource = new MatTableDataSource<PersonDTO>;
+  PeopleList: PersonDTO1[] = [];
+  displayedColumns: string[] = ['firstName', 'lastName', 'phone', 'email', 'roles', 'update'];
+  dataSource = new MatTableDataSource<PersonDTO1>;
 
   constructor(public auth: AuthService, private dialog: MatDialog, private formBuilder: FormBuilder, private httpApi: HttpProviderService, private toastr: ToastrService) {
-    this.dataSource = new MatTableDataSource<PersonDTO>(this.PeopleList);
+    this.dataSource = new MatTableDataSource<PersonDTO1>(this.PeopleList);
     /*this.filterForm = this.formBuilder.group({
       first_name: [null],
       last_name: [null]
@@ -99,7 +120,7 @@ export class PersoneComponent {
   }
 
   customFilterPredicate() {
-    return (data: PersonDTO, filter: string): boolean => {
+    return (data: PersonDTO1, filter: string): boolean => {
       const searchText = JSON.parse(filter);
       return (
         data.firstName.toLowerCase().includes(searchText.firstName) &&
@@ -120,8 +141,30 @@ export class PersoneComponent {
           var resultData = data.body;
           if (resultData) {
             this.PeopleList = resultData;
-            this.dataSource.data = [...this.PeopleList];
-            console.log(this.PeopleList);
+
+            this.httpApi.getAllUsers().subscribe({
+              next: (userData: any) => {
+                if (userData != null && userData.body != null) {
+                  const userDTOList: UserDTO[] = userData.body;
+
+                  console.log(userDTOList);
+
+
+                  this.PeopleList.forEach((person: PersonDTO1) => {
+                    const associatedUser = userDTOList.find(user => user.username === person.email);
+                    if (associatedUser) {
+                      person.roles = associatedUser.roles.map(role => role.role);
+                    }
+                  });
+
+                  this.dataSource.data = [...this.PeopleList];
+                  console.log(this.PeopleList);
+                }
+              },
+              error: (error: any) => {
+                console.error("Error fetching user data", error);
+              }
+            });
 
           }
         }
@@ -170,7 +213,7 @@ export class PersoneComponent {
   }
 
 
-  openUpdateDialog(person: PersonDTO): void {
+  openUpdateDialog(person: PersonDTO1): void {
     if (this.auth.isAuthenticated()) {
       const dialogRef = this.dialog.open(ModaleUpdatePersoneComponent, {
         width: '60%',
@@ -191,7 +234,7 @@ export class PersoneComponent {
     }
   }
 
-  openDetailsDialog(person: PersonDTO): void {
+  openDetailsDialog(person: PersonDTO1): void {
     if (this.auth.isAuthenticated()) {
       const dialogRef = this.dialog.open(ModaleDetailsPersoneComponent, {
         width: '60%',
