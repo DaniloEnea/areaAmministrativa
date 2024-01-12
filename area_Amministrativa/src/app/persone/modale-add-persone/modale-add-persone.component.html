@@ -24,7 +24,7 @@
 
     <mat-form-field class="full-width">
       <mat-label>Phone number</mat-label>
-      <input matInput formControlName="phone" maxlength="10"/>
+      <input matInput formControlName="phone" maxlength="10" />
     </mat-form-field>
 
     <mat-form-field class="full-width">
@@ -36,6 +36,14 @@
       <mat-label>Secondary email</mat-label>
       <input matInput formControlName="secondEmail" type="email">
     </mat-form-field>
+
+
+    <mat-label>Roles:</mat-label>
+    <mat-checkbox formControlName="Role_SA">Super Admin</mat-checkbox>
+
+    <mat-checkbox formControlName="Role_Admin">Admin</mat-checkbox>
+
+    <mat-checkbox formControlName="Role_User">User</mat-checkbox>
 
   </form>
 </mat-dialog-content>

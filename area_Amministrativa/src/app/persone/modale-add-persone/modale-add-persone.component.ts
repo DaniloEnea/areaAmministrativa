@@ -6,6 +6,11 @@ import { HttpProviderService } from "../../service/http-provider.service";
 import { ToastrService } from "ngx-toastr";
 import { AuthService } from "../../service/auth.service";
 
+export interface Roles {
+  Role_SA: boolean;
+  Role_User: boolean;
+  Role_Admin: boolean;
+}
 
 @Component({
   selector: 'app-modale-add',
@@ -21,8 +26,9 @@ export class ModaleAddPersoneComponent {
   ]
 
   newPersonForm: FormGroup;
+  rolesSelected: string[] = [];
   constructor(public auth: AuthService, public dialogRef: MatDialogRef<ModaleAddPersoneComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: PersonDTO1,
+    @Inject(MAT_DIALOG_DATA) public data: { person: PersonDTO1, roles: Roles },
     private formBuilder: FormBuilder,
     private httpApi: HttpProviderService, private toastr: ToastrService) {
 
@@ -37,7 +43,9 @@ export class ModaleAddPersoneComponent {
       isGDPRTermsAccepted: [false],
       isOtherProcessingPurposesAccepted: [true],
       isServiceProcessingPurposesAccepted: [false],
-      roles: [this.test]
+      Role_SA: [false],
+      Role_Admin: [false],
+      Role_User: [true]
     });
   }
 
@@ -48,6 +56,19 @@ export class ModaleAddPersoneComponent {
   onAddClick(): void {
     if (this.auth.isAuthenticated()) {
       if (this.newPersonForm.valid) {
+
+        if (this.newPersonForm.value.Role_SA == true) {
+          this.rolesSelected.push("ROLE_SA")
+        }
+        if (this.newPersonForm.value.Role_Admin == true) {
+          this.rolesSelected.push("ROLE_USER")
+        }
+        if (this.newPersonForm.value.Role_User == true) {
+          this.rolesSelected.push("ROLE_ADMIN")
+        }
+
+        console.log(this.rolesSelected)
+
         console.log("test 1")
         const newPerson: PersonDTO2 = {
           firstName: this.newPersonForm.value.firstName,
@@ -61,18 +82,19 @@ export class ModaleAddPersoneComponent {
           isOtherProcessingPurposesAccepted: this.newPersonForm.value.isOtherProcessingPurposesAccepted,
           isServiceProcessingPurposesAccepted: this.newPersonForm.value.isServiceProcessingPurposesAccepted,
           roles: 
-            this.newPersonForm.value.roles
+            this.rolesSelected
          
         };
         console.log(newPerson)
+        
 
         // post for create new user
         this.httpApi.addNewPerson(newPerson).subscribe({
           next: value => {
             this.toastr.success("Data updated successfully", "Success");
-            setTimeout(() => {
-              window.location.reload();
-            }, 1000)
+            //setTimeout(() => {
+            //  window.location.reload();
+            //}, 1000)
           },
           error: err => {
             this.toastr.error('Something is wrong', 'Error');
