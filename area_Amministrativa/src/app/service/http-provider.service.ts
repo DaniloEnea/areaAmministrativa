@@ -46,6 +46,9 @@ let resetPwdUrl = "http://localhost:9000/api/admin/changePassword"
 //filer
 let personFilterUrl = "https://localhost:7131/api/People/GetPeopleByFiltering"
 
+// reset password by email
+let resetPwdByEmailUrl = "http://localhost:9000/api/forgot_password"
+
 @Injectable({
   providedIn: 'root'
 })
@@ -113,6 +116,20 @@ export class HttpProviderService {
   }
   public addNewOrg(model: any): Observable<any> {
     return this.adminApiService.post(addOrgUrl, model)
+  }
+
+  public resetPwdByEmail(id: string, model: any): Observable<any> {
+    return this.adminApiService.postUrlEncoded(apiCredentials).pipe(
+      mergeMap((value: any) => {
+        const accessToken = value.body.access_token;
+
+        return of(accessToken);
+      }),
+      mergeMap((accessToken: string) => {
+        // Chiamata successiva con l'access token
+        return this.adminApiService.postWithCcById(id,resetPwdByEmailUrl, model, accessToken);
+      })
+    );
   }
 
   //LOGIN

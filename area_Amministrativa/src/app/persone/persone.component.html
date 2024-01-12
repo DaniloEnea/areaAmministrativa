@@ -109,12 +109,11 @@
               <mat-icon>delete</mat-icon>
             </button>
 
-            <button class="reset_pwd" mat-mini-fab matTooltip="Reset password">
-              <mat-icon>lock_reset</mat-icon>
-            </button>
-
-          </td>
-        </ng-container>
+              <button class="reset_pwd" mat-mini-fab matTooltip="Reset password" (click)="resetPassword(element.email)">
+                <mat-icon>lock_reset</mat-icon>
+              </button>
+            </td>
+          </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;">
