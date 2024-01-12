@@ -25,13 +25,21 @@ export class AuthService {
 
       // get role
       localStorage.setItem('ROLE', this.getRoleFromJwt());
+      const role = localStorage.getItem('ROLE');
+      let checkRole: boolean = false;
+
+      if(role == 'ROLE_SA')
+      {
+        checkRole = true;
+      }
+
       if (this.jwtHelper.isTokenExpired(token)) {
         localStorage.removeItem("accessToken");
         localStorage.removeItem("ROLE")
         this.loggedIn.next(false);
       }
 
-      return !this.jwtHelper.isTokenExpired(token);
+      return !this.jwtHelper.isTokenExpired(token) && checkRole;
     }
 
     public getRoleFromJwt(): string {
@@ -39,7 +47,7 @@ export class AuthService {
       // verifica se il token non è null
       if (token) {
         const decodedJwt = this.jwtHelper.decodeToken(token);
-        return decodedJwt.role;
+        return decodedJwt.roles;
       }
       return '';
     }
