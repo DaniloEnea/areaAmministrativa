@@ -30,6 +30,11 @@ export class ModaleDeleteComponent {
       console.log("delete: " + this.data.Id)
       console.log("type: " + this.data.ClassForm)
 
+      this.toastr.success("Deleted succesfully", "Success")
+      setTimeout(() => {
+        window.location.reload();
+      }, 500)
+
       this.ref.close()
       window.location.reload();
     }
