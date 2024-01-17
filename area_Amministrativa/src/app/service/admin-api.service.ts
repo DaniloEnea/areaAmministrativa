@@ -58,6 +58,7 @@ export class AdminApiService {
     );
   }
 
+
   postWithCcById(id: string, url: string, model: any, accessToken: string): Observable<any> {
     const httpOptions = {
       headers : new HttpHeaders( {
@@ -72,6 +73,7 @@ export class AdminApiService {
       catchError(this.handleError)
     );
   }
+
 
   getWithCc(url: string, accessToken: string): Observable<any> {
     const httpOptions = {
@@ -100,6 +102,38 @@ export class AdminApiService {
     console.log(putUrl)
     return this.http.put(putUrl, model, httpOptions).pipe(
       map((response : any) => this.ReturnResponseData(response)),
+      catchError(this.handleError)
+    );
+  }
+
+  putCc(url: string, model: any, accessToken: string): Observable<any> {
+    const httpOptions = {
+      headers : new HttpHeaders( {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + accessToken
+      }),
+      observe: "response" as 'body'
+    };
+
+    return this.http.put(url, model, httpOptions).pipe(
+      map((response : any) => this.ReturnResponseData(response)),
+      catchError(this.handleError)
+    );
+  }
+
+ getCc(url: string, accessToken: string, tokenQueryParam: string): Observable<any> {
+    const fullUrl = `${url}?token=${tokenQueryParam}`;
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + accessToken
+      }),
+      observe: 'response' as 'body'
+    };
+
+    return this.http.get(fullUrl, httpOptions).pipe(
+      map((response: any) => this.ReturnResponseData(response)),
       catchError(this.handleError)
     );
   }

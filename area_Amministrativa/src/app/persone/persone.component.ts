@@ -287,7 +287,7 @@ export class PersoneComponent {
   resetPassword(email: string): void {
     // check if user is already authenticated
     if (this.auth.isAuthenticated()) {
-        this.httpApi.resetPwdByEmail(email, null).subscribe(
+        this.httpApi.forgotPwdByEmail(email, null).subscribe(
           {
             next: value => {
               this.toastr.success("We have sent a reset password link to your email. Please check.", "Success")

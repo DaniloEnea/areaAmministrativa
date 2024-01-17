@@ -7,6 +7,7 @@ import {AreaLoginComponent} from "./area-login/area-login.component";
 import {HomepageComponent } from "./homepage/homepage.component";
 import {isAuthGuardComponent} from "./auth-guard/auth-guard.component";
 import {MyAccountComponent} from "./my-account/my-account.component";
+import {ResetPwComponent} from "./reset-pw/reset-pw.component";
 
 // vari path
 const routes: Routes = [
@@ -38,6 +39,8 @@ const routes: Routes = [
       role: 'ROLE_SA'
     }
   },
+
+  {path: 'reset_password', component: ResetPwComponent}
 ];
 
 @NgModule({
