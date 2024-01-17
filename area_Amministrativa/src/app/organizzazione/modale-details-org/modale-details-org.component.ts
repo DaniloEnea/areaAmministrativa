@@ -17,6 +17,7 @@ export class ModaleDetailsOrgComponent {
     private httpApi: HttpProviderService) {
 
     this.updateOrgForm = this.formBuilder.group({
+      id: [this.data.org.id],
       name: [this.data.org.name],
       vat: [this.data.org.vatNumber],
       streetAddress: [this.data.org.streetAddress],

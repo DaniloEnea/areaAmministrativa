@@ -97,6 +97,7 @@ export class AdminApiService {
       observe: "response" as 'body'
     };
     const putUrl = `${url}/${id}`;
+    console.log(putUrl)
     return this.http.put(putUrl, model, httpOptions).pipe(
       map((response : any) => this.ReturnResponseData(response)),
       catchError(this.handleError)
@@ -117,6 +118,25 @@ export class AdminApiService {
 
     // Effettua la richiesta POST
     return this.http.post(url, body.toString(), { headers, observe: 'response' }).pipe(
+      map((response: any) => this.ReturnResponseData(response)),
+      catchError(this.handleError)
+    );
+  }
+
+  putUrlEncoded(url: string): Observable<any> {
+    // Converti l'oggetto in formato URL-encoded
+    const body = new HttpParams()
+      .set('grant_type', 'client_credentials')
+      .set('client_id', 'client-angular')
+      .set('client_secret', 'secret')
+      .set('scope', 'client.write');
+
+    // Imposta le intestazioni per il tipo di contenuto
+    const headers = new HttpHeaders()
+      .set('Content-Type', 'application/x-www-form-urlencoded');
+
+    // Effettua la richiesta POST
+    return this.http.put(url, body.toString(), { headers, observe: 'response' }).pipe(
       map((response: any) => this.ReturnResponseData(response)),
       catchError(this.handleError)
     );
@@ -191,7 +211,7 @@ export class AdminApiService {
         }),
         observe: 'response' as 'body'
       };
-      const getUrl = `${url}/${id}`;
+      const getUrl = `${url}/${id}?valid=true`;
       return this.http.get(getUrl, httpOptions).pipe(
         catchError(this.handleError)
       );

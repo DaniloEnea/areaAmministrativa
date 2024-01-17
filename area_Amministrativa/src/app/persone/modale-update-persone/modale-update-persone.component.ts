@@ -1,21 +1,33 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
-import { PersonDTO } from "../persone.component";
+import { PersonDTO, PersonDTO1 } from "../persone.component";
+import { OrganizationDTO } from "src/app/organizzazione/organizzazione.component";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { HttpProviderService } from "../../service/http-provider.service";
 import { ToastrService } from "ngx-toastr";
 import { AuthService } from "../../service/auth.service";
+
+
+
+export interface Roles {
+  Role_SA: boolean;
+  Role_User: boolean;
+  Role_Admin: boolean;
+}
 
 @Component({
   selector: 'app-modale-update',
   templateUrl: './modale-update-persone.component.html',
   styleUrls: ['./modale-update-persone.component.css']
 })
+
 export class ModaleUpdatePersoneComponent {
 
-    updatePersonForm: FormGroup;
+  updatePersonForm: FormGroup;
+  rolesSelected: string[] = [];
+
   constructor(public auth: AuthService, public dialogRef: MatDialogRef<ModaleUpdatePersoneComponent>,
-      @Inject(MAT_DIALOG_DATA) public data: { person: PersonDTO },
+      @Inject(MAT_DIALOG_DATA) public data: { person: PersonDTO1 },
       private formBuilder: FormBuilder,
       private httpApi: HttpProviderService, private toastr: ToastrService) {
 
@@ -32,39 +44,62 @@ export class ModaleUpdatePersoneComponent {
         isGDPRTermsAccepted: [this.data.person.isGDPRTermsAccepted],
         isOtherProcessingPurposesAccepted: [this.data.person.isOtherProcessingPurposesAccepted],
         isServiceProcessingPurposesAccepted: [this.data.person.isServiceProcessingPurposesAccepted],
-        IsValid: [true],
-        IsDeleted: [false],
+        Role_SA: [this.roleCheck("ROLE_SA")],
+        Role_Admin: [this.roleCheck("ROLE_ADMIN")],
+        Role_User: [this.roleCheck("ROLE_USER")]
       });
-    }
+  }
+
+  roleCheck(role: string): boolean {
+    return this.data.person.roles.includes(role)
+  }
+
+  updateOrg(orgid: string): string {
+    return ""
+  }
 
   onUpdateClick(): void {
     if (this.auth.isAuthenticated()) {
       if (this.updatePersonForm.valid) {
+
+        if (this.updatePersonForm.value.Role_SA == true) {
+          this.rolesSelected.push("ROLE_SA")
+        }
+        if (this.updatePersonForm.value.Role_Admin == true) {
+          this.rolesSelected.push("ROLE_USER")
+        }
+        if (this.updatePersonForm.value.Role_User == true) {
+          this.rolesSelected.push("ROLE_ADMIN")
+        }
+
+        console.log(this.rolesSelected)
+
         const updatePerson: PersonDTO = {
-          id: this.data.person.id,
-          firstName: this.updatePersonForm.value.firstName,
-          lastName: this.updatePersonForm.value.lastName,
-          organizationId: this.data.person.organizationId,
-          cf: this.updatePersonForm.value.cf,
-          workRole: this.updatePersonForm.value.workRole,
-          phone: this.updatePersonForm.value.phone,
-          email: this.updatePersonForm.value.email,
-          secondEmail: this.updatePersonForm.value.secondEmail,
-          isGDPRTermsAccepted: this.updatePersonForm.value.isGDPRTermsAccepted,
-          isOtherProcessingPurposesAccepted: this.updatePersonForm.value.isOtherProcessingPurposesAccepted,
-          isServiceProcessingPurposesAccepted: this.updatePersonForm.value.isServiceProcessingPurposesAccepted,
-          IsValid: this.updatePersonForm.value.IsValid,
-          IsDeleted: this.updatePersonForm.value.IsDeleted
+            id: this.data.person.id,
+            firstName: this.updatePersonForm.value.firstName,
+            lastName: this.updatePersonForm.value.lastName,
+            organizationId: this.data.person.organizationId, 
+            workRole: this.updatePersonForm.value.workRole,
+            phone: this.updatePersonForm.value.phone,
+            email: this.updatePersonForm.value.email,
+            secondEmail: this.updatePersonForm.value.secondEmail,
+            isGDPRTermsAccepted: this.updatePersonForm.value.isGDPRTermsAccepted,
+            isOtherProcessingPurposesAccepted: this.updatePersonForm.value.isOtherProcessingPurposesAccepted,
+            isServiceProcessingPurposesAccepted: this.updatePersonForm.value.isServiceProcessingPurposesAccepted,
+            IsDeleted: false,
+            IsValid: true,
+            cf: this.updatePersonForm.value.cf
         };
 
         //post for create new user
         this.httpApi.updatePerson(this.data.person.id, updatePerson).subscribe(
           (response) => {
-            // show the successful message
-            this.toastr.success("Data updated successfully", "Success");
-            setTimeout(() => {
-              window.location.reload();
-            }, 1500)
+            this.httpApi.changeRole(this.data.person.email, this.rolesSelected).subscribe((response) => {
+              this.toastr.success("Data updated successfully", "Success");
+              setTimeout(() => {
+                window.location.reload();
+              }, 1500)
+            })
           },
           (error) => {
             // show the error

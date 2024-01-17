@@ -67,7 +67,6 @@ export class ModaleAddPersoneComponent {
           this.rolesSelected.push("ROLE_ADMIN")
         }
 
-        console.log(this.rolesSelected)
 
         console.log("test 1")
         const newPerson: PersonDTO2 = {
@@ -92,9 +91,9 @@ export class ModaleAddPersoneComponent {
         this.httpApi.addNewPerson(newPerson).subscribe({
           next: value => {
             this.toastr.success("Data updated successfully", "Success");
-            //setTimeout(() => {
-            //  window.location.reload();
-            //}, 1000)
+            setTimeout(() => {
+              window.location.reload();
+            }, 1000)
           },
           error: err => {
             this.toastr.error('Something is wrong', 'Error');

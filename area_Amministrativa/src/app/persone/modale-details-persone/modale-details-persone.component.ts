@@ -20,6 +20,7 @@ export class ModaleDetailsPersoneComponent {
       firstName: [this.data.person.firstName],
       lastName: [this.data.person.lastName],
       cf: [this.data.person.cf],
+      organizationName: [this.data.person.organizationName],
       workRole: [this.data.person.workRole], // Imposta il valore di default
       phone: [this.data.person.phone],
       email: [this.data.person.email],

@@ -11,6 +11,7 @@ import {MatInput} from "@angular/material/input";
 import { FormBuilder } from '@angular/forms';
 import { AuthService } from "../service/auth.service";
 import { ToastrService } from "ngx-toastr";
+import { OrganizationDTO } from '../organizzazione/organizzazione.component';
 
 /*export interface FilterDTO {
   first_name: string;
@@ -44,6 +45,8 @@ export interface PersonDTO1 {
   id: string;
   firstName: string;
   lastName: string;
+  organizationId: string;
+  organizationName: string;
   workRole: string;
   phone: string;
   email: string;
@@ -78,9 +81,12 @@ export interface PersonDTO2 {
 export class PersoneComponent {
   @ViewChild('filterFirstName') filterFirstNameInput: MatInput | undefined; // Riferimento all'input di firstName
   @ViewChild('filterLastName') filterLastNameInput: MatInput | undefined; // Riferimento all'input di lastName
+  @ViewChild('filterOrg') filterOrgInput: MatInput | undefined; // Riferimento all'input di lastName
 
   filterFirstName = ''; // Aggiungi questa linea per il valore del filtro per firstName
   filterLastName = ''; // Aggiungi questa linea per il valore del filtro per lastName
+  filterOrg = '';
+
   //filterForm: FormGroup
   classForm: string = "People";
   PeopleList: PersonDTO1[] = [];
@@ -124,14 +130,16 @@ export class PersoneComponent {
       const searchText = JSON.parse(filter);
       return (
         data.firstName.toLowerCase().includes(searchText.firstName) &&
-        data.lastName.toLowerCase().includes(searchText.lastName)
+        data.lastName.toLowerCase().includes(searchText.lastName) &&
+        data.organizationName.toLowerCase().includes(searchText.organizationName)
+
       );
     };
   }
 
   applyFilter() {
     // Applica il filtro in base alle proprietà firstName e lastName
-    const filterValue = { firstName: this.filterFirstName.toLowerCase(), lastName: this.filterLastName.toLowerCase() };
+    const filterValue = { firstName: this.filterFirstName.toLowerCase(), lastName: this.filterLastName.toLowerCase(), organizationName: this.filterOrg.toLowerCase() };
     this.dataSource.filter = JSON.stringify(filterValue);
   }
   allPeople() {
@@ -147,14 +155,36 @@ export class PersoneComponent {
                 if (userData != null && userData.body != null) {
                   const userDTOList: UserDTO[] = userData.body;
 
-                  console.log(userDTOList);
 
 
                   this.PeopleList.forEach((person: PersonDTO1) => {
-                    const associatedUser = userDTOList.find(user => user.username === person.email);
-                    if (associatedUser) {
-                      person.roles = associatedUser.roles.map(role => role.role);
-                    }
+                    this.httpApi.getAllOrg().subscribe(
+                      {
+                        next: (orgData: any) => {
+                          if (orgData != null && orgData.body != null) {
+                            const orgDTOList: OrganizationDTO[] = orgData.body;
+
+                            const associatedUser = userDTOList.find(user => user.username === person.email);
+                            const associatedOrg = orgDTOList.find(org => org.id === person.organizationId);
+
+                            if (associatedUser && associatedOrg) {
+                              person.roles = associatedUser.roles.map(role => role.role);
+                              
+                              person.organizationName = associatedOrg.name;
+                            }
+                            if (!associatedUser) {
+                              person.roles = ["Null"];
+                            }
+                            if (!associatedOrg) {
+                              person.organizationName = "No org";
+                            }
+                          }
+                        },
+                        error: (error: any) => {
+                          console.error("Error fetching org data", error);
+                        }
+                      }
+                    );
                   });
 
                   this.dataSource.data = [...this.PeopleList];

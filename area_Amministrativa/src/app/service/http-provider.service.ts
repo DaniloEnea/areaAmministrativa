@@ -23,13 +23,13 @@ let addOrgUrl = genericUrl + "addOrganization"
 /*details*/
 //let getUtenteByIdUrl = genericUrl + "utenti"
 //let getPersonByIdUrl = genericUrl + "person"
-//let getOrgByIdUrl = genericUrl + "organization"
+let getOrgByIdUrl = "https://localhost:7017/api/Organizations"
 
 //update
 
 let updateUtenteUrl = genericUrl + "updateUtenti"
 let updatePersonUrl = "https://localhost:7131/api/People"
-let updatePersonRoleUrl = "https://localhost:9000/api/Admin/changeRole"
+let updatePersonRoleUrl = "http://localhost:9000/api/admin/changeRole"
 let updateOrgUrl = "https://localhost:7017/api/Organizations"
 
 //delete
@@ -74,7 +74,7 @@ export class HttpProviderService {
   }
 
   public changeRole(username: string, roles: any ): Observable<any> {
-    return this.adminApiService.getUrlEncoded(apiCredentials).pipe(
+    return this.adminApiService.postUrlEncoded(apiCredentials).pipe(
       mergeMap((value: any) => {
         const accessToken = value.body.access_token;
 
@@ -103,9 +103,9 @@ export class HttpProviderService {
   //public getPersonByID(id: number): Observable<any> {
   //  return this.adminApiServie.getById(getPersonByIdUrl, id)
   //}
-  //public getOrgByID(id: number): Observable<any> {
-  //  return this.adminApiServie.getById(getOrgByIdUrl, id)
-  //}
+  public getOrgByID(id: number): Observable<any> {
+    return this.adminApiService.getById(getOrgByIdUrl, id)
+  }
 
   //POST
   public addNewUser(model: any) : Observable<any> {
@@ -119,7 +119,7 @@ export class HttpProviderService {
   }
 
   public resetPwdByEmail(id: string, model: any): Observable<any> {
-    return this.adminApiService.postUrlEncoded(apiCredentials).pipe(
+    return this.adminApiService.putUrlEncoded(apiCredentials).pipe(
       mergeMap((value: any) => {
         const accessToken = value.body.access_token;
 
