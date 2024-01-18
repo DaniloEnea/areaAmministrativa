@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {ModaleDeleteComponent} from "../modale-delete/modale-delete.component";
 import {ModaleUpdatePersoneComponent} from "./modale-update-persone/modale-update-persone.component";
 import {ModaleAddPersoneComponent} from "./modale-add-persone/modale-add-persone.component";
@@ -78,7 +78,7 @@ export interface PersonDTO2 {
   styleUrls: ['./persone.component.css']
 })
 
-export class PersoneComponent {
+export class PersoneComponent implements OnInit{
   @ViewChild('filterFirstName') filterFirstNameInput: MatInput | undefined; // Riferimento all'input di firstName
   @ViewChild('filterLastName') filterLastNameInput: MatInput | undefined; // Riferimento all'input di lastName
   @ViewChild('filterOrg') filterOrgInput: MatInput | undefined; // Riferimento all'input di lastName
@@ -86,6 +86,10 @@ export class PersoneComponent {
   filterFirstName = ''; // Aggiungi questa linea per il valore del filtro per firstName
   filterLastName = ''; // Aggiungi questa linea per il valore del filtro per lastName
   filterOrg = '';
+  resetButtonDisabled = false;
+  buttonColor = 'primary';
+
+
 
   //filterForm: FormGroup
   classForm: string = "People";
@@ -169,7 +173,7 @@ export class PersoneComponent {
 
                             if (associatedUser && associatedOrg) {
                               person.roles = associatedUser.roles.map(role => role.role);
-                              
+
                               person.organizationName = associatedOrg.name;
                             }
                             if (!associatedUser) {
@@ -284,20 +288,34 @@ export class PersoneComponent {
     }
   }
 
-  resetPassword(email: string): void {
-    // check if user is already authenticated
-    if (this.auth.isAuthenticated()) {
-        this.httpApi.forgotPwdByEmail(email, null).subscribe(
-          {
-            next: value => {
-              this.toastr.success("We have sent a reset password link to your email. Please check.", "Success")
-            },
-            error: err => {
-              this.toastr.error("Something is error",  "Error")
-            }
-          }
-        )
-    }
+resetPassword(email: string): void {
+  // Verifica se l'utente è già autenticato
+  if (this.auth.isAuthenticated()) {
+    // Disabilita il pulsante
+    this.resetButtonDisabled = true;
+    // Mette il colore grigio
+    this.buttonColor = 'grey';
+
+    // Chiamata alla funzione di reset della password
+    this.httpApi.forgotPwdByEmail(email, null).subscribe(
+      {
+        next: value => {
+          this.toastr.success("We have sent a reset password link to your email. Please check.", "Success")
+        },
+        error: err => {
+          this.toastr.error("Something is error",  "Error")
+        },
+        complete: () => {
+          setTimeout(() => {
+            this.resetButtonDisabled = false;
+            this.buttonColor = 'primary';
+            window.location.reload();
+          }, 60000);
+        }
+      }
+    );
   }
+}
+
 
 }
