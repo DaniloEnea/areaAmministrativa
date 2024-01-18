@@ -6,6 +6,8 @@ import {FormGroup} from "@angular/forms";
 import {MatButtonModule} from "@angular/material/button";
 import { ResetPasswordComponent } from '../reset-password/reset-password.component';
 import { MatDialog } from '@angular/material/dialog';
+import {HttpProviderService} from "../service/http-provider.service";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-my-account',
@@ -22,10 +24,15 @@ import { MatDialog } from '@angular/material/dialog';
 
 export class MyAccountComponent {
 
-  constructor(private authService: AuthService, private dialog: MatDialog) {}
+  resetButtonDisabled = false;
+
+  constructor(private toastr: ToastrService, private authService: AuthService, private dialog: MatDialog, private httpApi: HttpProviderService) {}
      username = this.authService.getUsernameFromJwt();
      role = this.authService.getRoleFromJwt();
 
+
+
+     /*
   openResetPwdDialog(username: string): void {
     const dialogRef = this.dialog.open(ResetPasswordComponent, {
       data: { Username: username} // passo l'ID
@@ -36,6 +43,26 @@ export class MyAccountComponent {
 
     });
   }
+  */
+    resetPasswordByEmail() {
+    this.httpApi.forgotPwdByEmail(this.username, null).subscribe(
+      {
+        next: value => {
+          this.toastr.success("We have sent a reset password link to your email. Please check.", "Success")
+          this.resetButtonDisabled = true;
+        },
+        error: err => {
+          this.toastr.error("Something is error",  "Error")
+        },
+        complete: () => {
+          setTimeout(() => {
+            this.resetButtonDisabled = false;
+          }, 30000);
+        }
+      }
+    );
+  }
+
 }
 
 

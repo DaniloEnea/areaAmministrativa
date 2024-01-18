@@ -9,5 +9,5 @@
     <p><strong>Username:</strong> {{ username }}</p>
     <p><strong>Ruolo:</strong> {{ role }}</p>
   </div>
-  <button mat-raised-button type="button" color="warn" (click)="openResetPwdDialog(username)">Change password</button>
+  <button mat-raised-button type="button" color="warn" (click)="resetPasswordByEmail()" [disabled]="resetButtonDisabled">Change password</button>
 </div>
