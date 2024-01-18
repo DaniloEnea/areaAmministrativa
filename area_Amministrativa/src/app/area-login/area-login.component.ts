@@ -33,11 +33,17 @@ export class AreaLoginComponent {
   hide : boolean = true;
   loginForm: FormGroup;
   constructor(private formBuilder: FormBuilder, private httpApi: HttpProviderService,
-              private router: Router, private toastr: ToastrService, private authService: AuthService) {
+    private router: Router, private toastr: ToastrService, private authService: AuthService) {
+
+    if (authService.isAuthenticated() == true) {
+      this.router.navigate([('')]);
+      this.toastr.info("You are already logged in", "Info")
+    }
 
     this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
+
     });
   }
 
