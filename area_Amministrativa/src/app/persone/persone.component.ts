@@ -12,6 +12,7 @@ import { FormBuilder } from '@angular/forms';
 import { AuthService } from "../service/auth.service";
 import { ToastrService } from "ngx-toastr";
 import { OrganizationDTO } from '../organizzazione/organizzazione.component';
+import {Router} from "@angular/router";
 
 /*export interface FilterDTO {
   first_name: string;
@@ -314,6 +315,11 @@ resetPassword(email: string): void {
         }
       }
     );
+  } else {
+    this.toastr.error("Token is expired", "Error")
+      setTimeout(() => {
+        window.location.reload();
+      }, 500)
   }
 }
 

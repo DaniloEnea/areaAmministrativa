@@ -1,6 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 import {ResetPasswordDto} from "../interfaces/ResetPasswordDto";
-import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  ValidationErrors,
+  ValidatorFn,
+  Validators
+} from "@angular/forms";
 import {NgIf} from "@angular/common";
 import {ActivatedRoute, RouterLink} from "@angular/router";
 import {HttpProviderService} from "../service/http-provider.service";
@@ -37,7 +45,7 @@ export class ResetPwComponent  implements OnInit{
     this.resetPasswordForm = new FormGroup({
       password: new FormControl('', [Validators.required]),
       confirm: new FormControl('', [Validators.required]),
-    });
+    }, { validators: this.passwordsMustMatchValidator });
 
     this.resetPasswordForm.get('confirm')?.setValidators([Validators.required]);
     this.token = this.route.snapshot.queryParams['token'];
@@ -70,9 +78,18 @@ export class ResetPwComponent  implements OnInit{
     );
   }
 
-  public hasError = (controlName: string, errorName: string) => {
-    return this.resetPasswordForm.get(controlName)?.hasError(errorName);
+  hasError(controlName: string, errorName: string): boolean {
+    const control = this.resetPasswordForm.get(controlName);
+    return control ? control.hasError(errorName) : false;
+  }
+
+  private passwordsMustMatchValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+    const password = control.get('password');
+    const confirm = control.get('confirm');
+
+    return password && confirm && password.value !== confirm.value ? { mustMatch: true } : null;
   };
+
 
   // function to call api
   public resetPassword = (resetPasswordFormValue: any) => {
