@@ -1,8 +1,9 @@
+<!-- Nel tuo componente.html -->
 <div class="card">
   <div class="card-body">
     <h1 class="card-title">Reset Password</h1>
 
-    <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+    <div *ngIf="errorMessage && !resetPasswordForm.hasError('mustMatch', 'confirm')" class="alert alert-danger" role="alert">
       <span [innerHTML]="errorMessage"></span>
     </div>
 
@@ -10,7 +11,7 @@
       Your password has been reset. Please <a [routerLink]="['/login']"> click here to log in. </a>
     </div>
 
-    <form *ngIf="!errorMessage" [formGroup]="resetPasswordForm" autocomplete="off" novalidate (ngSubmit)="resetPassword(resetPasswordForm.value)">
+    <form *ngIf="!errorMessage || resetPasswordForm.hasError('mustMatch', 'confirm')" [formGroup]="resetPasswordForm" autocomplete="off" novalidate (ngSubmit)="resetPassword(resetPasswordForm.value)">
       <div class="mb-3 row">
         <mat-form-field class="col-md-5">
           <mat-label>Password</mat-label>
@@ -20,6 +21,7 @@
           <em *ngIf="validateControl('password') && hasError('password', 'required')">Password is required</em>
         </div>
       </div>
+
       <div class="mb-3 row">
         <mat-form-field class="col-md-5">
           <mat-label>Confirm Password</mat-label>
@@ -27,10 +29,12 @@
         </mat-form-field>
         <div class="col-md-5">
           <em *ngIf="validateControl('confirm') && hasError('confirm', 'required')">Confirmation is required</em>
-          <em *ngIf="hasError('confirm', 'mustMatch')">Passwords must match</em>
+          <em *ngIf="resetPasswordForm.get('confirm')?.hasError('mustMatch') && resetPasswordForm.get('confirm')?.touched">Passwords must match</em>
         </div>
       </div>
+
       <br>
+
       <div class="mb-3 row">
         <div class="col-md-1">
           <button type="submit" mat-raised-button color="primary" [disabled]="!resetPasswordForm.valid">Submit</button>
