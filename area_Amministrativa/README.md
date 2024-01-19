@@ -29,8 +29,8 @@ For use `Area Amministrativa` you should start:
 
 You can have them on these URLs:
   - https://github.com/jtabilas/oauth2/tree/v2
-  - https://github.com/jtabilas/oauth2/tree/v2
-  - https://github.com/jtabilas/oauth2/tree/v2
+  - https://github.com/jtabilas/auth/tree/encrypt%26Decrypt
+  
 
 
 ## Build
