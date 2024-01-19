@@ -15,7 +15,7 @@ si potrà utilizzare su questo indirizzo: http://localhost:4200.
 
 ## Cosa avviare per il corretto funzionamento del programma
 
-per usare il programma devono essere avviati:
+Per usare il programma devono essere avviati:
 
 - CRM-Clean:
   - PeopleManagerApi
