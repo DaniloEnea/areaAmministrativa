@@ -11,7 +11,7 @@ The branch to use is: `business-logic`
 If is the first time that you start the program, you must type on terminal: `npm install`.
 
 After that, if you want to start the program, you should type: `ng serve`. 
-you can use it on this link: http://localhost:4200.
+You can use it on this link: http://localhost:4200.
 
 
 ## What you should start for use it
@@ -27,10 +27,10 @@ For use `Area Amministrativa` you should start:
 
 - auth on branch `encrypt&Decrypt` (only after that you have started `oauth2`)
 
-you can have them on these URLs:
-  ``` https://github.com/jtabilas/oauth2/tree/v2 ```
-  ``` https://github.com/jtabilas/oauth2/tree/v2 ```
-  ``` https://github.com/jtabilas/oauth2/tree/v2 ```
+You can have them on these URLs:
+  - https://github.com/jtabilas/oauth2/tree/v2
+  - https://github.com/jtabilas/oauth2/tree/v2
+  - https://github.com/jtabilas/oauth2/tree/v2
 
 
 ## Build
