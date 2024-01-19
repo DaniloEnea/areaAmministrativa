@@ -28,9 +28,9 @@ For use `Area Amministrativa` you should start:
 - auth on branch `encrypt&Decrypt` (only after that you have started `oauth2`)
 
 you can have them on these URLs:
-  ``` (https://github.com/jtabilas/oauth2/tree/v2) ```
-  ``` (https://github.com/jtabilas/oauth2/tree/v2) ```
-  ``` (https://github.com/jtabilas/oauth2/tree/v2) ```
+  ``` https://github.com/jtabilas/oauth2/tree/v2 ```
+  ``` https://github.com/jtabilas/oauth2/tree/v2 ```
+  ``` https://github.com/jtabilas/oauth2/tree/v2 ```
 
 
 ## Build
