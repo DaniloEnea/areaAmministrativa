@@ -17,10 +17,10 @@ si potrà utilizzare su questo indirizzo: http://localhost:4200.
 
 per usare il programma devono essere avviati:
 
-*CRM-Clean:
-  *PeopleManagerApi
-  *OrganizationManagerApi
-  *EmailTestApi
+- CRM-Clean:
+  - PeopleManagerApi
+  - OrganizationManagerApi
+  - EmailTestApi
 
 *oauth2 sul branch `v2`
 
