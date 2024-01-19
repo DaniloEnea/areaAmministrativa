@@ -2,9 +2,29 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.2.5.
 
-## Development server
+## Quale branch usare
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Il branch da usare è `business-logic`
+
+## Cosa fare per usare il programma
+
+Se è la prima volta che si avvia il programma fare `npm install`.
+
+Successivamente per avviare il programma fare `ng serve` e , se non ci sono altri Progetti Angular in esecuzione, 
+si potrà utilizzare su questo indirizzo: http://localhost:4200.
+
+## Cosa avviare per il corretto funzionamento del programma
+
+per usare il programma devono essere avviati:
+
+*CRM-Clean:
+  *PeopleManagerApi
+  *OrganizationManagerApi
+  *EmailTestApi
+
+*oauth2 sul branch `v2`
+
+*auth sul branch `encrypt&Decrypt` (solo dopo aver avviato oauth2)
 
 ## Code scaffolding
 
@@ -25,3 +45,4 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
