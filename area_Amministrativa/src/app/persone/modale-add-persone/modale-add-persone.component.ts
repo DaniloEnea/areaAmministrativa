@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { PersonDTO, PersonDTO1, PersonDTO2 } from "../persone.component";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import { HttpProviderService } from "../../service/http-provider.service";
 import { ToastrService } from "ngx-toastr";
 import { AuthService } from "../../service/auth.service";
@@ -38,8 +38,8 @@ export class ModaleAddPersoneComponent {
       cf: ['', Validators.required],
       workRole: ['', Validators.required],
       phone: ['', Validators.required],
-      email: ['', Validators.required],
-      secondEmail: [null],
+      email: new FormControl('', [ Validators.email, Validators.required ]),
+      secondEmail:  new FormControl(null, [ Validators.email]),
       isGDPRTermsAccepted: [false],
       isOtherProcessingPurposesAccepted: [true],
       isServiceProcessingPurposesAccepted: [false],
@@ -49,8 +49,28 @@ export class ModaleAddPersoneComponent {
     });
   }
 
-  gg(): string {
-    return "gg"
+  get email() { return this.newPersonForm.get('email'); }
+
+  get secondEmail() { return this.newPersonForm.get('secondEmail'); }
+
+  // @ts-ignore
+  getEmailError() {
+    // @ts-ignore
+    if (this.email.hasError('email')) {
+      return 'Please enter a valid email address.';
+    }
+    // @ts-ignore
+    if (this.email.hasError('required')) {
+      return 'An Email is required.';
+    }
+  }
+
+  // @ts-ignore
+  getSecondEmailError() {
+    // @ts-ignore
+    if (this.secondEmail.hasError('email')) {
+      return 'Please enter a valid email address.';
+    }
   }
 
   onAddClick(): void {
@@ -80,12 +100,12 @@ export class ModaleAddPersoneComponent {
           isGDPRTermsAccepted: this.newPersonForm.value.isGDPRTermsAccepted,
           isOtherProcessingPurposesAccepted: this.newPersonForm.value.isOtherProcessingPurposesAccepted,
           isServiceProcessingPurposesAccepted: this.newPersonForm.value.isServiceProcessingPurposesAccepted,
-          roles: 
+          roles:
             this.rolesSelected
-         
+
         };
         console.log(newPerson)
-        
+
 
         // post for create new user
         this.httpApi.addNewPerson(newPerson).subscribe({

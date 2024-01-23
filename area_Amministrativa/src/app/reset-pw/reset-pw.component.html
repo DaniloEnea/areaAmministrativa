@@ -8,7 +8,7 @@
     </div>
 
     <div *ngIf="showSuccess" class="alert alert-success" role="alert">
-      Your password has been reset. Please <a [routerLink]="['/login']"> click here to log in. </a>
+      <span [innerHTML]="successMessage"></span>
     </div>
 
     <form *ngIf="!errorMessage || resetPasswordForm.hasError('mustMatch', 'confirm')" [formGroup]="resetPasswordForm" autocomplete="off" novalidate (ngSubmit)="resetPassword(resetPasswordForm.value)">

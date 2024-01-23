@@ -10,7 +10,7 @@ import {
   Validators
 } from "@angular/forms";
 import {NgIf} from "@angular/common";
-import {ActivatedRoute, RouterLink} from "@angular/router";
+import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {HttpProviderService} from "../service/http-provider.service";
 import {HttpErrorResponse} from "@angular/common/http";
 import {MaterialModule} from "../material/material.module";
@@ -35,10 +35,11 @@ export class ResetPwComponent  implements OnInit{
   showSuccess!: boolean;
   showError!: boolean;
   errorMessage!: string;
+  successMessage!: string;
 
   private token!: string;
 
-  constructor(private http: HttpProviderService, private route: ActivatedRoute) {}
+  constructor(private http: HttpProviderService, private route: ActivatedRoute, private router: Router) {}
 
 
   ngOnInit(): void {
@@ -109,7 +110,16 @@ export class ResetPwComponent  implements OnInit{
     };
 
     this.http.resetPwdByEmail(resetPassDto).subscribe({
-      next: () => (this.showSuccess = true),
+      next: () => {
+        this.showSuccess = true;
+        this.successMessage = "Your password has been reset.";
+
+
+        // Attendere 3 secondi prima di eseguire il redirect
+        setTimeout(() => {
+          this.router.navigate(['/login']);
+        }, 5000);
+      },
       error: (err: HttpErrorResponse) => {
         this.showError = true;
         this.errorMessage = err.message;
