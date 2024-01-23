@@ -88,6 +88,7 @@ export class PersoneComponent implements OnInit{
   filterLastName = ''; // Aggiungi questa linea per il valore del filtro per lastName
   filterOrg = '';
   resetButtonDisabled = false;
+  IsSA = true;
   buttonColor = 'primary';
 
 
@@ -133,6 +134,7 @@ export class PersoneComponent implements OnInit{
   customFilterPredicate() {
     return (data: PersonDTO1, filter: string): boolean => {
       const searchText = JSON.parse(filter);
+      searchText.organizationName = this.orgFiltered();
       return (
         data.firstName.toLowerCase().includes(searchText.firstName) &&
         data.lastName.toLowerCase().includes(searchText.lastName) &&
@@ -140,6 +142,36 @@ export class PersoneComponent implements OnInit{
 
       );
     };
+  }
+
+  usernamefilter: string = '';
+  rolefilter: string = '';
+
+  orgFiltered(): string {
+    this.usernamefilter = this.auth.getUsernameFromJwt();
+    this.rolefilter = this.auth.getRoleFromJwt();
+
+    if (!this.rolefilter.includes('ROLE_SA')) {
+      this.IsSA = false;
+
+        const ppData: any = this.httpApi.getAllPeople();
+        const ppDTOList: PersonDTO1[] = ppData.body;
+
+        const associatedOrg = this.PeopleList.find(person => {
+          const pp = ppDTOList.find(pp => pp.email === this.usernamefilter);
+          return pp != null ? pp.organizationName : '';
+        });
+
+      if (associatedOrg != null) {
+        return associatedOrg ? associatedOrg.organizationName : '';
+      }
+      else {
+        this.toastr.error("Error fetching org data", 'Error');
+        return ' ';
+      }
+    } else {
+      return '';
+    }
   }
 
   applyFilter() {

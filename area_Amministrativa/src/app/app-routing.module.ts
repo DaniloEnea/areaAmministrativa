@@ -15,28 +15,28 @@ const routes: Routes = [
 
   {path: '', component: HomepageComponent, canActivate: [isAuthGuardComponent],
     data: {
-      role: 'ROLE_SA'
+      role: 'ROLE_SA' || 'ROLE_ADMIN'
     }
   },
 
   {path: 'organizzazione', component : OrganizzazioneComponent,
       canActivate: [isAuthGuardComponent],
       data: {
-      role: 'ROLE_SA'
+        role: 'ROLE_SA' || 'ROLE_ADMIN'
     }
   },
 
   {path: 'persone', component : PersoneComponent,
       canActivate: [isAuthGuardComponent],
       data: {
-      role: 'ROLE_SA'
+        role: 'ROLE_SA' || 'ROLE_ADMIN'
     }
   },
 
   {path: 'my-account', component: MyAccountComponent,
       canActivate: [isAuthGuardComponent],
       data: {
-      role: 'ROLE_SA'
+        role: 'ROLE_SA' || 'ROLE_ADMIN'
     }
   },
 

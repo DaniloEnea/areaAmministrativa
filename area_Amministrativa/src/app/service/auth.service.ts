@@ -28,7 +28,7 @@ export class AuthService {
       const role = localStorage.getItem('ROLE');
       let checkRole: boolean = false;
 
-      if(role == 'ROLE_SA')
+      if(role == 'ROLE_SA' || 'ROLE_ADMIN')
       {
         checkRole = true;
       }

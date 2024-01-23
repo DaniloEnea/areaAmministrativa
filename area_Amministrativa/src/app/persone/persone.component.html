@@ -25,10 +25,11 @@
         <input #filterLastNameInput matInput [(ngModel)]="filterLastName" (input)="applyFilter()" placeholder="Last name">
       </mat-form-field>
 
-      <mat-form-field class="input-filter" appearance="outline">
-        <mat-label>Filter for organization</mat-label>
-        <input #filterOrgInput matInput [(ngModel)]="filterOrg" (input)="applyFilter()" placeholder="Organization">
-      </mat-form-field>
+        <mat-form-field class="input-filter" appearance="outline" *ngIf="IsSA">
+          <mat-label>Filter for organization</mat-label>
+          <input #filterOrgInput matInput [(ngModel)]="filterOrg" (input)="applyFilter()" placeholder="Organization">
+        </mat-form-field>
+
 
       <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
