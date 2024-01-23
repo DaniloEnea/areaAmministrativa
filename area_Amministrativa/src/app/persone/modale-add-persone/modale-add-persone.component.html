@@ -27,14 +27,20 @@
       <input matInput formControlName="phone" maxlength="10" />
     </mat-form-field>
 
-    <mat-form-field class="full-width">
+    <mat-form-field>
       <mat-label>Email</mat-label>
-      <input matInput formControlName="email" type="email">
+      <input autocomplete="off" matInput placeholder="Email" type="email" formControlName="email">
+           <mat-error *ngIf="!email?.valid">
+          {{getEmailError()}}
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field class="full-width">
       <mat-label>Secondary email</mat-label>
       <input matInput formControlName="secondEmail" type="email">
+          <mat-error *ngIf="!secondEmail?.valid">
+          {{getSecondEmailError()}}
+    </mat-error>
     </mat-form-field>
 
 

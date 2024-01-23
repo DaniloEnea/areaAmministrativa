@@ -2,7 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { PersonDTO, PersonDTO1 } from "../persone.component";
 import { OrganizationDTO } from "src/app/organizzazione/organizzazione.component";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import { HttpProviderService } from "../../service/http-provider.service";
 import { ToastrService } from "ngx-toastr";
 import { AuthService } from "../../service/auth.service";
@@ -40,7 +40,7 @@ export class ModaleUpdatePersoneComponent {
         workRole: [this.data.person.workRole, Validators.required],
         phone: [this.data.person.phone, Validators.required],
         email: [this.data.person.email, Validators.required],
-        secondEmail: [this.data.person.secondEmail],
+        secondEmail: [this.data.person.secondEmail, Validators.email],
         isGDPRTermsAccepted: [this.data.person.isGDPRTermsAccepted],
         isOtherProcessingPurposesAccepted: [this.data.person.isOtherProcessingPurposesAccepted],
         isServiceProcessingPurposesAccepted: [this.data.person.isServiceProcessingPurposesAccepted],
@@ -48,6 +48,17 @@ export class ModaleUpdatePersoneComponent {
         Role_Admin: [this.roleCheck("ROLE_ADMIN")],
         Role_User: [this.roleCheck("ROLE_USER")]
       });
+  }
+
+
+  get secondEmail() { return this.updatePersonForm.get('secondEmail'); }
+
+  // @ts-ignore
+  getSecondEmailError() {
+    // @ts-ignore
+    if (this.secondEmail.hasError('email')) {
+      return 'Please enter a valid email address.';
+    }
   }
 
   roleCheck(role: string): boolean {
@@ -78,7 +89,7 @@ export class ModaleUpdatePersoneComponent {
             id: this.data.person.id,
             firstName: this.updatePersonForm.value.firstName,
             lastName: this.updatePersonForm.value.lastName,
-            organizationId: this.data.person.organizationId, 
+            organizationId: this.data.person.organizationId,
             workRole: this.updatePersonForm.value.workRole,
             phone: this.updatePersonForm.value.phone,
             email: this.updatePersonForm.value.email,
