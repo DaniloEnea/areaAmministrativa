@@ -16,22 +16,27 @@ class AuthGuardComponent{
   }
 
    checkUserLogin(route: ActivatedRouteSnapshot, url: any): boolean {
-    if (this.auth.isAuthenticated()) {
-      const userRole = this.auth.getRoleFromJwt();
-      if (userRole == "ROLE_SA" || "ROLE_ADMIN")
-      {
-        this.auth.loggedIn.next(true);
-      }
-      if (route.data['role'] && route.data['role'].indexOf(userRole) === -1) {
-        this.router.navigate(['login']);
-        return false;
-      }
-      return true;
-    }
+     if (this.auth.isAuthenticated()) {
+       const userRoles = this.auth.getRoleFromJwt();
+       console.log(userRoles);
 
-    this.router.navigate(['login']);
-    return false;
-  }
+       // Verifica se l'utente ha almeno uno dei ruoli richiesti specificati nella route
+       if (route.data['role'] && !route.data['role'].some((role: string) => userRoles.includes(role))) {
+         // L'utente non ha i ruoli necessari, quindi reindirizzalo alla pagina di login
+         this.router.navigate(['login']);
+         return false;
+       }
+
+       // L'utente ha almeno uno dei ruoli richiesti, puoi fare altre azioni necessarie qui
+       this.auth.loggedIn.next(true);
+       return true;
+     }
+
+     // L'utente non è autenticato, quindi reindirizzalo alla pagina di login
+     this.router.navigate(['login']);
+     return false;
+   }
+
 
 
 }

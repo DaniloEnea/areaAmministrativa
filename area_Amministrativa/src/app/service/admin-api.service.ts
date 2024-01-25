@@ -238,7 +238,7 @@ export class AdminApiService {
   }
 
     // GET BY ID operations
-    getById(url: string, id: number): Observable<any> {
+    getById(url: string, id: string): Observable<any> {
       const httpOptions = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json'

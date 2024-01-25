@@ -62,7 +62,10 @@ export class ModaleUpdatePersoneComponent {
   }
 
   roleCheck(role: string): boolean {
-    return this.data.person.roles.includes(role)
+    if (this.data.person.roles != null) {
+      return this.data.person.roles.includes(role);
+    }
+    else return false;
   }
 
   updateOrg(orgid: string): string {

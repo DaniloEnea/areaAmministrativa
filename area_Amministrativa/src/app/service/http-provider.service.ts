@@ -109,7 +109,7 @@ export class HttpProviderService {
   //public getPersonByID(id: number): Observable<any> {
   //  return this.adminApiServie.getById(getPersonByIdUrl, id)
   //}
-  public getOrgByID(id: number): Observable<any> {
+  public getOrgByID(id: string): Observable<any> {
     return this.adminApiService.getById(getOrgByIdUrl, id)
   }
 

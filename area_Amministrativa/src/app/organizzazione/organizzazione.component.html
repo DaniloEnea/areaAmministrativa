@@ -10,7 +10,7 @@
 <ng-template #OrgTable>
   <div>
 
-      <mat-form-field class="input-filter" appearance="outline">
+      <mat-form-field class="input-filter" appearance="outline" *ngIf="IsSA">
         <mat-label>Filter for org name</mat-label>
         <input #filterNameInput matInput [(ngModel)]="filterName" (input)="applyFilter()" placeholder="Organization name">
       </mat-form-field>

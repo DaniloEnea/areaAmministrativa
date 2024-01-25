@@ -7,6 +7,7 @@ import { ModaleDetailsOrgComponent } from './modale-details-org/modale-details-o
 import { MatInput } from '@angular/material/input';
 import { AuthService } from "../service/auth.service";
 import { ToastrService } from "ngx-toastr";
+import { PersonDTO1 } from '../persone/persone.component';
 
 export interface OrganizationDTO {
   id: string;
@@ -62,6 +63,10 @@ export class OrganizzazioneComponent {
   OrgList: OrganizationDTO[] = [];
   displayedColumns: string[] = ['name', 'streetAddress', 'country', 'emailAddress', 'emailDomain', 'update'];
   dataSource = new MatTableDataSource<OrganizationDTO>(this.OrgList);
+  PeopleList: PersonDTO1[] = [];
+  rolefilter: string = '';
+  usernamefilter: string = '';
+  IsSA: boolean = true;
 
   // modal
   constructor(public auth: AuthService, private dialog: MatDialog, private httpApi: HttpProviderService, private toastr: ToastrService) {
@@ -74,6 +79,17 @@ export class OrganizzazioneComponent {
 
   ngAfterViewInit() {
     this.dataSource.filterPredicate = this.customFilterPredicate();
+  }
+
+  checkIsSA(): boolean {
+    this.rolefilter = this.auth.getRoleFromJwt();
+
+    if (!this.rolefilter.includes('ROLE_SA')) {
+      return this.IsSA = false;
+    }
+    else {
+      return this.IsSA = true;
+    }
   }
 
   customFilterPredicate() {
@@ -93,12 +109,28 @@ export class OrganizzazioneComponent {
   allOrg() {
     this.httpApi.getAllOrg().subscribe({
       next: (data: any) => {
+
         if (data != null && data.body != null) {
           var resultData = data.body;
+
           if (resultData) {
-            this.OrgList = resultData;
-            this.dataSource.data = [...this.OrgList];
-            console.log(this.OrgList);
+            this.httpApi.getAllPeople().subscribe({
+              next: (data: any) => {
+
+                if (data != null && data.body != null) {
+                  var retrieveData = data.body;
+
+                  if (retrieveData) {
+                    this.OrgList = resultData;
+                    this.getOrgIfCrmMgr(resultData, retrieveData);
+                    this.dataSource.data = [...this.OrgList];
+                  }
+                }
+              },
+              error: (error: any) => {
+                console.error("Error fetching user data", error);
+              }
+            })
           }
         }
       },
@@ -115,6 +147,30 @@ export class OrganizzazioneComponent {
     });
   }
 
+  getOrgIfCrmMgr(resultData: any, retrieveData: any) {
+    this.usernamefilter = this.auth.getUsernameFromJwt();
+
+    if (this.checkIsSA() === false) {
+
+      const ppDTOList: PersonDTO1[] = retrieveData;
+      const orgDTOList: OrganizationDTO[] = resultData;
+
+      const CrmOrg = ppDTOList.find(pp => pp.email === this.usernamefilter);
+      console.log(CrmOrg)
+
+      if (CrmOrg != null) {
+        this.OrgList = orgDTOList.filter(og => og.id == CrmOrg.organizationId);
+        this.OrgList = this.OrgList;
+        
+      }
+      else {
+        this.toastr.error("No org data found", 'Error');
+        this.OrgList = [];
+      }
+    }
+  }
+
+  
 
   openUpdateDialog(org: OrganizationDTO): void {
     if (this.auth.isAuthenticated()) {

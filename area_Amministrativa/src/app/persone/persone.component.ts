@@ -90,6 +90,7 @@ export class PersoneComponent implements OnInit{
   resetButtonDisabled = false;
   IsSA = true;
   buttonColor = 'primary';
+  adminOrgFilter = '';
 
 
 
@@ -134,7 +135,7 @@ export class PersoneComponent implements OnInit{
   customFilterPredicate() {
     return (data: PersonDTO1, filter: string): boolean => {
       const searchText = JSON.parse(filter);
-      searchText.organizationName = this.orgFiltered();
+
       return (
         data.firstName.toLowerCase().includes(searchText.firstName) &&
         data.lastName.toLowerCase().includes(searchText.lastName) &&
@@ -147,32 +148,17 @@ export class PersoneComponent implements OnInit{
   usernamefilter: string = '';
   rolefilter: string = '';
 
-  orgFiltered(): string {
-    this.usernamefilter = this.auth.getUsernameFromJwt();
+  checkIsSA(): boolean {
     this.rolefilter = this.auth.getRoleFromJwt();
 
     if (!this.rolefilter.includes('ROLE_SA')) {
-      this.IsSA = false;
-
-        const ppData: any = this.httpApi.getAllPeople();
-        const ppDTOList: PersonDTO1[] = ppData.body;
-
-        const associatedOrg = this.PeopleList.find(person => {
-          const pp = ppDTOList.find(pp => pp.email === this.usernamefilter);
-          return pp != null ? pp.organizationName : '';
-        });
-
-      if (associatedOrg != null) {
-        return associatedOrg ? associatedOrg.organizationName : '';
-      }
-      else {
-        this.toastr.error("Error fetching org data", 'Error');
-        return ' ';
-      }
-    } else {
-      return '';
+      return this.IsSA = false;
     }
-  }
+    else {
+      return this.IsSA = true;
+    }
+  }      
+        
 
   applyFilter() {
     // Applica il filtro in base alle proprietà firstName e lastName
@@ -180,12 +166,17 @@ export class PersoneComponent implements OnInit{
     this.dataSource.filter = JSON.stringify(filterValue);
   }
   allPeople() {
+    this.usernamefilter = this.auth.getUsernameFromJwt();
+
     this.httpApi.getAllPeople().subscribe({
       next: (data: any) => {
         if (data != null && data.body != null) {
           var resultData = data.body;
           if (resultData) {
             this.PeopleList = resultData;
+
+            this.getPeopleIfAdmin(this.PeopleList)
+
 
             this.httpApi.getAllUsers().subscribe({
               next: (userData: any) => {
@@ -210,10 +201,10 @@ export class PersoneComponent implements OnInit{
                               person.organizationName = associatedOrg.name;
                             }
                             if (!associatedUser) {
-                              person.roles = ["Null"];
+                              person.roles = ['Null'];
                             }
                             if (!associatedOrg) {
-                              person.organizationName = "No org";
+                              person.organizationName = 'No org';
                             }
                           }
                         },
@@ -247,6 +238,21 @@ export class PersoneComponent implements OnInit{
         }
       }
     });
+  }
+
+  getPeopleIfAdmin(resultData: any) {
+    if (this.checkIsSA() === false) {
+      const ppDTOList: PersonDTO1[] = resultData;
+
+      const CrmOrg = ppDTOList.find(pp => pp.email === this.usernamefilter);
+      if (CrmOrg) {
+        this.PeopleList = this.PeopleList.filter(orgs => orgs.organizationId === CrmOrg.organizationId);
+      }
+      else {
+        this.toastr.error("No org data found", 'Error');
+        this.PeopleList = [];
+      }
+    }
   }
 
   openDeleteDialog(id: number): void {
