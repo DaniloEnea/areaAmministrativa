@@ -165,6 +165,8 @@ export class PersoneComponent implements OnInit{
     const filterValue = { firstName: this.filterFirstName.toLowerCase(), lastName: this.filterLastName.toLowerCase(), organizationName: this.filterOrg.toLowerCase() };
     this.dataSource.filter = JSON.stringify(filterValue);
   }
+
+
   allPeople() {
     this.usernamefilter = this.auth.getUsernameFromJwt();
 

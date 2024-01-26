@@ -99,12 +99,17 @@
         <ng-container matColumnDef="update">
           <th mat-header-cell *matHeaderCellDef></th>
           <td mat-cell *matCellDef="let element">
-            <button mat-mini-fab (click)="openDetailsDialog(element)" color="accent" matTooltop="Inspect">
+
+            <button mat-mini-fab (click)="openDetailsDialog(element)" color="accent" matTooltip="Inspect">
               <mat-icon>search</mat-icon>
             </button>
 
             <button mat-mini-fab (click)="openUpdateDialog(element)" color="primary" matTooltip="Edit">
               <mat-icon>edit</mat-icon>
+            </button>
+
+            <button class="go-to" mat-mini-fab matTooltip="Go to">
+              <mat-icon>arrow_forward</mat-icon>
             </button>
           </td>
         </ng-container>
