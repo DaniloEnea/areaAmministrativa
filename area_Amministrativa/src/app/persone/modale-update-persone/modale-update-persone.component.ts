@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
-import { PersonDTO, PersonDTO1 } from "../persone.component";
+import { PersonDTO, PersonDTO1, PersoneComponent } from "../persone.component";
 import { OrganizationDTO } from "src/app/organizzazione/organizzazione.component";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import { HttpProviderService } from "../../service/http-provider.service";
@@ -15,6 +15,8 @@ export interface Roles {
   Role_Admin: boolean;
 }
 
+
+
 @Component({
   selector: 'app-modale-update',
   templateUrl: './modale-update-persone.component.html',
@@ -25,29 +27,33 @@ export class ModaleUpdatePersoneComponent {
 
   updatePersonForm: FormGroup;
   rolesSelected: string[] = [];
-
+  IsSA = true;
+    
   constructor(public auth: AuthService, public dialogRef: MatDialogRef<ModaleUpdatePersoneComponent>,
-      @Inject(MAT_DIALOG_DATA) public data: { person: PersonDTO1 },
-      private formBuilder: FormBuilder,
-      private httpApi: HttpProviderService, private toastr: ToastrService) {
+    @Inject(MAT_DIALOG_DATA) public data: { person: PersonDTO1 },
+    private formBuilder: FormBuilder,
+    private httpApi: HttpProviderService, private toastr: ToastrService) {
 
-      this.updatePersonForm = this.formBuilder.group({
-        //id: ['3fa85f64-5717-4562-b3fc-2c963f66afa6'],
-        firstName: [this.data.person.firstName, Validators.required],
-        lastName: [this.data.person.lastName, Validators.required],
-        //organizationId: ['3fa85f64-5717-4562-b3fc-2c963f66afa6'],
-        cf: [this.data.person.cf, Validators.required],
-        workRole: [this.data.person.workRole, Validators.required],
-        phone: [this.data.person.phone, Validators.required],
-        email: [this.data.person.email, Validators.required],
-        secondEmail: [this.data.person.secondEmail, Validators.email],
-        isGDPRTermsAccepted: [this.data.person.isGDPRTermsAccepted],
-        isOtherProcessingPurposesAccepted: [this.data.person.isOtherProcessingPurposesAccepted],
-        isServiceProcessingPurposesAccepted: [this.data.person.isServiceProcessingPurposesAccepted],
-        Role_SA: [this.roleCheck("ROLE_SA")],
-        Role_Admin: [this.roleCheck("ROLE_ADMIN")],
-        Role_User: [this.roleCheck("ROLE_USER")]
-      });
+
+    this.IsSA = auth.checkIsSA();
+
+    this.updatePersonForm = this.formBuilder.group({
+      //id: ['3fa85f64-5717-4562-b3fc-2c963f66afa6'],
+      firstName: [this.data.person.firstName, Validators.required],
+      lastName: [this.data.person.lastName, Validators.required],
+      //organizationId: ['3fa85f64-5717-4562-b3fc-2c963f66afa6'],
+      cf: [this.data.person.cf, Validators.required],
+      workRole: [this.data.person.workRole, Validators.required],
+      phone: [this.data.person.phone, Validators.required],
+      email: [this.data.person.email, Validators.required],
+      secondEmail: [this.data.person.secondEmail, Validators.email],
+      isGDPRTermsAccepted: [this.data.person.isGDPRTermsAccepted],
+      isOtherProcessingPurposesAccepted: [this.data.person.isOtherProcessingPurposesAccepted],
+      isServiceProcessingPurposesAccepted: [this.data.person.isServiceProcessingPurposesAccepted],
+      Role_SA: [this.roleCheck("ROLE_SA")],
+      Role_Admin: [this.roleCheck("ROLE_ADMIN")],
+      Role_User: [this.roleCheck("ROLE_USER")]
+    });
   }
 
 
@@ -111,7 +117,9 @@ export class ModaleUpdatePersoneComponent {
             this.httpApi.changeRole(this.data.person.email, this.rolesSelected).subscribe((response) => {
               this.toastr.success("Data updated successfully", "Success");
               setTimeout(() => {
-                window.location.reload();
+                console.log(updatePerson);
+                console.log(this.rolesSelected);
+                //window.location.reload();
               }, 1500)
             })
           },

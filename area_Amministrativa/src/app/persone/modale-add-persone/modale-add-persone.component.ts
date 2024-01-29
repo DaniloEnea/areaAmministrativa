@@ -27,11 +27,14 @@ export class ModaleAddPersoneComponent {
 
   newPersonForm: FormGroup;
   rolesSelected: string[] = [];
+  IsSA = true;
+
   constructor(public auth: AuthService, public dialogRef: MatDialogRef<ModaleAddPersoneComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { person: PersonDTO1, roles: Roles },
     private formBuilder: FormBuilder,
     private httpApi: HttpProviderService, private toastr: ToastrService) {
 
+    this.IsSA = auth.checkIsSA();
     this.newPersonForm = this.formBuilder.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
@@ -107,12 +110,14 @@ export class ModaleAddPersoneComponent {
         console.log(newPerson)
 
 
+
         // post for create new user
         this.httpApi.addNewPerson(newPerson).subscribe({
           next: value => {
             this.toastr.success("Data updated successfully", "Success");
             setTimeout(() => {
-              window.location.reload();
+              console.log(newPerson)
+              //window.location.reload();
             }, 1000)
           },
           error: err => {

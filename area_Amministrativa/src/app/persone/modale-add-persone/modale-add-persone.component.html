@@ -45,7 +45,7 @@
 
 
     <mat-label>Roles:</mat-label>
-    <mat-checkbox formControlName="Role_SA">Super Admin</mat-checkbox>
+    <mat-checkbox formControlName="Role_SA" *ngIf="IsSA">Super Admin</mat-checkbox>
 
     <mat-checkbox formControlName="Role_Admin">CRM Admin</mat-checkbox>
 

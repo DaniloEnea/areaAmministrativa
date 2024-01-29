@@ -148,17 +148,6 @@ export class PersoneComponent implements OnInit{
   usernamefilter: string = '';
   rolefilter: string = '';
 
-  checkIsSA(): boolean {
-    this.rolefilter = this.auth.getRoleFromJwt();
-
-    if (!this.rolefilter.includes('ROLE_SA')) {
-      return this.IsSA = false;
-    }
-    else {
-      return this.IsSA = true;
-    }
-  }
-
 
   applyFilter() {
     // Applica il filtro in base alle proprietà firstName e lastName
@@ -243,7 +232,8 @@ export class PersoneComponent implements OnInit{
   }
 
   getPeopleIfAdmin(resultData: any) {
-    if (this.checkIsSA() === false) {
+    if (this.auth.checkIsSA() === false) {
+      this.IsSA = false;
       const ppDTOList: PersonDTO1[] = resultData;
 
       const CrmOrg = ppDTOList.find(pp => pp.email === this.usernamefilter);
@@ -254,6 +244,9 @@ export class PersoneComponent implements OnInit{
         this.toastr.error("No org data found", 'Error');
         this.PeopleList = [];
       }
+    }
+    else {
+      this.IsSA = true;
     }
   }
 

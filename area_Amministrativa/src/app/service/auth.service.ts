@@ -62,6 +62,15 @@ export class AuthService {
       return '';
     }
 
+  checkIsSA(): boolean {
+    if (!this.getRoleFromJwt().includes('ROLE_SA')) {
+      return false;
+    }
+    else {
+      return true;
+    }
+  }
+
   logout() {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("ROLE")

@@ -81,16 +81,7 @@ export class OrganizzazioneComponent {
     this.dataSource.filterPredicate = this.customFilterPredicate();
   }
 
-  checkIsSA(): boolean {
-    this.rolefilter = this.auth.getRoleFromJwt();
-
-    if (!this.rolefilter.includes('ROLE_SA')) {
-      return this.IsSA = false;
-    }
-    else {
-      return this.IsSA = true;
-    }
-  }
+  
 
   customFilterPredicate() {
     return (data: OrganizationDTO, filter: string): boolean => {
@@ -150,8 +141,8 @@ export class OrganizzazioneComponent {
   getOrgIfCrmMgr(resultData: any, retrieveData: any) {
     this.usernamefilter = this.auth.getUsernameFromJwt();
 
-    if (this.checkIsSA() === false) {
-
+    if (this.auth.checkIsSA() === false) {
+      this.IsSA = false;
       const ppDTOList: PersonDTO1[] = retrieveData;
       const orgDTOList: OrganizationDTO[] = resultData;
 
