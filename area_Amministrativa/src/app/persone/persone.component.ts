@@ -87,9 +87,9 @@ export class PersoneComponent implements OnInit{
   filterFirstName = ''; // Aggiungi questa linea per il valore del filtro per firstName
   filterLastName = ''; // Aggiungi questa linea per il valore del filtro per lastName
   filterOrg = '';
-  resetButtonDisabled = false;
+  resetButtonDisabled: { [key: string]: boolean } = {};
   IsSA = true;
-  buttonColor = 'primary';
+  buttonColor: { [email: string]: string } = {};
   adminOrgFilter = '';
 
 
@@ -157,8 +157,8 @@ export class PersoneComponent implements OnInit{
     else {
       return this.IsSA = true;
     }
-  }      
-        
+  }
+
 
   applyFilter() {
     // Applica il filtro in base alle proprietà firstName e lastName
@@ -333,9 +333,9 @@ resetPassword(email: string): void {
   // Verifica se l'utente è già autenticato
   if (this.auth.isAuthenticated()) {
     // Disabilita il pulsante
-    this.resetButtonDisabled = true;
+   this.resetButtonDisabled[email] = true;
     // Mette il colore grigio
-    this.buttonColor = 'grey';
+    this.buttonColor[email] = 'grey';
 
     // Chiamata alla funzione di reset della password
     this.httpApi.forgotPwdByEmail(email, null).subscribe(
@@ -348,8 +348,8 @@ resetPassword(email: string): void {
         },
         complete: () => {
           setTimeout(() => {
-            this.resetButtonDisabled = false;
-            this.buttonColor = 'primary';
+            this.resetButtonDisabled[email] = false;
+            this.buttonColor[email] = 'primary';
             window.location.reload();
           }, 60000);
         }

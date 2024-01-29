@@ -121,7 +121,7 @@
               <mat-icon>delete</mat-icon>
             </button>
 
-              <button class="reset_pwd" mat-mini-fab matTooltip="Reset password" (click)="resetPassword(element.email)" [disabled]="resetButtonDisabled" [ngStyle]="{ 'background-color': buttonColor }">
+              <button class="reset_pwd" mat-mini-fab matTooltip="Reset password" (click)="resetPassword(element.email)"  [disabled]="resetButtonDisabled[element.email]"  [ngStyle]="{ 'background-color': buttonColor[element.email] }">
                 <mat-icon>lock_reset</mat-icon>
               </button>
             </td>
