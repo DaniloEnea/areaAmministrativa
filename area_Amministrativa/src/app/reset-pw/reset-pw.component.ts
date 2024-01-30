@@ -37,15 +37,22 @@ export class ResetPwComponent  implements OnInit{
   errorMessage!: string;
   successMessage!: string;
 
+  hide1: boolean = true;
+  hide2: boolean = true;
+
   private token!: string;
 
-  constructor(private http: HttpProviderService, private route: ActivatedRoute, private router: Router) {}
+  constructor(private http: HttpProviderService, private route: ActivatedRoute, private router: Router) {
+
+  }
 
 
   ngOnInit(): void {
     this.resetPasswordForm = new FormGroup({
       password: new FormControl('', [Validators.required]),
       confirm: new FormControl('', [Validators.required]),
+      hide1: new FormControl(true), // Aggiungi hide1 come FormControl
+      hide2: new FormControl(true), // Aggiungi hide2 come FormControl
     }, { validators: this.passwordsMustMatchValidator });
 
     this.resetPasswordForm.get('confirm')?.setValidators([Validators.required]);
@@ -58,6 +65,13 @@ export class ResetPwComponent  implements OnInit{
         this.errorMessage = 'Invalid token';
       }
     });
+  }
+
+  get visibilityIconPwd(): string {
+    return this.hide1 ? 'visibility_off' : 'visibility';
+  }
+  get visibilityIconCheckPwd(): string {
+    return this.hide2 ? 'visibility_off' : 'visibility';
   }
 
   public validateControl = (controlName: string) => {

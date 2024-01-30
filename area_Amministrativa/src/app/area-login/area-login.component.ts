@@ -86,10 +86,6 @@ export class AreaLoginComponent {
 
     const dialogRef = this.dialog.open(ModaleSendEmailPwdComponent);
 
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log(`Dialog result: ${result}`);
-    });
-
   }
 
 }
