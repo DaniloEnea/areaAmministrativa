@@ -56,28 +56,53 @@ export class ModaleAddPersoneComponent {
           console.error('Errore durante il recupero delle organizzazioni', error);
         }
       });
+
     }
 
-    this.newPersonForm = this.formBuilder.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      cf: ['', Validators.required],
-      organizationId: ['', Validators.required],
-      workRole: ['', Validators.required],
-      phone: ['', Validators.required],
-      email: new FormControl('', [ Validators.email, Validators.required ]),
-      secondEmail:  new FormControl(null, [ Validators.email]),
-      isGDPRTermsAccepted: [false],
-      isOtherProcessingPurposesAccepted: [true],
-      isServiceProcessingPurposesAccepted: [false],
-      Role_SA: [false],
-      Role_Admin: [false]
-    });
+    this.newPersonForm = this.setFormBuilder();
+    
   }
 
   get email() { return this.newPersonForm.get('email'); }
 
   get secondEmail() { return this.newPersonForm.get('secondEmail'); }
+
+  setFormBuilder() : FormGroup {
+    if (this.IsSA === true) {
+      return this.formBuilder.group({
+        firstName: ['', Validators.required],
+        lastName: ['', Validators.required],
+        cf: ['', Validators.required],
+        organizationId: ['', Validators.required],
+        workRole: ['', Validators.required],
+        phone: ['', Validators.required],
+        email: new FormControl('', [Validators.email, Validators.required]),
+        secondEmail: new FormControl(null, [Validators.email]),
+        isGDPRTermsAccepted: [false],
+        isOtherProcessingPurposesAccepted: [true],
+        isServiceProcessingPurposesAccepted: [false],
+        Role_SA: [false],
+        Role_Admin: [false]
+      });
+    }
+    else {
+      return this.formBuilder.group({
+        firstName: ['', Validators.required],
+        lastName: ['', Validators.required],
+        cf: ['', Validators.required],
+        organizationId: [''],
+        workRole: ['', Validators.required],
+        phone: ['', Validators.required],
+        email: new FormControl('', [Validators.email, Validators.required]),
+        secondEmail: new FormControl(null, [Validators.email]),
+        isGDPRTermsAccepted: [false],
+        isOtherProcessingPurposesAccepted: [true],
+        isServiceProcessingPurposesAccepted: [false],
+        Role_SA: [false],
+        Role_Admin: [false]
+      });
+    }
+  }
 
   // @ts-ignore
   getEmailError() {
@@ -190,6 +215,10 @@ export class ModaleAddPersoneComponent {
             });
           }
         })
+      }
+      else {
+        this.toastr.error('The form is wrong', 'Error');
+        setTimeout(() => { }, 1500)
       }
       this.closepopup();
     }
