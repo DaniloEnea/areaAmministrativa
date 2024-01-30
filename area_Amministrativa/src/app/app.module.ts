@@ -13,6 +13,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { HomepageComponent } from './homepage/homepage.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { SidenavService } from './service/SidenavService';
+import { ModaleSendEmailPwdComponent } from './modale-send-email-pwd/modale-send-email-pwd.component';
 import { ModaleUpdateOrgComponent } from './organizzazione/modale-update-org/modale-update-org.component';
 import { ModaleUpdatePersoneComponent } from './persone/modale-update-persone/modale-update-persone.component';
 import { ModaleUpdateUserComponent } from './utenti/modale-update-user/modale-update-user.component';
@@ -35,6 +36,7 @@ import {ToastrModule} from "ngx-toastr";
     SidebarComponent,
     HomepageComponent,
     ModaleUpdateOrgComponent,
+    ModaleSendEmailPwdComponent,
     ModaleUpdatePersoneComponent,
     ModaleUpdateUserComponent,
     ModaleAddPersoneComponent,

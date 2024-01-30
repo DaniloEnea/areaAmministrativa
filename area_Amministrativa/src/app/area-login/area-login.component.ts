@@ -9,6 +9,8 @@ import {HttpProviderService} from "../service/http-provider.service";
 import {Router} from "@angular/router";
 import {ToastrService} from "ngx-toastr";
 import {AuthService} from "../service/auth.service";
+import { MatDialog } from '@angular/material/dialog';
+import { ModaleSendEmailPwdComponent } from '../modale-send-email-pwd/modale-send-email-pwd.component';
 
 export interface LoginDTO {
   username: string,
@@ -30,9 +32,9 @@ export interface LoginDTO {
 })
 export class AreaLoginComponent {
 
-  hide : boolean = true;
+  hide: boolean = true;
   loginForm: FormGroup;
-  constructor(private formBuilder: FormBuilder, private httpApi: HttpProviderService,
+  constructor(private formBuilder: FormBuilder, private httpApi: HttpProviderService, private dialog: MatDialog,
     private router: Router, private toastr: ToastrService, private authService: AuthService) {
 
     if (authService.isAuthenticated() == true) {
@@ -62,24 +64,32 @@ export class AreaLoginComponent {
       this.httpApi.login(newLogin).subscribe({
         next: value => {
           localStorage.setItem("accessToken", value.body.accessToken);
-          if(this.authService.isAuthenticated()) {
+          if (this.authService.isAuthenticated()) {
             this.toastr.success("Login successful", "Success")
             this.router.navigate([('')]).then(r => null);
           }
           else {
-             this.toastr.error("Unauthorized", "Error");
-             localStorage.removeItem('accessToken');
-             localStorage.removeItem('ROLE');
+            this.toastr.error("Unauthorized", "Error");
+            localStorage.removeItem('accessToken');
+            localStorage.removeItem('ROLE');
           }
         },
         error: err => {
           this.toastr.error("Incorrect username or password", "Error")
-           console.log(err)
+          console.log(err)
         }
       })
     }
   }
 
+  openSendEmail(): void {
 
+    const dialogRef = this.dialog.open(ModaleSendEmailPwdComponent);
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(`Dialog result: ${result}`);
+    });
+
+  }
 
 }

@@ -80,7 +80,7 @@ export interface PersonDTO2 {
   styleUrls: ['./persone.component.css']
 })
 
-export class PersoneComponent implements OnInit{
+export class PersoneComponent implements OnInit {
   @ViewChild('filterFirstName') filterFirstNameInput: MatInput | undefined; // Riferimento all'input di firstName
   @ViewChild('filterLastName') filterLastNameInput: MatInput | undefined; // Riferimento all'input di lastName
   @ViewChild('filterOrg') filterOrgInput: MatInput | undefined; // Riferimento all'input di lastName
@@ -335,39 +335,39 @@ export class PersoneComponent implements OnInit{
     }
   }
 
-resetPassword(email: string): void {
-  // Verifica se l'utente è già autenticato
-  if (this.auth.isAuthenticated()) {
-    // Disabilita il pulsante
-   this.resetButtonDisabled[email] = true;
-    // Mette il colore grigio
-    this.buttonColor[email] = 'grey';
+  resetPassword(email: string): void {
+    // Verifica se l'utente è già autenticato
+    if (this.auth.isAuthenticated()) {
+      // Disabilita il pulsante
+      this.resetButtonDisabled[email] = true;
+      // Mette il colore grigio
+      this.buttonColor[email] = 'grey';
 
-    // Chiamata alla funzione di reset della password
-    this.httpApi.forgotPwdByEmail(email, null).subscribe(
-      {
-        next: value => {
-          this.toastr.success("We have sent a reset password link to your email. Please check.", "Success")
-        },
-        error: err => {
-          this.toastr.error("Something is error",  "Error")
-        },
-        complete: () => {
-          setTimeout(() => {
-            this.resetButtonDisabled[email] = false;
-            this.buttonColor[email] = 'primary';
-            window.location.reload();
-          }, 60000);
+      // Chiamata alla funzione di reset della password
+      this.httpApi.forgotPwdByEmail(email, null).subscribe(
+        {
+          next: value => {
+            this.toastr.success("We have sent a reset password link to your email. Please check.", "Success")
+          },
+          error: err => {
+            this.toastr.error("Something is error", "Error")
+          },
+          complete: () => {
+            setTimeout(() => {
+              this.resetButtonDisabled[email] = false;
+              this.buttonColor[email] = 'primary';
+              window.location.reload();
+            }, 60000);
+          }
         }
-      }
-    );
-  } else {
-    this.toastr.error("Token is expired", "Error")
+      );
+    } else {
+      this.toastr.error("Token is expired", "Error")
       setTimeout(() => {
         window.location.reload();
       }, 500)
+    }
   }
-}
 
 
 }

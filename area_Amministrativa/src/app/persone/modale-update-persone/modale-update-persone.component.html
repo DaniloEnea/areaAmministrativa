@@ -15,15 +15,14 @@
     <mat-form-field class="full-width">
       <mat-label>Secondary email</mat-label>
       <input matInput formControlName="secondEmail" type="email">
-            <mat-error *ngIf="!secondEmail?.valid">
-          {{getSecondEmailError()}}
-    </mat-error>
+      <mat-error *ngIf="!secondEmail?.valid">
+        {{getSecondEmailError()}}
+      </mat-error>
     </mat-form-field>
 
     <mat-label>Roles:</mat-label>
-    <mat-checkbox formControlName="Role_SA" *ngIf="IsSA">Super Admin</mat-checkbox>
-
-    <mat-checkbox formControlName="Role_Admin">CRM Admin</mat-checkbox>
+    <mat-slide-toggle formControlName="Role_SA" *ngIf="IsSA">Super Admin</mat-slide-toggle>
+    <mat-slide-toggle formControlName="Role_Admin">CRM Admin</mat-slide-toggle>
 
 
 
