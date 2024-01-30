@@ -12,7 +12,7 @@ import { FormBuilder } from '@angular/forms';
 import { AuthService } from "../service/auth.service";
 import { ToastrService } from "ngx-toastr";
 import { OrganizationDTO } from '../organizzazione/organizzazione.component';
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 
 /*export interface FilterDTO {
   first_name: string;
@@ -100,7 +100,7 @@ export class PersoneComponent implements OnInit{
   displayedColumns: string[] = ['firstName', 'lastName', 'phone', 'email', 'roles', 'update'];
   dataSource = new MatTableDataSource<PersonDTO1>;
 
-  constructor(public auth: AuthService, private dialog: MatDialog, private formBuilder: FormBuilder, private httpApi: HttpProviderService, private toastr: ToastrService) {
+  constructor(public auth: AuthService, private route: ActivatedRoute, private dialog: MatDialog, private formBuilder: FormBuilder, private httpApi: HttpProviderService, private toastr: ToastrService) {
     this.dataSource = new MatTableDataSource<PersonDTO1>(this.PeopleList);
     /*this.filterForm = this.formBuilder.group({
       first_name: [null],
@@ -109,7 +109,14 @@ export class PersoneComponent implements OnInit{
   }
 
   ngOnInit() {
-    this.allPeople();
+    this.route.queryParams.subscribe(params => {
+      const orgId = params['orgId'];
+      if (orgId) {
+        this.allPeople(orgId);
+      } else {
+        this.allPeople();
+      }
+    });
   }
 
   /*applyFilter() {
@@ -156,7 +163,7 @@ export class PersoneComponent implements OnInit{
   }
 
 
-  allPeople() {
+  allPeople(orgId?: string) {
     this.usernamefilter = this.auth.getUsernameFromJwt();
 
     this.httpApi.getAllPeople().subscribe({
@@ -168,6 +175,9 @@ export class PersoneComponent implements OnInit{
 
             this.getPeopleIfAdmin(this.PeopleList)
 
+            if (orgId != null) {
+              this.PeopleList = this.PeopleList.filter(orgs => orgs.organizationId === orgId);
+            }
 
             this.httpApi.getAllUsers().subscribe({
               next: (userData: any) => {
@@ -183,8 +193,9 @@ export class PersoneComponent implements OnInit{
                           if (orgData != null && orgData.body != null) {
                             const orgDTOList: OrganizationDTO[] = orgData.body;
 
-                            const associatedUser = userDTOList.find(user => user.username === person.email);
                             const associatedOrg = orgDTOList.find(org => org.id === person.organizationId);
+
+                            const associatedUser = userDTOList.find(user => user.username === person.email);
 
                             if (associatedUser && associatedOrg) {
                               person.roles = associatedUser.roles.map(role => role.role);
@@ -237,6 +248,7 @@ export class PersoneComponent implements OnInit{
       const ppDTOList: PersonDTO1[] = resultData;
 
       const CrmOrg = ppDTOList.find(pp => pp.email === this.usernamefilter);
+
       if (CrmOrg) {
         this.PeopleList = this.PeopleList.filter(orgs => orgs.organizationId === CrmOrg.organizationId);
       }

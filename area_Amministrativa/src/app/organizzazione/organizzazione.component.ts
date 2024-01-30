@@ -8,6 +8,7 @@ import { MatInput } from '@angular/material/input';
 import { AuthService } from "../service/auth.service";
 import { ToastrService } from "ngx-toastr";
 import { PersonDTO1 } from '../persone/persone.component';
+import { Router } from '@angular/router';
 
 export interface OrganizationDTO {
   id: string;
@@ -69,7 +70,7 @@ export class OrganizzazioneComponent {
   IsSA: boolean = true;
 
   // modal
-  constructor(public auth: AuthService, private dialog: MatDialog, private httpApi: HttpProviderService, private toastr: ToastrService) {
+  constructor(public auth: AuthService, private router: Router, private dialog: MatDialog, private httpApi: HttpProviderService, private toastr: ToastrService) {
     this.dataSource = new MatTableDataSource<OrganizationDTO>(this.OrgList);
   }
 
@@ -161,7 +162,18 @@ export class OrganizzazioneComponent {
     }
   }
 
-  
+  openGoTo(orgId: string): void {
+    if (this.auth.isAuthenticated()) {
+      this.router.navigate(['/persone'], { queryParams: { orgId: orgId } });
+    }
+    else {
+      this.toastr.error("Token is expired", "Error")
+      setTimeout(() => {
+        window.location.reload();
+      }, 500)
+
+    }
+  }
 
   openUpdateDialog(org: OrganizationDTO): void {
     if (this.auth.isAuthenticated()) {

@@ -108,7 +108,7 @@
               <mat-icon>edit</mat-icon>
             </button>
 
-            <button class="go-to" mat-mini-fab matTooltip="Go to" [routerLink]="'/persone'">
+            <button class="go-to" mat-mini-fab matTooltip="Go to" (click)="openGoTo(element.id)">
               <mat-icon>arrow_forward</mat-icon>
             </button>
           </td>
