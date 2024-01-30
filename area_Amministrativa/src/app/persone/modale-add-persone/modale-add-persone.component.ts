@@ -5,6 +5,7 @@ import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import { HttpProviderService } from "../../service/http-provider.service";
 import { ToastrService } from "ngx-toastr";
 import { AuthService } from "../../service/auth.service";
+import { Observable } from 'rxjs';
 
 export interface Roles {
   Role_SA: boolean;
@@ -27,7 +28,12 @@ export class ModaleAddPersoneComponent {
 
   newPersonForm: FormGroup;
   rolesSelected: string[] = [];
+  organizations: any[] = [];
+  organizationId = "";
   IsSA = true;
+  RoleSa = false;
+  RoleAdmin = false;
+  RoleUser = false;
 
   constructor(public auth: AuthService, public dialogRef: MatDialogRef<ModaleAddPersoneComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { person: PersonDTO1, roles: Roles },
@@ -35,10 +41,28 @@ export class ModaleAddPersoneComponent {
     private httpApi: HttpProviderService, private toastr: ToastrService) {
 
     this.IsSA = auth.checkIsSA();
+
+    if (this.IsSA === true) {
+      this.httpApi.getAllOrg().subscribe({
+        next: (data: any) => {
+
+          if (data != null && data.body != null) {
+            this.organizations = data.body;
+            console.log(this.organizations);
+          }
+
+        },
+        error: (error) => {
+          console.error('Errore durante il recupero delle organizzazioni', error);
+        }
+      });
+    }
+
     this.newPersonForm = this.formBuilder.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       cf: ['', Validators.required],
+      organizationId: ['', Validators.required],
       workRole: ['', Validators.required],
       phone: ['', Validators.required],
       email: new FormControl('', [ Validators.email, Validators.required ]),
@@ -47,8 +71,7 @@ export class ModaleAddPersoneComponent {
       isOtherProcessingPurposesAccepted: [true],
       isServiceProcessingPurposesAccepted: [false],
       Role_SA: [false],
-      Role_Admin: [false],
-      Role_User: [true]
+      Role_Admin: [false]
     });
   }
 
@@ -68,6 +91,44 @@ export class ModaleAddPersoneComponent {
     }
   }
 
+  getOrgByLogin(): Observable<string> {
+    
+    if (this.IsSA === false) {
+      return new Observable<string>((observer) => {
+        this.httpApi.getAllPeople().subscribe({
+          next: (data: any) => {
+            var resultData = data.body;
+            const ppDTOList: PersonDTO1[] = resultData;
+
+            const CrmOrg = ppDTOList.find(pp => pp.email === this.auth.getUsernameFromJwt());
+            if (CrmOrg) {
+              this.organizationId = CrmOrg.organizationId;
+              observer.next(CrmOrg.organizationId);
+              observer.complete();
+            } else {
+              observer.next("");
+              observer.complete();
+            }
+          },
+          error: (error) => {
+            observer.error(error);
+          }
+        });
+      });
+    } else {
+      return new Observable<string>((observer) => {
+        if (this.newPersonForm.valid) {
+          this.organizationId = this.newPersonForm.value.organizationId;
+          observer.next(this.newPersonForm.value.organizationId);
+          observer.complete();
+        }
+        observer.next("");
+        observer.complete();
+      });
+    }
+  }
+  
+
   // @ts-ignore
   getSecondEmailError() {
     // @ts-ignore
@@ -77,54 +138,58 @@ export class ModaleAddPersoneComponent {
   }
 
   onAddClick(): void {
+
     if (this.auth.isAuthenticated()) {
       if (this.newPersonForm.valid) {
+        this.getOrgByLogin().subscribe({
+          next: (orgId: string) => {
+            if (this.newPersonForm.value.Role_SA == true) {
+              this.rolesSelected.push("ROLE_SA")
+              this.RoleSa = true;
+            }
+            if (this.newPersonForm.value.Role_Admin == true) {
+              this.rolesSelected.push("ROLE_ADMIN")
+              this.RoleAdmin = true
+            }
+            this.rolesSelected.push("ROLE_USER")
 
-        if (this.newPersonForm.value.Role_SA == true) {
-          this.rolesSelected.push("ROLE_SA")
-        }
-        if (this.newPersonForm.value.Role_Admin == true) {
-          this.rolesSelected.push("ROLE_USER")
-        }
-        if (this.newPersonForm.value.Role_User == true) {
-          this.rolesSelected.push("ROLE_ADMIN")
-        }
+            console.log("test 1")
+            const newPerson: PersonDTO2 = {
+              firstName: this.newPersonForm.value.firstName,
+              lastName: this.newPersonForm.value.lastName,
+              cf: this.newPersonForm.value.cf,
+              organizationId: this.organizationId,
+              workRole: this.newPersonForm.value.workRole,
+              phone: this.newPersonForm.value.phone,
+              email: this.newPersonForm.value.email,
+              secondEmail: this.newPersonForm.value.secondEmail,
+              isGDPRTermsAccepted: this.newPersonForm.value.isGDPRTermsAccepted,
+              isOtherProcessingPurposesAccepted: this.newPersonForm.value.isOtherProcessingPurposesAccepted,
+              isServiceProcessingPurposesAccepted: this.newPersonForm.value.isServiceProcessingPurposesAccepted,
+              roles:
+                this.rolesSelected
 
-
-        console.log("test 1")
-        const newPerson: PersonDTO2 = {
-          firstName: this.newPersonForm.value.firstName,
-          lastName: this.newPersonForm.value.lastName,
-          cf: this.newPersonForm.value.cf,
-          workRole: this.newPersonForm.value.workRole,
-          phone: this.newPersonForm.value.phone,
-          email: this.newPersonForm.value.email,
-          secondEmail: this.newPersonForm.value.secondEmail,
-          isGDPRTermsAccepted: this.newPersonForm.value.isGDPRTermsAccepted,
-          isOtherProcessingPurposesAccepted: this.newPersonForm.value.isOtherProcessingPurposesAccepted,
-          isServiceProcessingPurposesAccepted: this.newPersonForm.value.isServiceProcessingPurposesAccepted,
-          roles:
-            this.rolesSelected
-
-        };
-        console.log(newPerson)
+            };
+            console.log(newPerson)
 
 
 
-        // post for create new user
-        this.httpApi.addNewPerson(newPerson).subscribe({
-          next: value => {
-            this.toastr.success("Data updated successfully", "Success");
-            setTimeout(() => {
-              console.log(newPerson)
-              //window.location.reload();
-            }, 1000)
-          },
-          error: err => {
-            this.toastr.error('Something is wrong', 'Error');
-            setTimeout(() => { }, 1500)
+            // post for create new user
+            this.httpApi.addNewPerson(newPerson).subscribe({
+              next: value => {
+                this.toastr.success("Data updated successfully", "Success");
+                setTimeout(() => {
+                  //console.log(newPerson)
+                  window.location.reload();
+                }, 1000)
+              },
+              error: err => {
+                this.toastr.error('Something is wrong', 'Error');
+                setTimeout(() => { }, 1500)
+              }
+            });
           }
-        });
+        })
       }
       this.closepopup();
     }
@@ -133,7 +198,6 @@ export class ModaleAddPersoneComponent {
       setTimeout(() => {
         window.location.reload();
       }, 500)
-
     }
   }
 

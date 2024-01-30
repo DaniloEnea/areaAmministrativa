@@ -17,6 +17,14 @@
       <input matInput formControlName="cf">
     </mat-form-field>
 
+    <mat-form-field  class="full-width" *ngIf="IsSA">
+      <mat-label>Organizzazione</mat-label>
+      <mat-select formControlName="organizationId">
+        <mat-option *ngFor="let org of organizations" [value]="org.id">{{ org.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+
     <mat-form-field class="full-width">
       <mat-label>Select a work role</mat-label>
       <input matInput formControlName="workRole">
@@ -30,17 +38,17 @@
     <mat-form-field>
       <mat-label>Email</mat-label>
       <input autocomplete="off" matInput placeholder="Email" type="email" formControlName="email">
-           <mat-error *ngIf="!email?.valid">
-          {{getEmailError()}}
+      <mat-error *ngIf="!email?.valid">
+        {{getEmailError()}}
       </mat-error>
     </mat-form-field>
 
     <mat-form-field class="full-width">
       <mat-label>Secondary email</mat-label>
       <input matInput formControlName="secondEmail" type="email">
-          <mat-error *ngIf="!secondEmail?.valid">
-          {{getSecondEmailError()}}
-    </mat-error>
+      <mat-error *ngIf="!secondEmail?.valid">
+        {{getSecondEmailError()}}
+      </mat-error>
     </mat-form-field>
 
 
@@ -49,7 +57,6 @@
 
     <mat-checkbox formControlName="Role_Admin">CRM Admin</mat-checkbox>
 
-    <mat-checkbox formControlName="Role_User">CRM User</mat-checkbox>
 
   </form>
 </mat-dialog-content>

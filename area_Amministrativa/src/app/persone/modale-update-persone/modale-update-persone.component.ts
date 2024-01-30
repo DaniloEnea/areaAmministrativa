@@ -51,8 +51,7 @@ export class ModaleUpdatePersoneComponent {
       isOtherProcessingPurposesAccepted: [this.data.person.isOtherProcessingPurposesAccepted],
       isServiceProcessingPurposesAccepted: [this.data.person.isServiceProcessingPurposesAccepted],
       Role_SA: [this.roleCheck("ROLE_SA")],
-      Role_Admin: [this.roleCheck("ROLE_ADMIN")],
-      Role_User: [this.roleCheck("ROLE_USER")]
+      Role_Admin: [this.roleCheck("ROLE_ADMIN")]
     });
   }
 
@@ -74,10 +73,6 @@ export class ModaleUpdatePersoneComponent {
     else return false;
   }
 
-  updateOrg(orgid: string): string {
-    return ""
-  }
-
   onUpdateClick(): void {
     if (this.auth.isAuthenticated()) {
       if (this.updatePersonForm.valid) {
@@ -86,11 +81,9 @@ export class ModaleUpdatePersoneComponent {
           this.rolesSelected.push("ROLE_SA")
         }
         if (this.updatePersonForm.value.Role_Admin == true) {
-          this.rolesSelected.push("ROLE_USER")
-        }
-        if (this.updatePersonForm.value.Role_User == true) {
           this.rolesSelected.push("ROLE_ADMIN")
         }
+        this.rolesSelected.push("ROLE_USER")
 
         console.log(this.rolesSelected)
 
@@ -117,9 +110,9 @@ export class ModaleUpdatePersoneComponent {
             this.httpApi.changeRole(this.data.person.email, this.rolesSelected).subscribe((response) => {
               this.toastr.success("Data updated successfully", "Success");
               setTimeout(() => {
-                console.log(updatePerson);
-                console.log(this.rolesSelected);
-                //window.location.reload();
+                //console.log(updatePerson);
+                //console.log(this.rolesSelected);
+                window.location.reload();
               }, 1500)
             })
           },

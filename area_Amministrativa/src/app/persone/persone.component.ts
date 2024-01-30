@@ -67,6 +67,7 @@ export interface PersonDTO2 {
   email: string;
   secondEmail: string;
   cf: string;
+  organizationId: string;
   isGDPRTermsAccepted: boolean;
   isServiceProcessingPurposesAccepted: boolean;
   isOtherProcessingPurposesAccepted: boolean;
