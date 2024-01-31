@@ -30,7 +30,7 @@ export class ModaleSendEmailPwdComponent {
             this.toastr.success("We have sent a reset password link to your email. Please check.", "Success")
           },
           error: err => {
-            this.toastr.error("Something is error", "Error")
+            this.toastr.error("Something goes wrong", "Error")
           }
         }
       );
