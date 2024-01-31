@@ -6,6 +6,8 @@ import { HttpProviderService } from "../../service/http-provider.service";
 import { ToastrService } from "ngx-toastr";
 import { AuthService } from "../../service/auth.service";
 import { Observable } from 'rxjs';
+import { SearchCountryField, CountryISO, PhoneNumberFormat } from 'ngx-intl-tel-input';
+
 
 export interface Roles {
   Role_SA: boolean;
@@ -35,6 +37,12 @@ export class ModaleAddPersoneComponent {
   RoleAdmin = false;
   RoleUser = false;
 
+  separateDialCode = false;
+	SearchCountryField = SearchCountryField;
+	CountryISO = CountryISO;
+  PhoneNumberFormat = PhoneNumberFormat;
+	preferredCountries: CountryISO[] = [CountryISO.UnitedStates, CountryISO.UnitedKingdom];
+
   constructor(public auth: AuthService, public dialogRef: MatDialogRef<ModaleAddPersoneComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { person: PersonDTO1, roles: Roles },
     private formBuilder: FormBuilder,
@@ -60,7 +68,7 @@ export class ModaleAddPersoneComponent {
     }
 
     this.newPersonForm = this.setFormBuilder();
-    
+
   }
 
   get firstName() { return this.newPersonForm.get('firstName'); }
@@ -153,7 +161,7 @@ export class ModaleAddPersoneComponent {
 
 
   getOrgByLogin(): Observable<string> {
-    
+
     if (this.IsSA === false) {
       return new Observable<string>((observer) => {
         this.httpApi.getAllPeople().subscribe({
@@ -188,7 +196,7 @@ export class ModaleAddPersoneComponent {
       });
     }
   }
-  
+
 
   // @ts-ignore
   getSecondEmailError() {
@@ -221,7 +229,7 @@ export class ModaleAddPersoneComponent {
               cf: this.newPersonForm.value.cf,
               organizationId: this.organizationId,
               workRole: this.newPersonForm.value.workRole,
-              phone: this.newPersonForm.value.phone,
+              phone: this.newPersonForm.value.phone.internationalNumber,
               email: this.newPersonForm.value.email,
               secondEmail: this.newPersonForm.value.secondEmail,
               isGDPRTermsAccepted: this.newPersonForm.value.isGDPRTermsAccepted,

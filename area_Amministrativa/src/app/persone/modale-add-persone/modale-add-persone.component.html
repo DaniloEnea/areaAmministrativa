@@ -42,10 +42,28 @@
       </mat-error>
     </mat-form-field>
 
-    <mat-form-field class="full-width">
-      <mat-label>Phone number</mat-label>
-      <input matInput formControlName="phone" maxlength="10" />
-    </mat-form-field>
+    <mat-label>Phone number</mat-label>
+      <ngx-intl-tel-input
+        [cssClass]="'custom'"
+        [preferredCountries]="preferredCountries"
+        [enableAutoCountrySelect]="true"
+        [enablePlaceholder]="true"
+        [searchCountryFlag]="true"
+        [searchCountryField]="[
+          SearchCountryField.Iso2,
+          SearchCountryField.Name
+        ]"
+        [selectFirstCountry]="false"
+        [selectedCountryISO]="CountryISO.India"
+        [maxLength]="15"
+        [phoneValidation]="true"
+        [separateDialCode]="separateDialCode"
+        [numberFormat]="PhoneNumberFormat.National"
+        name="phone"
+        formControlName="phone"
+      >
+      </ngx-intl-tel-input>
+
 
     <mat-form-field>
       <mat-label>Email</mat-label>
@@ -65,7 +83,7 @@
 
 
     <mat-label>Roles:</mat-label>
-    
+
     <mat-slide-toggle formControlName="Role_SA" *ngIf="IsSA">Super Admin</mat-slide-toggle>
     <mat-slide-toggle formControlName="Role_Admin">CRM Admin</mat-slide-toggle>
 

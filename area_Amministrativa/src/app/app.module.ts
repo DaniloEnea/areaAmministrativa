@@ -25,6 +25,7 @@ import { ModaleDetailsOrgComponent } from './organizzazione/modale-details-org/m
 import { ModaleDetailsPersoneComponent } from './persone/modale-details-persone/modale-details-persone.component';
 import {HttpClientModule} from "@angular/common/http";
 import {ToastrModule} from "ngx-toastr";
+import {NgxIntlTelInputModule} from "ngx-intl-tel-input";
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import {ToastrModule} from "ngx-toastr";
         ReactiveFormsModule,
         FormsModule,
         HttpClientModule,
-        ToastrModule.forRoot()
+        ToastrModule.forRoot(),
+        NgxIntlTelInputModule
     ],
   providers: [
     SidenavService
