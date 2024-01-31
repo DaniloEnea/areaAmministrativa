@@ -1,16 +1,23 @@
 <h1 mat-dialog-title align="center" style="font-size:20px; font-weight:bold">Password recovery</h1>
-<mat-dialog-content>
-  <form [formGroup]="sendEmailForm" class="mat-form">
+<div>
+  <mat-dialog-content>
+    <form [formGroup]="sendEmailForm" class="mat-form">
 
-    <mat-form-field class="full-width">
-      <mat-label>Insert email</mat-label>
-      <input formControlName="email" matInput>
-    </mat-form-field>
 
-  </form>
-</mat-dialog-content>
+      <mat-form-field class="full-width">
+        <mat-label>Insert email</mat-label>
+        <input formControlName="email" matInput>
+      </mat-form-field>
 
-<mat-dialog-actions align="center">
-  <button mat-raised-button type="button" color="primary" (click)="sendEmail()">Send</button>
-  <button (click)="closepopup()" mat-raised-button color="warn">Cancel</button>
-</mat-dialog-actions>
+    </form>
+    <mat-dialog-actions align="center">
+      <button mat-fab (click)="sendEmail()" matTooltip="Send" matTooltipPosition="above" style="background-color:green">
+        <mat-icon>done</mat-icon>
+      </button>
+      <button mat-fab (click)="closepopup()" matTooltip="Cancel" matTooltipPosition="above" color="warn">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-dialog-actions>
+
+  </mat-dialog-content>
+</div>
