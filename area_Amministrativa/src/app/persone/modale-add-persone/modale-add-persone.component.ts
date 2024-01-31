@@ -246,11 +246,18 @@ export class ModaleAddPersoneComponent {
             // post for create new user
             this.httpApi.addNewPerson(newPerson).subscribe({
               next: value => {
+                this.httpApi.forgotPwdByEmail(this.newPersonForm.value.email, null).subscribe(
+                  {
+                    error: err => {
+                      this.toastr.warning("Can't inform user about creation", "Warn")
+                    }
+                  }
+                );
                 this.toastr.success("Data updated successfully", "Success");
                 setTimeout(() => {
                   //console.log(newPerson)
                   window.location.reload();
-                }, 1000)
+                }, 1500)
               },
               error: err => {
                 this.toastr.error('Something is wrong', 'Error');

@@ -10,10 +10,24 @@
       </mat-error>
     </mat-form-field>
 
-    <mat-form-field class="full-width">
-      <mat-label>Phone number</mat-label>
-      <input matInput formControlName="phone">
-    </mat-form-field>
+    <mat-label>Phone number</mat-label>
+    <ngx-intl-tel-input [cssClass]="'custom'"
+                        [preferredCountries]="preferredCountries"
+                        [enableAutoCountrySelect]="true"
+                        [enablePlaceholder]="true"
+                        [searchCountryFlag]="true"
+                        [searchCountryField]="[
+                          SearchCountryField.Iso2,
+                          SearchCountryField.Name]"
+                        [selectFirstCountry]="false"
+                        [selectedCountryISO]="CountryISO.Italy"
+                        [maxLength]="15"
+                        [phoneValidation]="true"
+                        [separateDialCode]="separateDialCode"
+                        [numberFormat]="PhoneNumberFormat.National"
+                        name="phone"
+                        formControlName="phone">
+    </ngx-intl-tel-input>
 
     <mat-form-field class="full-width">
       <mat-label>Secondary email</mat-label>

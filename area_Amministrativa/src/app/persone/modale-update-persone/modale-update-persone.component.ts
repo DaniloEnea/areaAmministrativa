@@ -6,6 +6,7 @@ import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import { HttpProviderService } from "../../service/http-provider.service";
 import { ToastrService } from "ngx-toastr";
 import { AuthService } from "../../service/auth.service";
+import { CountryISO, PhoneNumberFormat, SearchCountryField } from 'ngx-intl-tel-input';
 
 
 
@@ -28,6 +29,12 @@ export class ModaleUpdatePersoneComponent {
   updatePersonForm: FormGroup;
   rolesSelected: string[] = [];
   IsSA = true;
+
+  separateDialCode = false;
+  SearchCountryField = SearchCountryField;
+  CountryISO = CountryISO;
+  PhoneNumberFormat = PhoneNumberFormat;
+  preferredCountries: CountryISO[] = [CountryISO.UnitedStates, CountryISO.UnitedKingdom];
     
   constructor(public auth: AuthService, public dialogRef: MatDialogRef<ModaleUpdatePersoneComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { person: PersonDTO1 },
@@ -101,7 +108,7 @@ export class ModaleUpdatePersoneComponent {
             lastName: this.updatePersonForm.value.lastName,
             organizationId: this.data.person.organizationId,
             workRole: this.updatePersonForm.value.workRole,
-            phone: this.updatePersonForm.value.phone,
+            phone: this.updatePersonForm.value.phone.internationalNumber,
             email: this.updatePersonForm.value.email,
             secondEmail: this.updatePersonForm.value.secondEmail,
             isGDPRTermsAccepted: this.updatePersonForm.value.isGDPRTermsAccepted,
