@@ -4,17 +4,26 @@
 
     <mat-form-field class="full-width">
       <mat-label>First Name</mat-label>
-      <input formControlName="firstName" matInput>
+      <input autocomplete="off" formControlName="firstName" matInput>
+      <mat-error *ngIf="!firstName?.valid">
+        {{getFirstNameError()}}
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field class="full-width">
       <mat-label>Last Name</mat-label>
-      <input formControlName="lastName" matInput>
+      <input autocomplete="off" formControlName="lastName" matInput>
+      <mat-error *ngIf="!lastName?.valid">
+        {{getLastNameError()}}
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field class="full-width">
       <mat-label>CF</mat-label>
-      <input matInput formControlName="cf">
+      <input autocomplete="off" matInput formControlName="cf">
+      <mat-error *ngIf="!cf?.valid">
+        {{getCFError()}}
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field class="full-width" *ngIf="IsSA">
@@ -28,6 +37,9 @@
     <mat-form-field class="full-width">
       <mat-label>Select a work role</mat-label>
       <input matInput formControlName="workRole">
+      <mat-error autocomplete="off" *ngIf="!workRole?.valid">
+        {{getWorkroleError()}}
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field class="full-width">

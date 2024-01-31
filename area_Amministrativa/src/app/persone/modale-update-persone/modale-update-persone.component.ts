@@ -46,7 +46,7 @@ export class ModaleUpdatePersoneComponent {
       workRole: [this.data.person.workRole, Validators.required],
       phone: [this.data.person.phone, Validators.required],
       email: [this.data.person.email, Validators.required],
-      secondEmail: [this.data.person.secondEmail, Validators.email],
+      secondEmail: new FormControl(this.data.person.secondEmail, [Validators.email]),
       isGDPRTermsAccepted: [this.data.person.isGDPRTermsAccepted],
       isOtherProcessingPurposesAccepted: [this.data.person.isOtherProcessingPurposesAccepted],
       isServiceProcessingPurposesAccepted: [this.data.person.isServiceProcessingPurposesAccepted],
@@ -55,8 +55,16 @@ export class ModaleUpdatePersoneComponent {
     });
   }
 
-
+  get workRole() { return this.updatePersonForm.get('workRole'); }
   get secondEmail() { return this.updatePersonForm.get('secondEmail'); }
+
+  // @ts-ignore
+  getWorkroleError() {
+    // @ts-ignore
+    if (this.workRole.hasError('required')) {
+      return 'This field is required.';
+    }
+  }
 
   // @ts-ignore
   getSecondEmailError() {

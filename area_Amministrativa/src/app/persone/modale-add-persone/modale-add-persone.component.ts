@@ -63,8 +63,11 @@ export class ModaleAddPersoneComponent {
     
   }
 
+  get firstName() { return this.newPersonForm.get('firstName'); }
+  get lastName() { return this.newPersonForm.get('lastName'); }
+  get cf() { return this.newPersonForm.get('cf'); }
+  get workRole() { return this.newPersonForm.get('workRole'); }
   get email() { return this.newPersonForm.get('email'); }
-
   get secondEmail() { return this.newPersonForm.get('secondEmail'); }
 
   setFormBuilder() : FormGroup {
@@ -115,6 +118,39 @@ export class ModaleAddPersoneComponent {
       return 'An Email is required.';
     }
   }
+
+  // @ts-ignore
+  getFirstNameError() {
+    // @ts-ignore
+    if (this.firstName.hasError('required')) {
+      return 'This field is required.';
+    }
+  }
+
+  // @ts-ignore
+  getLastNameError() {
+    // @ts-ignore
+    if (this.firstName.hasError('required')) {
+      return 'This field is required.';
+    }
+  }
+
+  // @ts-ignore
+  getCFError() {
+    // @ts-ignore
+    if (this.cf.hasError('required')) {
+      return 'This field is required.';
+    }
+  }
+
+  // @ts-ignore
+  getWorkroleError() {
+    // @ts-ignore
+    if (this.workRole.hasError('required')) {
+      return 'This field is required.';
+    }
+  }
+
 
   getOrgByLogin(): Observable<string> {
     

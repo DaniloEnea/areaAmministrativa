@@ -5,6 +5,9 @@
     <mat-form-field class="full-width">
       <mat-label>Work role</mat-label>
       <input matInput formControlName="workRole">
+      <mat-error autocomplete="off" *ngIf="!workRole?.valid">
+        {{getWorkroleError()}}
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field class="full-width">
