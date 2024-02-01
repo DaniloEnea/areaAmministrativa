@@ -1,58 +1,31 @@
 .card-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     text-align: center;
-    padding:60px;
+    padding: 60px;
 }
 
-.card-title {
-    color: #333;
+mat-form-field {
+    width: 100%;
+    max-width: 500px;
+    margin: auto;
 }
 
-.alert {
-    margin-top: 15px;
-    margin-bottom: 15px;
-    padding: 15px;
+.mb-3.row, .mb-3.row div[class^="col"] {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
 }
 
-.alert-danger {
-    background-color: #f8d7da;
-    color: #721c24;
-    border-color: #f5c6cb;
-}
-
-.alert-success {
-    background-color: #d4edda;
-    color: #155724;
-    border-color: #c3e6cb;
-}
-
-.form-group {
-    margin-bottom: 20px;
-}
-
-label {
-    font-weight: bold;
-}
-
-.form-control {
-    width: 70%; /* Riduci la larghezza della casella di testo secondo le tue preferenze */
-    padding: 10px;
-    margin-top: 5px;
-}
-
-.em-error {
+em {
     color: #dc3545;
+    text-align: center;
 }
 
-.btn-submit {
-    background-color: #dc3545;
-    color: white;
+button[type="submit"] {
     padding: 10px 20px;
-    border: none;
-    cursor: pointer;
     font-size: 16px;
-}
-
-.btn-submit:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
 }
