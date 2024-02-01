@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as forge from 'node-forge';
-import * as cryptoKeys from '../../assets/CryptoKeys.json';
+import cryptoKeys from '../../assets/CryptoKeys.json';
 
 @Injectable({
   providedIn: 'root'
@@ -111,6 +111,7 @@ export class EncryptionService {
     // Extract the Base64 content between "-----BEGIN ... KEY-----" and "-----END ... KEY-----"
     const base64Content = await pem.split('\n').slice(1, -2).join('');
     return base64Content;
+
   }
 
   public async encryptRSASplit(obj: string, backUrl: string): Promise<string> {
