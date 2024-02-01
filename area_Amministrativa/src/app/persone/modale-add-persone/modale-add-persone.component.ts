@@ -7,6 +7,7 @@ import { ToastrService } from "ngx-toastr";
 import { AuthService } from "../../service/auth.service";
 import { Observable } from 'rxjs';
 import { SearchCountryField, CountryISO, PhoneNumberFormat } from 'ngx-intl-tel-input';
+import { EncryptionService } from '../../service/encryption.service';
 
 
 export interface Roles {
@@ -43,7 +44,7 @@ export class ModaleAddPersoneComponent {
   PhoneNumberFormat = PhoneNumberFormat;
 	preferredCountries: CountryISO[] = [CountryISO.UnitedStates, CountryISO.UnitedKingdom];
 
-  constructor(public auth: AuthService, public dialogRef: MatDialogRef<ModaleAddPersoneComponent>,
+  constructor(public auth: AuthService, public encryptionService: EncryptionService, public dialogRef: MatDialogRef<ModaleAddPersoneComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { person: PersonDTO1, roles: Roles },
     private formBuilder: FormBuilder,
     private httpApi: HttpProviderService, private toastr: ToastrService) {
@@ -278,6 +279,31 @@ export class ModaleAddPersoneComponent {
       setTimeout(() => {
         window.location.reload();
       }, 500)
+    }
+  }
+
+  private async encrypt(obj: any, backUrl: string): Promise<string> {
+    // Convert the form data to a JSON string and then encrypt it
+    return await this.encryptionService.encryptRSASplit(JSON.stringify(obj), backUrl);
+  }
+
+  private decrypt(encryptedObj: string): any {
+    // Decrypt the encrypted form data
+    const decryptedString = this.encryptionService.decryptRSASplit(encryptedObj);
+
+    if (decryptedString) {
+      try {
+        // Parse the decrypted JSON string
+        const decryptedFormValue = JSON.parse(decryptedString);
+        return decryptedFormValue;
+      } catch (error) {
+        console.error('Error parsing decrypted JSON:', error);
+        return null;
+      }
+    } else {
+      // Handle decryption failure
+      console.error('Error decrypting form data');
+      return null;
     }
   }
 
