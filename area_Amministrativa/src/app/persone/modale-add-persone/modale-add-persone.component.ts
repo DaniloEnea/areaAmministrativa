@@ -5,7 +5,7 @@ import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import { HttpProviderService } from "../../service/http-provider.service";
 import { ToastrService } from "ngx-toastr";
 import { AuthService } from "../../service/auth.service";
-import { Observable } from 'rxjs';
+import { Observable, from } from 'rxjs';
 import { SearchCountryField, CountryISO, PhoneNumberFormat } from 'ngx-intl-tel-input';
 import { EncryptionService } from '../../service/encryption.service';
 
@@ -165,6 +165,7 @@ export class ModaleAddPersoneComponent {
 
     if (this.IsSA === false) {
       return new Observable<string>((observer) => {
+
         this.httpApi.getAllPeople().subscribe({
           next: (data: any) => {
             var resultData = data.body;
@@ -245,8 +246,9 @@ export class ModaleAddPersoneComponent {
 
 
             // post for create new user
-            this.httpApi.addNewPerson(newPerson).subscribe({
-              next: value => {
+            const addPersonObservable = from(this.httpApi.addNewPerson(newPerson));
+            addPersonObservable.subscribe({
+              next: (value: any) => {
                 this.httpApi.forgotPwdByEmail(this.newPersonForm.value.email, null).subscribe(
                   {
                     error: err => {
@@ -257,10 +259,10 @@ export class ModaleAddPersoneComponent {
                 this.toastr.success("Data updated successfully", "Success");
                 setTimeout(() => {
                   //console.log(newPerson)
-                  window.location.reload();
+                  //window.location.reload();
                 }, 1500)
               },
-              error: err => {
+              error: (err: any) => {
                 this.toastr.error('Something is wrong', 'Error');
                 setTimeout(() => { }, 1500)
               }
@@ -279,31 +281,6 @@ export class ModaleAddPersoneComponent {
       setTimeout(() => {
         window.location.reload();
       }, 500)
-    }
-  }
-
-  private async encrypt(obj: any, backUrl: string): Promise<string> {
-    // Convert the form data to a JSON string and then encrypt it
-    return await this.encryptionService.encryptRSASplit(JSON.stringify(obj), backUrl);
-  }
-
-  private decrypt(encryptedObj: string): any {
-    // Decrypt the encrypted form data
-    const decryptedString = this.encryptionService.decryptRSASplit(encryptedObj);
-
-    if (decryptedString) {
-      try {
-        // Parse the decrypted JSON string
-        const decryptedFormValue = JSON.parse(decryptedString);
-        return decryptedFormValue;
-      } catch (error) {
-        console.error('Error parsing decrypted JSON:', error);
-        return null;
-      }
-    } else {
-      // Handle decryption failure
-      console.error('Error decrypting form data');
-      return null;
     }
   }
 

@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
 import {AdminApiService} from "./admin-api.service";
 import {mergeMap, Observable, of} from "rxjs";
+import { EncryptionService } from './encryption.service';
 
 var tempFilterUrl : string;
 // PATH API
 let genericUrl = "http://localhost:8080/api/"
 let apiCredentials = "http://localhost:8282/oauth2/token"
+let orgEncryption = "https://localhost:7017/api/GetPublicKey/"
+let personEncryption = "https://localhost:7131/api/GetPublicKey/"
 
 //get
 //let getUtenteUrl = genericUrl + "utenti"
@@ -17,7 +20,7 @@ let getOrgUrl = "https://localhost:7017/api/Organizations"
 
 //add
 let addUtenteUrl = genericUrl + "addUtenti"
-let addPersonUrl = "https://localhost:7131/api/People/CreatePU"
+let addPersonUrl = "https://localhost:7131/api/People/CreatePU?isFront=true"
 let addOrgUrl = genericUrl + "addOrganization"
 
 /*details*/
@@ -60,9 +63,34 @@ let getTokenUrl = "http://localhost:9000/api/reset_password"
 })
 export class HttpProviderService {
 
-  constructor(private adminApiService: AdminApiService) { }
+  constructor(private adminApiService: AdminApiService, private encryptionService: EncryptionService) { }
 
   /* ALL METHOD API FOR USER'S */
+
+  private async encrypt(obj: string, backUrl: string): Promise<string> {
+    // Convert the form data to a JSON string and then encrypt it
+    return await this.encryptionService.encryptRSASplit(obj, backUrl);
+  }
+
+  private decrypt(encryptedObj: string): any {
+    // Decrypt the encrypted form data
+    const decryptedString = this.encryptionService.decryptRSASplit(encryptedObj);
+
+    if (decryptedString) {
+      try {
+        // Parse the decrypted JSON string
+        const decryptedFormValue = JSON.parse(decryptedString);
+        return decryptedFormValue;
+      } catch (error) {
+        console.error('Error parsing decrypted JSON:', error);
+        return null;
+      }
+    } else {
+      // Handle decryption failure
+      console.error('Error decrypting form data');
+      return null;
+    }
+  }
 
   //GET
   public getAllUsers(): Observable<any> {
@@ -114,14 +142,23 @@ export class HttpProviderService {
   }
 
   //POST
-  public addNewUser(model: any) : Observable<any> {
-    return this.adminApiService.post(addUtenteUrl, model)
+  //public async addNewUser(model: any) : Promise<Observable<any>> {
+  //  return await this.adminApiService.post(addUtenteUrl, this.encrypt(model))
+  //}
+
+  public async addNewPerson(model: any): Promise<Observable<any>> {
+    
+    const encryptedDto = await this.encrypt(model, personEncryption);
+
+    const sendDto = JSON.stringify(encryptedDto);
+
+    console.log(sendDto)
+    
+    return this.adminApiService.post(addPersonUrl, sendDto)
   }
-  public addNewPerson(model: any): Observable<any> {
-    return this.adminApiService.post(addPersonUrl, model)
-  }
+
   public addNewOrg(model: any): Observable<any> {
-    return this.adminApiService.post(addOrgUrl, model)
+    return this.adminApiService.post(addOrgUrl, this.encrypt(model,orgEncryption))
   }
 
   public forgotPwdByEmail(id: string, model: any): Observable<any> {

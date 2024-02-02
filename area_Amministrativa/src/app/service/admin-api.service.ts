@@ -29,15 +29,16 @@ export class AdminApiService {
   }
 
   //POST operations
-  post(url: string, model:any): Observable<any> {
+  post(url: string, body:any): Observable<any> {
     const httpOptions = {
       headers : new HttpHeaders( {
         'Content-Type': 'application/json'
       }),
-      observe: "response" as 'body'
+      observe: "response" as 'body',
+      responseType: 'text' as 'json'
     };
 
-    return this.http.post(url, model, httpOptions).pipe(
+    return this.http.post(url, body, httpOptions).pipe(
       map((response : any) => this.ReturnResponseData(response)),
       catchError(this.handleError)
     );
