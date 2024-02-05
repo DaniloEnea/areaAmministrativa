@@ -20,7 +20,8 @@ let getOrgUrl = "https://localhost:7017/api/Organizations"
 
 //add
 let addUtenteUrl = genericUrl + "addUtenti"
-let addPersonUrl = "https://localhost:7131/api/People/CreatePU?isFront=true"
+//let addPersonUrl = "https://localhost:7131/api/People/CreatePU?isFront=true"
+let addPersonUrl = "https://localhost:7131/api/People/CreatePU"
 let addOrgUrl = genericUrl + "addOrganization"
 
 /*details*/
@@ -150,11 +151,9 @@ export class HttpProviderService {
     
     const encryptedDto = await this.encrypt(model, personEncryption);
 
-    const sendDto = JSON.stringify(encryptedDto);
-
-    console.log(sendDto)
+    console.log(JSON.stringify(encryptedDto))
     
-    return this.adminApiService.post(addPersonUrl, sendDto)
+    return await this.adminApiService.postEncrypted(addPersonUrl, JSON.stringify(encryptedDto))
   }
 
   public addNewOrg(model: any): Observable<any> {

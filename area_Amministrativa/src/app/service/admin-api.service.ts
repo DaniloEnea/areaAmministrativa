@@ -44,6 +44,24 @@ export class AdminApiService {
     );
   }
 
+  async postEncrypted(url: string, body: string): Promise<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      }),
+      observe: "response" as 'body',
+      responseType: 'text' as 'json'
+    };
+
+    try {
+      const response = await this.http.post(url, body, httpOptions).toPromise();
+      return this.ReturnResponseData(response);
+    } catch (error) {
+      this.handleError(error);
+      throw error; // Rilancia l'errore per gestirlo nell'ambito in cui è stata chiamata la funzione
+    }
+  }
+
   postWithCc(url: string, model: any, accessToken: string): Observable<any> {
     const httpOptions = {
       headers : new HttpHeaders( {
