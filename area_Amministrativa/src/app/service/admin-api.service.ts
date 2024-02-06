@@ -68,7 +68,7 @@ export class AdminApiService {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + accessToken
       }),
-      observe: "response" as 'body'
+      responseType: 'text' as 'json'
     };
 
     return this.http.post(url, model, httpOptions).pipe(

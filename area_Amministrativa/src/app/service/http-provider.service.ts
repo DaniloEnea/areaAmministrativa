@@ -72,12 +72,12 @@ export class HttpProviderService {
 
   /* ALL METHOD API FOR USER'S */
 
-  private async encrypt(obj: string, backUrl: string): Promise<string> {
+  public async encrypt(obj: string, backUrl: string): Promise<string> {
     // Convert the form data to a JSON string and then encrypt it
     return await this.encryptionService.encryptRSASplit(obj, backUrl);
   }
 
-  private decrypt(encryptedObj: string): any {
+  public decrypt(encryptedObj: string): any {
     // Decrypt the encrypted form data
     const decryptedString = this.encryptionService.decryptRSASplit(encryptedObj);
 
@@ -156,11 +156,11 @@ export class HttpProviderService {
   //}
 
   public async addNewPerson(model: any): Promise<Observable<any>> {
-    
+
     const encryptedDto = await this.encrypt(model, personEncryption);
 
     console.log(JSON.stringify(encryptedDto))
-    
+
     return await this.adminApiService.postEncrypted(addPersonUrl, JSON.stringify(encryptedDto))
   }
 
@@ -211,6 +211,7 @@ export class HttpProviderService {
   }
 
   //LOGIN
+  /*
   public login(model: any): Observable<any> {
     return this.adminApiService.postUrlEncoded(apiCredentials).pipe(
       mergeMap((value: any) => {
@@ -224,23 +225,18 @@ export class HttpProviderService {
       })
     );
   }
+  */
 
   public loginEncrypted(model: any): Observable<any> {
-    return this.adminApiService.postUrlEncoded(apiCredentials).pipe(
+       return this.adminApiService.postUrlEncoded(apiCredentials).pipe(
       mergeMap((value: any) => {
-
-        console.log(value.body.access_token)
-        const accessToken = this.decrypt(value.body.access_token);
-
+        const accessToken = value.body.access_token;
 
         return of(accessToken);
       }),
-      mergeMap(async (accessToken: string) => {
-        const encryptedDTO = await JSON.stringify(this.encrypt(JSON.stringify(model), loginEncryption))
-
-        
+      mergeMap((accessToken: string) => {
         // Chiamata successiva con l'access token
-        return this.adminApiService.postWithCc(loginUrl, encryptedDTO, accessToken);
+        return this.adminApiService.postWithCc(loginUrl, model, accessToken);
       })
     );
   }
