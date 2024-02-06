@@ -61,7 +61,7 @@ export class AreaLoginComponent {
         password: this.loginForm.value.password
       }
       //console.log(newLogin)
-      this.httpApi.login(newLogin).subscribe({
+      this.httpApi.loginEncrypted(newLogin).subscribe({
         next: value => {
           localStorage.setItem("accessToken", value.body.accessToken);
           if (this.authService.isAuthenticated()) {

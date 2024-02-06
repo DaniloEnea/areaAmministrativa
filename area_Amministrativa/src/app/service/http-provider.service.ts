@@ -5,10 +5,13 @@ import { EncryptionService } from './encryption.service';
 
 var tempFilterUrl : string;
 // PATH API
-let genericUrl = "http://localhost:8080/api/"
+//let genericUrl = "http://localhost:8080/api/"
 let apiCredentials = "http://localhost:8282/oauth2/token"
+
+//GET PUBLIC KEY
 let orgEncryption = "https://localhost:7017/api/GetPublicKey/"
 let personEncryption = "https://localhost:7131/api/GetPublicKey/"
+let loginEncryption = "https://localhost:9000/api/rsa/GetPublicKey"
 
 //get
 //let getUtenteUrl = genericUrl + "utenti"
@@ -19,10 +22,10 @@ let getOrgUrl = "https://localhost:7017/api/Organizations"
 //let getOrgUrl = genericUrl + "organization"
 
 //add
-let addUtenteUrl = genericUrl + "addUtenti"
+//let addUtenteUrl = genericUrl + "addUtenti"
 //let addPersonUrl = "https://localhost:7131/api/People/CreatePU?isFront=true"
 let addPersonUrl = "https://localhost:7131/api/People/CreatePU"
-let addOrgUrl = genericUrl + "addOrganization"
+//let addOrgUrl = genericUrl + "addOrganization"
 
 /*details*/
 //let getUtenteByIdUrl = genericUrl + "utenti"
@@ -31,24 +34,25 @@ let getOrgByIdUrl = "https://localhost:7017/api/Organizations"
 
 //update
 
-let updateUtenteUrl = genericUrl + "updateUtenti"
+//let updateUtenteUrl = genericUrl + "updateUtenti"
 let updatePersonUrl = "https://localhost:7131/api/People"
 let updatePersonRoleUrl = "http://localhost:9000/api/admin/changeRole"
 let updateOrgUrl = "https://localhost:7017/api/Organizations"
 
 //delete
-let deleteUtenteUrl = genericUrl + "deleteUtenti"
+//let deleteUtenteUrl = genericUrl + "deleteUtenti"
 let deletePersonUrl = "https://localhost:7131/api/People"
 let deleteOrgUrl = "https://localhost:7017/api/Organizations"
 
 //login
 let loginUrl = "http://localhost:9000/api/auth/login"
+let getDecryptedMessage = "https://localhost:9000/api/rsa/decrypt"
 
 //reset password
 let resetPwdUrl = "http://localhost:9000/api/admin/changePassword"
 
 //filer
-let personFilterUrl = "https://localhost:7131/api/People/GetPeopleByFiltering"
+//let personFilterUrl = "https://localhost:7131/api/People/GetPeopleByFiltering"
 
 //forgot password
 let forgotPwdByEmailUrl = "http://localhost:9000/api/forgot_password"
@@ -91,6 +95,10 @@ export class HttpProviderService {
       console.error('Error decrypting form data');
       return null;
     }
+  }
+
+  private decryptToken(accessToken: string): any {
+    return this.adminApiService.getWithCc(getDecryptedMessage, accessToken)
   }
 
   //GET
@@ -156,9 +164,9 @@ export class HttpProviderService {
     return await this.adminApiService.postEncrypted(addPersonUrl, JSON.stringify(encryptedDto))
   }
 
-  public addNewOrg(model: any): Observable<any> {
-    return this.adminApiService.post(addOrgUrl, this.encrypt(model,orgEncryption))
-  }
+  //public addNewOrg(model: any): Observable<any> {
+  //  return this.adminApiService.post(addOrgUrl, this.encrypt(model,orgEncryption))
+  //}
 
   public forgotPwdByEmail(id: string, model: any): Observable<any> {
     return this.adminApiService.postUrlEncoded(apiCredentials).pipe(
@@ -189,7 +197,7 @@ export class HttpProviderService {
   }
 
   public getTokenUrl(queryParams: any): Observable<any> {
-        return this.adminApiService.getUrlEncoded(apiCredentials).pipe(
+    return this.adminApiService.getUrlEncoded(apiCredentials).pipe(
       mergeMap((value: any) => {
         const accessToken = value.body.access_token;
 
@@ -203,8 +211,8 @@ export class HttpProviderService {
   }
 
   //LOGIN
- public login(model: any): Observable<any> {
-   return this.adminApiService.postUrlEncoded(apiCredentials).pipe(
+  public login(model: any): Observable<any> {
+    return this.adminApiService.postUrlEncoded(apiCredentials).pipe(
       mergeMap((value: any) => {
         const accessToken = value.body.access_token;
 
@@ -213,6 +221,26 @@ export class HttpProviderService {
       mergeMap((accessToken: string) => {
         // Chiamata successiva con l'access token
         return this.adminApiService.postWithCc(loginUrl, model, accessToken);
+      })
+    );
+  }
+
+  public loginEncrypted(model: any): Observable<any> {
+    return this.adminApiService.postUrlEncoded(apiCredentials).pipe(
+      mergeMap((value: any) => {
+
+        const accessToken = this.decrypt(value.body.access_token);
+
+        
+
+        return of(accessToken);
+      }),
+      mergeMap((accessToken: string) => {
+        const encryptedDTO = JSON.stringify(this.encrypt(JSON.stringify(model), loginEncryption))
+
+        
+        // Chiamata successiva con l'access token
+        return this.adminApiService.postWithCc(loginUrl, encryptedDTO, accessToken);
       })
     );
   }
