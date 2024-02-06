@@ -229,14 +229,14 @@ export class HttpProviderService {
     return this.adminApiService.postUrlEncoded(apiCredentials).pipe(
       mergeMap((value: any) => {
 
+        console.log(value.body.access_token)
         const accessToken = this.decrypt(value.body.access_token);
 
-        
 
         return of(accessToken);
       }),
-      mergeMap((accessToken: string) => {
-        const encryptedDTO = JSON.stringify(this.encrypt(JSON.stringify(model), loginEncryption))
+      mergeMap(async (accessToken: string) => {
+        const encryptedDTO = await JSON.stringify(this.encrypt(JSON.stringify(model), loginEncryption))
 
         
         // Chiamata successiva con l'access token
