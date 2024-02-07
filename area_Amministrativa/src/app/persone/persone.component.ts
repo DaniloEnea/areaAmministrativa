@@ -186,6 +186,8 @@ export class PersoneComponent implements OnInit {
                   const userDTOList: UserDTO[] = userData.body;
 
 
+                  console.log("testina")
+                  console.log(userDTOList)
 
                   this.PeopleList.forEach((person: PersonDTO1) => {
                     this.httpApi.getAllOrg().subscribe(
@@ -195,6 +197,8 @@ export class PersoneComponent implements OnInit {
                             const orgDTOList: OrganizationDTO[] = orgData.body;
 
                             const associatedOrg = orgDTOList.find(org => org.id === person.organizationId);
+
+                            
 
                             const associatedUser = userDTOList.find(user => user.username === person.email);
 
@@ -263,9 +267,9 @@ export class PersoneComponent implements OnInit {
     }
   }
 
-  openDeleteDialog(id: number): void {
+  openDeleteDialog(id: string, username: string): void {
     const dialogRef = this.dialog.open(ModaleDeleteComponent, {
-      data: { Id: id, ClassForm: this.classForm } // passo l'ID
+      data: { Id: id, Username : username, ClassForm: this.classForm } // passo l'ID
     });
 
     dialogRef.afterClosed().subscribe((result) => {

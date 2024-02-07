@@ -28,7 +28,7 @@ let addPersonUrl = "https://localhost:7131/api/People/CreatePU"
 //let addOrgUrl = genericUrl + "addOrganization"
 
 /*details*/
-//let getUtenteByIdUrl = genericUrl + "utenti"
+let getUtenteByUsernameUrl = "http://localhost:9000/api/user"
 //let getPersonByIdUrl = genericUrl + "person"
 let getOrgByIdUrl = "https://localhost:7017/api/Organizations"
 
@@ -42,6 +42,7 @@ let updateOrgUrl = "https://localhost:7017/api/Organizations"
 //delete
 //let deleteUtenteUrl = genericUrl + "deleteUtenti"
 let deletePersonUrl = "https://localhost:7131/api/People"
+let forcedDeletePersonUrl = "https://localhost:7131/api/People/ForceDelete"
 let deleteOrgUrl = "https://localhost:7017/api/Organizations"
 
 //login
@@ -139,10 +140,20 @@ export class HttpProviderService {
     return this.adminApiService.get(getOrgUrl)
   }
 
+  public getUtenteByUsername(username: string): Observable<any> {
+    return this.adminApiService.getUrlEncoded(apiCredentials).pipe(
+      mergeMap((value: any) => {
+        const accessToken = value.body.access_token;
+
+        return of(accessToken);
+      }),
+      mergeMap((accessToken: string) => {
+        return this.adminApiService.getByIDWithCc(getUtenteByUsernameUrl, username, accessToken)
+      })
+    );
+  }
+
   //GET BY ID
-  //public getUtenteByID( id: number): Observable<any> {
-  //  return this.adminApiServie.getById(getUtenteByIdUrl, id)
-  //}
   //public getPersonByID(id: number): Observable<any> {
   //  return this.adminApiServie.getById(getPersonByIdUrl, id)
   //}
@@ -275,9 +286,12 @@ export class HttpProviderService {
   public deletePerson(id: string): Observable<any> {
     return this.adminApiService.deleteFisic(deletePersonUrl, id)
   }
-  public deleteOrg(id: string): Observable<any> {
-    return this.adminApiService.delete(deleteOrgUrl, id)
+  public forcedDeletePerson(id: string): Observable<any> {
+    return this.adminApiService.deleteFisic(forcedDeletePersonUrl, id)
   }
+  //public deleteOrg(id: string): Observable<any> {
+  //  return this.adminApiService.delete(deleteOrgUrl, id)
+  //}
 
   //Filter
   /*public filterPeople(endUrl: string) {

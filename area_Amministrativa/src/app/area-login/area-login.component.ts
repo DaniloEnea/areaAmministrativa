@@ -54,46 +54,46 @@ export class AreaLoginComponent {
     return this.hide ? 'visibility_off' : 'visibility';
   }
 
-async submit() {
+  async submit() {
     if (this.loginForm.valid) {
-        const newLogin: LoginDTO = {
-            username: this.loginForm.value.username,
-            password: this.loginForm.value.password,
-        };
+      const newLogin: LoginDTO = {
+        username: this.loginForm.value.username,
+        password: this.loginForm.value.password,
+      };
 
-        try {
-            // Cripta le credenziali di login
-            const loginEncrypt = await this.httpApi.encrypt(JSON.stringify(newLogin), "http://localhost:9000/api/rsa/GetPublicKey");
+      try {
+        // Cripta le credenziali di login
+        const loginEncrypt = await this.httpApi.encrypt(JSON.stringify(newLogin), "http://localhost:9000/api/rsa/GetPublicKey");
 
-            // Invia le credenziali di login criptate
-            this.httpApi.loginEncrypted(loginEncrypt).subscribe({
-                next: async (encryptedResponse) => {
-                    // Decifra la risposta
-                    const decryptedResponse = await this.httpApi.decrypt(encryptedResponse);
-                    console.log(decryptedResponse);
+        // Invia le credenziali di login criptate
+        this.httpApi.loginEncrypted(loginEncrypt).subscribe({
+          next: async (encryptedResponse) => {
+            // Decifra la risposta
+            const decryptedResponse = await this.httpApi.decrypt(encryptedResponse);
+            console.log(decryptedResponse);
 
-                  localStorage.setItem("accessToken", decryptedResponse.accessToken);
+            localStorage.setItem("accessToken", decryptedResponse.accessToken);
 
-                    if (this.authService.isAuthenticated()) {
-                        this.toastr.success("Login successful", "Success");
-                        await this.router.navigate([('')]);
-                    } else {
-                        this.toastr.error("Unauthorized", "Error");
-                        localStorage.removeItem('accessToken');
-                        localStorage.removeItem('ROLE');
-                    }
-                },
-                error: err => {
-                    this.toastr.error("Incorrect username or password", "Error");
-                    console.log(err);
-                }
-            });
-        } catch (error) {
-            console.log(error);
-            this.toastr.error("Encryption failed or unable to fetch the public key", "Error");
-        }
+            if (this.authService.isAuthenticated()) {
+              this.toastr.success("Login successful", "Success");
+              await this.router.navigate([('')]);
+            } else {
+              this.toastr.error("Unauthorized", "Error");
+              localStorage.removeItem('accessToken');
+              localStorage.removeItem('ROLE');
+            }
+          },
+          error: err => {
+            this.toastr.error("Incorrect username or password", "Error");
+            console.log(err);
+          }
+        });
+      } catch (error) {
+        console.log(error);
+        this.toastr.error("Encryption failed or unable to fetch the public key", "Error");
+      }
     }
-}
+  }
 
 
 

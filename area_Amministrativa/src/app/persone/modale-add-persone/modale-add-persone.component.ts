@@ -248,6 +248,7 @@ export class ModaleAddPersoneComponent {
             // post for create new user 
             const addPersonObservable = from(this.httpApi.addNewPerson(JSON.stringify(newPerson)));
             addPersonObservable.subscribe({
+
               next: (value: any) => {
                 this.httpApi.forgotPwdByEmail(this.newPersonForm.value.email, null).subscribe(
                   {

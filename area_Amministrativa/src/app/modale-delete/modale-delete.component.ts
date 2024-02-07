@@ -11,41 +11,76 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class ModaleDeleteComponent {
   constructor(public auth: AuthService, private toastr: ToastrService, private ref: MatDialogRef<ModaleDeleteComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { Id: string, ClassForm : string },
-               private httpApi: HttpProviderService) {}
+    @Inject(MAT_DIALOG_DATA) public data: { Id: string, Username: string, ClassForm : string },
+    private httpApi: HttpProviderService) { }
+
+  UserExist: boolean = false;
 
   // delete for call DELETE API
   confirmForm(): void {
     if (this.auth.isAuthenticated()) {
-      if (this.data.ClassForm == "User") {
-        //this.httpApi.deleteUser(this.data.Id).subscribe()
-      }
-      else if (this.data.ClassForm == "People") {
-        this.httpApi.deletePerson(this.data.Id).subscribe()
-      }
-      else if (this.data.ClassForm == "Organization") {
-        //this.httpApi.deleteOrg(this.data.Id).subscribe()
-      }
+      this.httpApi.getUtenteByUsername(this.data.Username).subscribe({
+        next: (userData: any) => {
+            this.UserExist = true
+        }
+      })
 
-      console.log("delete: " + this.data.Id)
+      //if (this.data.ClassForm == "User") {
+      //  //this.httpApi.deleteUser(this.data.Id).subscribe()
+      //}
+      //else if (this.data.ClassForm == "People") {
+      //  this.deletePU()
+      //}
+      //else if (this.data.ClassForm == "Organization") {
+      //  //this.httpApi.deleteOrg(this.data.Id).subscribe()
+      //}
+      this.deletePU()
+
+      console.log("delete: " + this.data.Username)
       console.log("type: " + this.data.ClassForm)
 
-      this.toastr.success("Deleted succesfully", "Success")
-      setTimeout(() => {
-        window.location.reload();
-      }, 500)
-
       this.ref.close()
-      window.location.reload();
     }
     else {
       this.toastr.error("Token is expired", "Error")
       setTimeout(() => {
-        window.location.reload();
+        //window.location.reload();
       }, 500)
       
     }
   }
+
+
+  deletePU() {
+    if (this.UserExist === true) {
+      this.httpApi.deletePerson(this.data.Id).subscribe({
+        next: (value: any) => {
+          this.toastr.success("Deleted succesfully", "Success")
+          setTimeout(() => {
+            //window.location.reload();
+          }, 500)
+        },
+        error: (error: Error) => {
+          this.toastr.error("Something went wrong with delete", "Error")
+        }
+      })
+    }
+    else {
+      this.httpApi.forcedDeletePerson(this.data.Id).subscribe({
+        next: (value: any) => {
+          this.toastr.success("Deleted succesfully", "Success")
+          this.toastr.success("No user was found", "Warn")
+          setTimeout(() => {
+            //window.location.reload();
+          }, 500)
+        },
+        error: (error: Error) => {
+          this.toastr.error("Something went wrong with delete", "Error")
+        }
+      })
+    }
+  }
+  
 
   closepopup() {
     this.ref.close('Closed using function');

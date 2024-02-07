@@ -109,6 +109,22 @@ export class AdminApiService {
     );
   }
 
+  getByIDWithCc(url: string, id: string, accessToken: string): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + accessToken
+      }),
+      observe: "response" as 'body'
+    };
+
+    const getUrl: string = `${url}/${id}`;
+    return this.http.get(getUrl, httpOptions).pipe(
+      map((response: any) => this.ReturnResponseData(response)),
+      catchError(this.handleError)
+    );
+  }
+
   putWithCc(url: string,id: string, model: any, accessToken: string): Observable<any> {
     const httpOptions = {
       headers : new HttpHeaders( {
