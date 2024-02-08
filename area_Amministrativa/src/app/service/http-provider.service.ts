@@ -64,6 +64,8 @@ let resetPwdByEmailUrl = "http://localhost:9000/api/reset_password"
 // get token by url
 let getTokenUrl = "http://localhost:9000/api/reset_password"
 
+let createUserUrl = "http://localhost:9000/api/auth/create"
+
 @Injectable({
   providedIn: 'root'
 })
@@ -248,6 +250,20 @@ export class HttpProviderService {
       mergeMap((accessToken: string) => {
         // Chiamata successiva con l'access token
         return this.adminApiService.postWithCc(loginUrl, model, accessToken);
+      })
+    );
+  }
+
+    public createUserEncrypted(model: any): Observable<any> {
+       return this.adminApiService.postUrlEncoded(apiCredentials).pipe(
+      mergeMap((value: any) => {
+        const accessToken = value.body.access_token;
+
+        return of(accessToken);
+      }),
+      mergeMap((accessToken: string) => {
+        // Chiamata successiva con l'access token
+        return this.adminApiService.postWithCc(createUserUrl, model, accessToken);
       })
     );
   }

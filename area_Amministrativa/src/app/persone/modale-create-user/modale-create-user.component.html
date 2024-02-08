@@ -1,0 +1,14 @@
+<h1 mat-dialog-title align="center" style="font-size:20px; font-weight:bold">Create User</h1>
+<mat-dialog-content>
+  <form [formGroup]="createUserForm" class="mat-form">
+    <mat-label>Roles:</mat-label>
+    <mat-slide-toggle formControlName="Role_SA" *ngIf="IsSA">Super Admin</mat-slide-toggle>
+    <mat-slide-toggle formControlName="Role_Admin">CRM Admin</mat-slide-toggle>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+  <button mat-raised-button type="button" color="primary" (click)="onCreateUserClick()">Save</button>
+  <button mat-raised-button type="button" (click)="closepopup()" color="warn">Close</button>
+</mat-dialog-actions>
+

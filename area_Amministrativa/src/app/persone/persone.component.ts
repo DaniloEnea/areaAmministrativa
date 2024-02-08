@@ -13,6 +13,7 @@ import { AuthService } from "../service/auth.service";
 import { ToastrService } from "ngx-toastr";
 import { OrganizationDTO } from '../organizzazione/organizzazione.component';
 import {ActivatedRoute, Router} from "@angular/router";
+import {ModaleCreateUserComponent} from "./modale-create-user/modale-create-user.component";
 
 /*export interface FilterDTO {
   first_name: string;
@@ -71,6 +72,13 @@ export interface PersonDTO2 {
   isGDPRTermsAccepted: boolean;
   isServiceProcessingPurposesAccepted: boolean;
   isOtherProcessingPurposesAccepted: boolean;
+  roles: string[];
+}
+
+export interface User {
+  email: string;
+  password: string;
+  id: string;
   roles: string[];
 }
 
@@ -140,6 +148,8 @@ export class PersoneComponent implements OnInit {
     this.dataSource.filterPredicate = this.customFilterPredicate();
   }
 
+
+
   customFilterPredicate() {
     return (data: PersonDTO1, filter: string): boolean => {
       const searchText = JSON.parse(filter);
@@ -198,7 +208,7 @@ export class PersoneComponent implements OnInit {
 
                             const associatedOrg = orgDTOList.find(org => org.id === person.organizationId);
 
-                            
+
 
                             const associatedUser = userDTOList.find(user => user.username === person.email);
 
@@ -306,6 +316,26 @@ export class PersoneComponent implements OnInit {
         data: { person: person }
       });
 
+      dialogRef.afterClosed().subscribe((result) => {
+        console.log(`Dialog result: ${result}`);
+      });
+    }
+    else {
+      this.toastr.error("Token is expired", "Error")
+      setTimeout(() => {
+        window.location.reload();
+      }, 500)
+
+    }
+  }
+
+    openCreateUserDialog(person: User): void {
+    if (this.auth.isAuthenticated()) {
+      const dialogRef = this.dialog.open(ModaleCreateUserComponent, {
+        width: '60%',
+
+        data: { person: person }
+      });
       dialogRef.afterClosed().subscribe((result) => {
         console.log(`Dialog result: ${result}`);
       });
