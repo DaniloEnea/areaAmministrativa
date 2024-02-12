@@ -27,24 +27,24 @@ export class MyAccountComponent {
   resetButtonDisabled = false;
 
   constructor(private toastr: ToastrService, private authService: AuthService, private dialog: MatDialog, private httpApi: HttpProviderService) {}
-     username = this.authService.getUsernameFromJwt();
-     role = this.authService.getRoleFromJwt();
+  username = this.authService.getUsernameFromJwt();
+  role = this.authService.getRoleFromJwt();
 
 
 
-     /*
-  openResetPwdDialog(username: string): void {
-    const dialogRef = this.dialog.open(ResetPasswordComponent, {
-      data: { Username: username} // passo l'ID
-    });
+  /*
+openResetPwdDialog(username: string): void {
+ const dialogRef = this.dialog.open(ResetPasswordComponent, {
+   data: { Username: username} // passo l'ID
+ });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log(`Dialog result: ${result}`);
+ dialogRef.afterClosed().subscribe((result) => {
+   console.log(`Dialog result: ${result}`);
 
-    });
-  }
-  */
-    resetPasswordByEmail() {
+ });
+}
+*/
+  resetPasswordByEmail() {
     this.httpApi.forgotPwdByEmail(this.username, null).subscribe(
       {
         next: value => {
@@ -52,7 +52,7 @@ export class MyAccountComponent {
           this.resetButtonDisabled = true;
         },
         error: err => {
-          this.toastr.error("Something is error",  "Error")
+          this.toastr.error("Something went wrong", "Error")
         },
         complete: () => {
           setTimeout(() => {

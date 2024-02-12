@@ -97,6 +97,7 @@ export class PersoneComponent implements OnInit {
   filterLastName = ''; // Aggiungi questa linea per il valore del filtro per lastName
   filterOrg = '';
   resetButtonDisabled: { [key: string]: boolean } = {};
+  hideCreateUser: { [key: string]: boolean } = {};
   IsSA = true;
   buttonColor: { [email: string]: string } = {};
   adminOrgFilter = '';
@@ -381,7 +382,7 @@ export class PersoneComponent implements OnInit {
       this.httpApi.forgotPwdByEmail(email, null).subscribe(
         {
           next: value => {
-            this.toastr.success("We have sent a reset password link to your email. Please check.", "Success")
+            this.toastr.success("We have sent a reset password link to the email. Please check.", "Success")
           },
           error: err => {
             this.toastr.error("Something is error", "Error")

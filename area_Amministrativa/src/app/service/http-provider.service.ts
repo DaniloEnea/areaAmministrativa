@@ -11,7 +11,7 @@ let apiCredentials = "http://localhost:8282/oauth2/token"
 //GET PUBLIC KEY
 let orgEncryption = "https://localhost:7017/api/GetPublicKey/"
 let personEncryption = "https://localhost:7131/api/GetPublicKey/"
-let loginEncryption = "https://localhost:9000/api/rsa/GetPublicKey"
+let authEncryption = "https://localhost:9000/api/rsa/GetPublicKey/"
 
 //get
 //let getUtenteUrl = genericUrl + "utenti"
@@ -57,6 +57,9 @@ let resetPwdUrl = "http://localhost:9000/api/admin/changePassword"
 
 //forgot password
 let forgotPwdByEmailUrl = "http://localhost:9000/api/forgot_password"
+
+//Send email creation
+let sendEmailCreateUrl = "http://localhost:9000/api/auth/send_email_create/"
 
 // reset password by email
 let resetPwdByEmailUrl = "http://localhost:9000/api/reset_password"
@@ -195,6 +198,20 @@ export class HttpProviderService {
     );
   }
 
+  public sendEmailCreation(id: string, model: any): Observable<any> {
+    return this.adminApiService.postUrlEncoded(apiCredentials).pipe(
+      mergeMap((value: any) => {
+        const accessToken = value.body.access_token;
+
+        return of(accessToken);
+      }),
+      mergeMap((accessToken: string) => {
+        // Chiamata successiva con l'access token
+        return this.adminApiService.postWithCcById(id,sendEmailCreateUrl, model, accessToken);
+      })
+    );
+  }
+
   public resetPwdByEmail(model: any): Observable<any> {
     return this.adminApiService.postUrlEncoded(apiCredentials).pipe(
       mergeMap((value: any) => {
@@ -203,6 +220,7 @@ export class HttpProviderService {
         return of(accessToken);
       }),
       mergeMap((accessToken: string) => {
+
         // Chiamata successiva con l'access token
         return this.adminApiService.putCc(resetPwdByEmailUrl,model,accessToken);
       })
@@ -241,7 +259,7 @@ export class HttpProviderService {
   */
 
   public loginEncrypted(model: any): Observable<any> {
-       return this.adminApiService.postUrlEncoded(apiCredentials).pipe(
+    return this.adminApiService.postUrlEncoded(apiCredentials).pipe(
       mergeMap((value: any) => {
         const accessToken = value.body.access_token;
 
@@ -254,8 +272,8 @@ export class HttpProviderService {
     );
   }
 
-    public createUserEncrypted(model: any): Observable<any> {
-       return this.adminApiService.postUrlEncoded(apiCredentials).pipe(
+  public createUserEncrypted(model: any): Observable<any> {
+    return this.adminApiService.postUrlEncoded(apiCredentials).pipe(
       mergeMap((value: any) => {
         const accessToken = value.body.access_token;
 

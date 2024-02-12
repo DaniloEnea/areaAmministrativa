@@ -11,7 +11,6 @@ import {AuthService} from "../../service/auth.service";
 import {PersonDTO, PersonDTO1, User} from "../persone.component";
 import {HttpProviderService} from "../../service/http-provider.service";
 import {ToastrService} from "ngx-toastr";
-import {async} from "rxjs";
 
 @Component({
   selector: 'app-modale-create-user',
@@ -119,17 +118,18 @@ export class ModaleCreateUserComponent {
   }
 
   // funzione per creare l'utenza
-   async createUser(model:any) {
+  async createUser(model: any) {
     try {
       const createUserEncrypt = await this.httpApi.encrypt(JSON.stringify(model), "http://localhost:9000/api/rsa/GetPublicKey");
 
       this.httpApi.createUserEncrypted(createUserEncrypt).subscribe({
         next: async (encryptedResponse) => {
           this.toastr.success("Create user successful", "Success");
+          this.toastr.success("The create email has been sent to the user .", "Success");
           this.closepopup()
         },
         error: err => {
-           this.toastr.error("User exists", "Error");
+          this.toastr.error("User exists", "Error");
           console.log(err);
         }
       });
