@@ -59,7 +59,7 @@ let resetPwdUrl = "http://localhost:9000/api/admin/changePassword"
 let forgotPwdByEmailUrl = "http://localhost:9000/api/forgot_password"
 
 //Send email creation
-let sendEmailCreateUrl = "http://localhost:9000/api/auth/send_email_create/"
+let sendEmailCreateUrl = "http://localhost:9000/api/send_email_create"
 
 // reset password by email
 let resetPwdByEmailUrl = "http://localhost:9000/api/reset_password"
