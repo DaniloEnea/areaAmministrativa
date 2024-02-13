@@ -26,7 +26,6 @@ export interface UserDTO {
   roles: any[];
 }
 
-
 export interface PersonDTO {
   id: string;
   firstName: string;
@@ -214,6 +213,7 @@ export class PersoneComponent implements OnInit {
                             const associatedUser = userDTOList.find(user => user.username === person.email);
 
                             if (associatedUser && associatedOrg) {
+                              this.hideCreateUser[associatedUser.username] = true;
                               person.roles = associatedUser.roles.map(role => role.role);
 
                               person.organizationName = associatedOrg.name;
@@ -238,6 +238,7 @@ export class PersoneComponent implements OnInit {
                 }
               },
               error: (error: any) => {
+                this.toastr.error("Error fetching user data", "error")
                 console.error("Error fetching user data", error);
               }
             });
@@ -373,15 +374,16 @@ export class PersoneComponent implements OnInit {
   resetPassword(email: string): void {
     // Verifica se l'utente è già autenticato
     if (this.auth.isAuthenticated()) {
-      // Disabilita il pulsante
-      this.resetButtonDisabled[email] = true;
-      // Mette il colore grigio
-      this.buttonColor[email] = 'grey';
 
       // Chiamata alla funzione di reset della password
       this.httpApi.forgotPwdByEmail(email, null).subscribe(
         {
           next: value => {
+            // Disabilita il pulsante
+            this.resetButtonDisabled[email] = true;
+            // Mette il colore grigio
+            this.buttonColor[email] = 'grey';
+
             this.toastr.success("We have sent a reset password link to the email. Please check.", "Success")
           },
           error: err => {
@@ -391,7 +393,6 @@ export class PersoneComponent implements OnInit {
             setTimeout(() => {
               this.resetButtonDisabled[email] = false;
               this.buttonColor[email] = 'primary';
-              window.location.reload();
             }, 60000);
           }
         }

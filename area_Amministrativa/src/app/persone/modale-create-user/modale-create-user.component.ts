@@ -127,25 +127,21 @@
             this.toastr.success("Create user successful", "Success");
             console.log(this.data.person.email)
             console.log(this.createUserForm.value.email);
-            setTimeout(() => {
-              this.httpApi.sendEmailCreation(this.createUserForm.value.email, null).subscribe(
-                {
-                  next: value => {
-                    this.toastr.success("The create email has been send.", "Success")
 
-                  },
-                  error: err => {
-                    this.toastr.error("There is a problem with the email", "Error")
-                  },
-                  complete: () => {
-                    setTimeout(() => {
-
-                    }, 30000);
-                  }
-                }
-              );
-            }, 5000);
+            this.httpApi.sendEmailCreation(this.createUserForm.value.email, null).subscribe(
+              {
+                next: value => {
+                  this.toastr.success("The create email has been sent", "Success")
+                },
+                error: err => {
+                  this.toastr.error("There is a problem with the email", "Error")
+                },
+              }
+            );
             this.closepopup()
+            setTimeout(() => {
+              window.location.reload();
+            }, 3000);
           },
           error: err => {
             this.toastr.error("User exists", "Error");

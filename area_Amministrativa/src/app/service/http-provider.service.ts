@@ -12,6 +12,7 @@ let apiCredentials = "http://localhost:8282/oauth2/token"
 let orgEncryption = "https://localhost:7017/api/GetPublicKey/"
 let personEncryption = "https://localhost:7131/api/GetPublicKey/"
 let authEncryption = "https://localhost:9000/api/rsa/GetPublicKey/"
+let publicKeyUrl = "http://localhost:3000/api";
 
 //get
 //let getUtenteUrl = genericUrl + "utenti"
@@ -69,11 +70,18 @@ let getTokenUrl = "http://localhost:9000/api/reset_password"
 
 let createUserUrl = "http://localhost:9000/api/auth/create"
 
+export interface BodyComboDto {
+  Data1: any;
+  Data2: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class HttpProviderService {
 
+
+  
   constructor(private adminApiService: AdminApiService, private encryptionService: EncryptionService) { }
 
   /* ALL METHOD API FOR USER'S */
@@ -173,9 +181,12 @@ export class HttpProviderService {
 
   public async addNewPerson(model: any): Promise<Observable<any>> {
 
-    const encryptedDto = await this.encrypt(model, personEncryption);
+    const bcDto: BodyComboDto = {
+      Data1: model,
+      Data2: publicKeyUrl
+    }
 
-    console.log(JSON.stringify(encryptedDto))
+    const encryptedDto = await this.encrypt(JSON.stringify(bcDto), personEncryption);
 
     return await this.adminApiService.postEncrypted(addPersonUrl, JSON.stringify(encryptedDto))
   }

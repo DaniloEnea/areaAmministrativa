@@ -225,6 +225,7 @@ export class ModaleAddPersoneComponent {
             this.rolesSelected.push("ROLE_USER")
 
             console.log("test 1")
+            
             const newPerson: PersonDTO2 = {
               firstName: this.newPersonForm.value.firstName,
               lastName: this.newPersonForm.value.lastName,
@@ -241,26 +242,27 @@ export class ModaleAddPersoneComponent {
                 this.rolesSelected
 
             };
+
             console.log(newPerson)
-
-
             
             // post for create new user 
-            const addPersonObservable = from(this.httpApi.addNewPerson(JSON.stringify(newPerson)));
+            const addPersonObservable = from(this.httpApi.addNewPerson(newPerson));
             addPersonObservable.subscribe({
-
               next: (value: any) => {
-                this.httpApi.forgotPwdByEmail(this.newPersonForm.value.email, null).subscribe(
+                this.httpApi.sendEmailCreation(this.newPersonForm.value.email, null).subscribe(
                   {
+                    next: value => {
+                      this.toastr.success("The create email has been sent", "Success")
+                    },
                     error: err => {
                       this.toastr.warning("Can't inform user about creation", "Warn")
-                    }
+                    },
                   }
                 );
                 this.toastr.success("Data updated successfully", "Success");
                 setTimeout(() => {
                   //console.log(newPerson)
-                  //window.location.reload();
+                  window.location.reload();
                 }, 1500)
               },
               error: (err: any) => {
