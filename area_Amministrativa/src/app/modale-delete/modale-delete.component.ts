@@ -46,7 +46,7 @@ export class ModaleDeleteComponent {
       setTimeout(() => {
         //window.location.reload();
       }, 500)
-      
+
     }
   }
 
@@ -80,7 +80,7 @@ export class ModaleDeleteComponent {
       })
     }
   }
-  
+
 
   closepopup() {
     this.ref.close('Closed using function');
