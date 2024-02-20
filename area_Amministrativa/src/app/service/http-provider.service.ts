@@ -70,6 +70,8 @@ let getTokenUrl = "http://localhost:9000/api/reset_password"
 
 let createUserUrl = "http://localhost:9000/api/auth/create"
 
+let disableUserUrl = "http://localhost:9000/api/admin/disableUser"
+
 export interface BodyComboDto {
   Data1: any;
   Data2: string;
@@ -81,7 +83,7 @@ export interface BodyComboDto {
 export class HttpProviderService {
 
 
-  
+
   constructor(private adminApiService: AdminApiService, private encryptionService: EncryptionService) { }
 
   /* ALL METHOD API FOR USER'S */
@@ -126,6 +128,21 @@ export class HttpProviderService {
       mergeMap((accessToken: string) => {
         // Chiamata successiva con l'access token
         return this.adminApiService.getWithCc(getUtenteUrl, accessToken);
+      })
+    );
+  }
+
+    public disableUser(username: string): Observable<any> {
+    return this.adminApiService.postUrlEncoded(apiCredentials).pipe(
+      mergeMap((value: any) => {
+        const accessToken = value.body.access_token;
+
+        return of(accessToken);
+      }),
+      mergeMap((accessToken: string) => {
+
+        // Chiamata successiva con l'access token
+        return this.adminApiService.postWithCcById(username, disableUserUrl, null , accessToken);
       })
     );
   }

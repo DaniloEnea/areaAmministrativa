@@ -129,7 +129,7 @@
             <mat-icon>person_add</mat-icon>
           </button>
 
-          <button *ngIf="hideCreateUser[element.email]===true" class="delete-user" mat-mini-fab matTooltip="Delete user">
+          <button *ngIf="hideCreateUser[element.email]===true" class="delete-user" mat-mini-fab matTooltip="Delete user" (click)="disableUser(element.email)">
             <mat-icon>person_delete</mat-icon>
           </button>
 
