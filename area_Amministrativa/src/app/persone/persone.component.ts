@@ -216,21 +216,23 @@ export class PersoneComponent implements OnInit {
 
                             const associatedOrg = orgDTOList.find(org => org.Id === person.OrganizationId);
 
-
-
                             const associatedUser = userDTOList.find(user => user.Username === person.Email);
 
-                            if (associatedUser && associatedOrg) {
+                            if (associatedOrg) {
+                              person.OrganizationName = associatedOrg.Name;
+                            }
+                            else {
+                              person.OrganizationName = 'No org';
+                            }
+
+                            if (associatedUser) {
+
                               this.hideCreateUser[associatedUser.Username] = true;
                               person.Roles = associatedUser.Roles.map(role => role.role);
 
-                              person.OrganizationName = associatedOrg.Name;
                             }
-                            if (!associatedUser) {
+                            else{
                               person.Roles = ['Null'];
-                            }
-                            if (!associatedOrg) {
-                              person.OrganizationName = 'No org';
                             }
                           }
                         },
@@ -242,7 +244,7 @@ export class PersoneComponent implements OnInit {
                   });
                   this.LoadedData = true;
                   this.dataSource.data = [...this.PeopleList];
-                  console.log(this.PeopleList);
+                  
                 }
               },
               error: (error: any) => {
