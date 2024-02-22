@@ -89,9 +89,10 @@ export interface User {
 })
 
 export class PersoneComponent implements OnInit {
-  @ViewChild('filterFirstName') filterFirstNameInput: MatInput | undefined; // Riferimento all'input di firstName
-  @ViewChild('filterLastName') filterLastNameInput: MatInput | undefined; // Riferimento all'input di lastName
-  @ViewChild('filterOrg') filterOrgInput: MatInput | undefined; // Riferimento all'input di lastName
+  @ViewChild('filterFirstNameInput') filterFirstNameInput!: MatInput; // Riferimento all'input di firstName
+  @ViewChild('filterLastNameInput') filterLastNameInput!: MatInput; // Riferimento all'input di lastName
+  @ViewChild('filterOrgInput') filterOrgInput!: MatInput; // Riferimento all'input di organization
+
 
   filterFirstName = ''; // Aggiungi questa linea per il valore del filtro per firstName
   filterLastName = ''; // Aggiungi questa linea per il valore del filtro per lastName
@@ -101,6 +102,7 @@ export class PersoneComponent implements OnInit {
   IsSA = true;
   buttonColor: { [email: string]: string } = {};
   adminOrgFilter = '';
+  LoadedData: boolean = false;
 
 
 
@@ -152,17 +154,17 @@ export class PersoneComponent implements OnInit {
 
 
   customFilterPredicate() {
-    return (data: PersonDTO1, filter: string): boolean => {
-      const searchText = JSON.parse(filter);
+  return (data: PersonDTO1, filter: string): boolean => {
+    const searchText = JSON.parse(filter);
 
-      return (
-        data.FirstName.toLowerCase().includes(searchText.firstName) &&
-        data.LastName.toLowerCase().includes(searchText.lastName) &&
-        data.OrganizationName.toLowerCase().includes(searchText.organizationName)
+    return (
+      data.FirstName.toLowerCase().startsWith(searchText.FirstName) &&
+      data.LastName.toLowerCase().startsWith(searchText.LastName) &&
+      (!searchText.OrganizationName || data.OrganizationName.toLowerCase().startsWith(searchText.OrganizationName))
+    );
+  };
+}
 
-      );
-    };
-  }
 
   usernamefilter: string = '';
   rolefilter: string = '';
@@ -170,7 +172,11 @@ export class PersoneComponent implements OnInit {
 
   applyFilter() {
     // Applica il filtro in base alle proprietà firstName e lastName
-    const filterValue = { firstName: this.filterFirstName.toLowerCase(), lastName: this.filterLastName.toLowerCase(), organizationName: this.filterOrg.toLowerCase() };
+    const filterValue = {
+      FirstName: this.filterFirstName.toLowerCase(),
+      LastName: this.filterLastName.toLowerCase(),
+      OrganizationName: this.filterOrg.toLowerCase()
+    };
     this.dataSource.filter = JSON.stringify(filterValue);
   }
 
@@ -210,21 +216,23 @@ export class PersoneComponent implements OnInit {
 
                             const associatedOrg = orgDTOList.find(org => org.Id === person.OrganizationId);
 
-
-
                             const associatedUser = userDTOList.find(user => user.Username === person.Email);
 
-                            if (associatedUser && associatedOrg) {
+                            if (associatedOrg) {
+                              person.OrganizationName = associatedOrg.Name;
+                            }
+                            else {
+                              person.OrganizationName = 'No org';
+                            }
+
+                            if (associatedUser) {
+
                               this.hideCreateUser[associatedUser.Username] = true;
                               person.Roles = associatedUser.Roles.map(role => role.role);
 
-                              person.OrganizationName = associatedOrg.Name;
                             }
-                            if (!associatedUser) {
+                            else{
                               person.Roles = ['Null'];
-                            }
-                            if (!associatedOrg) {
-                              person.OrganizationName = 'No org';
                             }
                           }
                         },
@@ -234,9 +242,9 @@ export class PersoneComponent implements OnInit {
                       }
                     );
                   });
-
+                  this.LoadedData = true;
                   this.dataSource.data = [...this.PeopleList];
-                  console.log(this.PeopleList);
+                  
                 }
               },
               error: (error: any) => {
@@ -246,6 +254,10 @@ export class PersoneComponent implements OnInit {
             });
 
           }
+        }
+        else {
+          this.LoadedData = true;
+          this.toastr.warning("No people data found", "Warn");
         }
       },
       error: (error: any) => {

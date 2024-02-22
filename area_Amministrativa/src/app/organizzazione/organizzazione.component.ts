@@ -70,6 +70,7 @@ export class OrganizzazioneComponent {
   usernamefilter: string = '';
   resultData: any;
   IsSA: boolean = true;
+  LoadedData: boolean = false;
 
   // modal
   constructor(private changeDetectorRef: ChangeDetectorRef, public auth: AuthService, private router: Router, private dialog: MatDialog, private httpApi: HttpProviderService, private toastr: ToastrService) {
@@ -89,8 +90,9 @@ export class OrganizzazioneComponent {
   customFilterPredicate() {
     return (data: OrganizationDTO, filter: string): boolean => {
       const searchText = JSON.parse(filter);
+
       return (
-        data.Name.toLowerCase().includes(searchText.name)
+        data.Name.toLowerCase().startsWith(searchText.name)
       );
     };
   }
@@ -107,23 +109,28 @@ export class OrganizzazioneComponent {
           if (data != null && data.body != null) {
             this.resultData = this.httpApi.decrypt(data.body);
             if (this.resultData) {
-              ( this.httpApi.getAllPeople()).subscribe({
-                next:  (data2: any) => {
+              (this.httpApi.getAllPeople()).subscribe({
+                next: (data2: any) => {
                   if (data2 != null && data2.body != null) {
                     const retrieveData = this.httpApi.decrypt(data2.body);
                     if (retrieveData) {
                       this.OrgList = this.resultData;
                       this.getOrgIfCrmMgr(this.resultData, retrieveData);
+                      this.LoadedData = true;
                       this.dataSource.data = [...this.OrgList];
                       this.changeDetectorRef.detectChanges();
                     }
                   }
                 },
                 error: (error: any) => {
-                  console.error("Error fetching user data", error);
+                  console.error("Error fetching org data", error);
                 }
               });
             }
+          }
+          else {
+            this.LoadedData = true;
+            this.toastr.warning("No org data found", "Warn");
           }
         },
         error: (error: any) => {

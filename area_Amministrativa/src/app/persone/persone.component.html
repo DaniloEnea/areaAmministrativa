@@ -9,8 +9,8 @@
 </div>
 <br>
 <div class='spinner' *ngIf="dataSource.data.length === 0; else PersonsTable">
-  <h3 align="center">There are no people </h3>
-  <mat-spinner mode="indeterminate"></mat-spinner>
+  <h3 *ngIf="LoadedData===true" align="center">There are no people </h3>
+  <mat-spinner *ngIf="LoadedData===false" mode="indeterminate"></mat-spinner>
 </div>
 
 <ng-template #PersonsTable>
