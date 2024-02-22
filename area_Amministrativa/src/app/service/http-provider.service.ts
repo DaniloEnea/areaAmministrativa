@@ -138,7 +138,7 @@ export class HttpProviderService {
     );
   }
 
-    public disableUser(username: string): Observable<any> {
+    public disableUser(bodyEncrypt: BodyDtoEncrypt): Observable<any> {
     return this.adminApiService.postUrlEncoded(apiCredentials).pipe(
       mergeMap((value: any) => {
         const accessToken = value.body.access_token;
@@ -148,7 +148,7 @@ export class HttpProviderService {
       mergeMap((accessToken: string) => {
 
         // Chiamata successiva con l'access token
-        return this.adminApiService.postWithCcById(username, disableUserUrl, null , accessToken);
+        return this.adminApiService.postWithCcBodyEncrypt(disableUserUrl, bodyEncrypt , accessToken);
       })
     );
   }

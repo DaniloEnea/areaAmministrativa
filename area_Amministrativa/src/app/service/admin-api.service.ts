@@ -121,6 +121,22 @@ export class AdminApiService {
     );
   }
 
+  postWithCcBodyEncrypt(url: string, model: any, accessToken: string): Observable<any> {
+    const httpOptions = {
+      headers : new HttpHeaders( {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Authorization': 'Bearer ' + accessToken
+      }),
+      observe: "response" as 'body'
+    };
+
+    return this.http.post(url, JSON.stringify(model) , httpOptions).pipe(
+      map((response : any) => this.ReturnResponseData(response)),
+      catchError(this.handleError)
+    );
+  }
+
 
   getWithCc(url: string, accessToken: string): Observable<any> {
     const httpOptions = {
