@@ -281,6 +281,19 @@ export class PersoneComponent implements OnInit {
     }
   }
 
+  async disableUser(username: string) {
+    const usernameEncrypt = await this.httpApi.encrypt(JSON.stringify(username), "http://localhost:9000/api/rsa/GetPublicKey");
+
+    this.httpApi.disableUser(usernameEncrypt).subscribe({
+      next: value =>  {
+         this.toastr.success("User disable successfully", 'Success');
+      },
+      error: err => {
+         this.toastr.error("Something's error", 'Error');
+      }
+    })
+  }
+
   openDeleteDialog(id: string, username: string): void {
     const dialogRef = this.dialog.open(ModaleDeleteComponent, {
       data: { Id: id, Username : username, ClassForm: this.classForm } // passo l'ID

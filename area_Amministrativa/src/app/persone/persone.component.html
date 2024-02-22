@@ -8,8 +8,9 @@
   </button>
 </div>
 <br>
-<div *ngIf="dataSource.data.length === 0; else PersonsTable">
+<div class='spinner' *ngIf="dataSource.data.length === 0; else PersonsTable">
   <h3 align="center">There are no people </h3>
+  <mat-spinner mode="indeterminate"></mat-spinner>
 </div>
 
 <ng-template #PersonsTable>
@@ -127,6 +128,11 @@
           <button class="add-user" mat-mini-fab matTooltip="Create user" (click)="openCreateUserDialog(element)" [hidden]="hideCreateUser[element.email]">
             <mat-icon>person_add</mat-icon>
           </button>
+
+          <button *ngIf="hideCreateUser[element.email]===true" class="delete-user" mat-mini-fab matTooltip="Delete user" (click)="disableUser(element.email)">
+            <mat-icon>person_delete</mat-icon>
+          </button>
+
         </td>
       </ng-container>
 
