@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {AdminApiService} from "./admin-api.service";
 import {buffer, catchError, from, mergeMap, Observable, of} from "rxjs";
 import { EncryptionService } from './encryption.service';
+import {BodyDtoEncrypt} from "../dto/body-dto-encrypt";
 
 var tempFilterUrl : string;
 // PATH API
@@ -152,7 +153,7 @@ export class HttpProviderService {
     );
   }
 
-  public changeRole(username: string, roles: any ): Observable<any> {
+  public changeRole(bodyEncrypt: BodyDtoEncrypt): Observable<any> {
     return this.adminApiService.postUrlEncoded(apiCredentials).pipe(
       mergeMap((value: any) => {
         const accessToken = value.body.access_token;
@@ -162,7 +163,7 @@ export class HttpProviderService {
       mergeMap((accessToken: string) => {
 
         // Chiamata successiva con l'access token
-        return this.adminApiService.putWithCc(updatePersonRoleUrl, username, roles, accessToken);
+        return this.adminApiService.putWithCc(updatePersonRoleUrl,bodyEncrypt, accessToken);
 
       })
     );
@@ -336,7 +337,7 @@ export class HttpProviderService {
   }
 
   //reset_password
-  public resetPwd(username: string, password: any) {
+  public resetPwd(bodyEncrypt: BodyDtoEncrypt) {
     return this.adminApiService.postUrlEncoded(apiCredentials).pipe(
       mergeMap((value: any) => {
         const accessToken = value.body.access_token;
@@ -345,7 +346,7 @@ export class HttpProviderService {
       }),
       mergeMap((accessToken: string) => {
         // Chiamata successiva con l'access token
-        return this.adminApiService.putWithCc(resetPwdUrl,username, password, accessToken);
+        return this.adminApiService.putWithCc(resetPwdUrl,bodyEncrypt, accessToken);
       })
     );
   }
