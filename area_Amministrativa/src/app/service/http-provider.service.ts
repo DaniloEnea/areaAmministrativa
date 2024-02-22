@@ -77,6 +77,11 @@ export interface BodyComboDto {
   Data2: string;
 }
 
+export interface EncryptedAuthData {
+  encryptedUsername: string;
+  encryptedBody: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })

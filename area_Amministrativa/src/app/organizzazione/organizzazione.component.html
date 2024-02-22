@@ -4,8 +4,8 @@
 <h2 style="margin-top: 95px">Organizations List</h2>
 <br>
 <div class='spinner' *ngIf="dataSource.data.length === 0; else OrgTable">
-  <h3 align="center">There are no organization </h3>
-  <mat-spinner mode="indeterminate"></mat-spinner>
+  <h3 *ngIf="LoadedData===true" align="center">There are no organization </h3>
+  <mat-spinner *ngIf="LoadedData===false" mode="indeterminate"></mat-spinner>
 </div>
 
 <ng-template #OrgTable>
