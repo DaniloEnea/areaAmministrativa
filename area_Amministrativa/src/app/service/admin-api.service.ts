@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {catchError, map, Observable, throwError} from "rxjs";
+import { EncryptionService } from './encryption.service';
 
 
 @Injectable({
@@ -11,21 +12,46 @@ export class AdminApiService {
   //inserire token qui
   bearerToken: string = ""
 
-  constructor(private http: HttpClient) { }
+
+  constructor(private http: HttpClient, private encryptionService: EncryptionService) { }
+
+  public decrypt(encryptedObj: string): any {
+    // Decrypt the encrypted form data
+    const decryptedString = this.encryptionService.decryptRSASplit(encryptedObj);
+
+    if (decryptedString) {
+      try {
+        // Parse the decrypted JSON string
+        const decryptedFormValue = JSON.parse(decryptedString);
+        return decryptedFormValue;
+      } catch (error) {
+        console.error('Error parsing decrypted JSON:', error);
+        return null;
+      }
+    } else {
+      // Handle decryption failure
+      console.error('Error decrypting form data');
+      return null;
+    }
+  }
 
   /*  ALL METHOD API  */
-  get(url: string): Observable<any> {
-    const httpOpstions = {
+  async get(url: string): Promise<any> {
+    const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
       }),
-      observe: "response" as 'body'
+      observe: "response" as 'body',
+      responseType: "text" as 'json'
     };
 
-    return this.http.get(url, httpOpstions).pipe(
-    map((response: any) => this.ReturnResponseData(response)),
-      catchError(this.handleError)
-    );
+    try {
+      const response = await this.http.get(url, httpOptions).toPromise();
+      return this.ReturnResponseData(response);
+    } catch (error) {
+      this.handleError(error);
+      throw error; // Rilancia l'errore per gestirlo nell'ambito in cui è stata chiamata la funzione
+    }
   }
 
   //POST operations
@@ -135,7 +161,6 @@ export class AdminApiService {
       observe: "response" as 'body'
     };
     const putUrl = `${url}/${id}`;
-    console.log(putUrl)
     return this.http.put(putUrl, model, httpOptions).pipe(
       map((response : any) => this.ReturnResponseData(response)),
       catchError(this.handleError)
@@ -155,6 +180,27 @@ export class AdminApiService {
       map((response : any) => this.ReturnResponseData(response)),
       catchError(this.handleError)
     );
+  }
+
+  async putEncrypted(url: string, id: string, body: string): Promise<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      }),
+      observe: "response" as 'body',
+      responseType: 'text' as 'json'
+    };
+
+
+    const putUrl = `${url}/${id}`;
+
+    try {
+      const response = await this.http.put(putUrl, body, httpOptions).toPromise();
+      return this.ReturnResponseData(response);
+    } catch (error) {
+      this.handleError(error);
+      throw error; // Rilancia l'errore per gestirlo nell'ambito in cui è stata chiamata la funzione
+    }
   }
 
  getCc(url: string, accessToken: string, tokenQueryParam: string): Observable<any> {

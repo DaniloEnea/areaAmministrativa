@@ -57,7 +57,7 @@ export class ModaleDeleteComponent {
         next: (value: any) => {
           this.toastr.success("Deleted succesfully", "Success")
           setTimeout(() => {
-            //window.location.reload();
+            window.location.reload();
           }, 500)
         },
         error: (error: Error) => {
@@ -69,9 +69,9 @@ export class ModaleDeleteComponent {
       this.httpApi.forcedDeletePerson(this.data.Id).subscribe({
         next: (value: any) => {
           this.toastr.success("Deleted succesfully", "Success")
-          this.toastr.success("No user was found", "Warn")
+          this.toastr.warning("No user was found", "Warn")
           setTimeout(() => {
-            //window.location.reload();
+            window.location.reload();
           }, 500)
         },
         error: (error: Error) => {

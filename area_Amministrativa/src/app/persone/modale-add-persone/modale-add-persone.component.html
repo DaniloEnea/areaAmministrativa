@@ -29,7 +29,7 @@
     <mat-form-field class="full-width" *ngIf="IsSA">
       <mat-label>Organizzazione</mat-label>
       <mat-select formControlName="organizationId">
-        <mat-option *ngFor="let org of organizations" [value]="org.id">{{ org.name }}</mat-option>
+        <mat-option *ngFor="let org of organizations" [value]="org.Id">{{ org.Name }}</mat-option>
       </mat-select>
     </mat-form-field>
 

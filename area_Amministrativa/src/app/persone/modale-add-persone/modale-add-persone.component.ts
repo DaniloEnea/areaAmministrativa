@@ -52,11 +52,14 @@ export class ModaleAddPersoneComponent {
     this.IsSA = auth.checkIsSA();
 
     if (this.IsSA === true) {
-      this.httpApi.getAllOrg().subscribe({
+      const orgObservable = from(this.httpApi.getAllOrg())
+      orgObservable.subscribe({
         next: (data: any) => {
 
-          if (data != null && data.body != null) {
-            this.organizations = data.body;
+          const decryptedData = this.httpApi.decrypt(data.body);
+
+          if (decryptedData != null) {
+            this.organizations = decryptedData;
             console.log(this.organizations);
           }
 
@@ -166,15 +169,16 @@ export class ModaleAddPersoneComponent {
     if (this.IsSA === false) {
       return new Observable<string>((observer) => {
 
-        this.httpApi.getAllPeople().subscribe({
+        const PersonObservable = from(this.httpApi.getAllPeople())
+        PersonObservable.subscribe({
           next: (data: any) => {
             var resultData = data.body;
             const ppDTOList: PersonDTO1[] = resultData;
 
-            const CrmOrg = ppDTOList.find(pp => pp.email === this.auth.getUsernameFromJwt());
+            const CrmOrg = ppDTOList.find(pp => pp.Email === this.auth.getUsernameFromJwt());
             if (CrmOrg) {
-              this.organizationId = CrmOrg.organizationId;
-              observer.next(CrmOrg.organizationId);
+              this.organizationId = CrmOrg.OrganizationId;
+              observer.next(CrmOrg.OrganizationId);
               observer.complete();
             } else {
               observer.next("");
@@ -227,18 +231,18 @@ export class ModaleAddPersoneComponent {
             console.log("test 1")
             
             const newPerson: PersonDTO2 = {
-              firstName: this.newPersonForm.value.firstName,
-              lastName: this.newPersonForm.value.lastName,
-              cf: this.newPersonForm.value.cf,
-              organizationId: this.organizationId,
-              workRole: this.newPersonForm.value.workRole,
-              phone: this.newPersonForm.value.phone.internationalNumber,
-              email: this.newPersonForm.value.email,
-              secondEmail: this.newPersonForm.value.secondEmail,
-              isGDPRTermsAccepted: this.newPersonForm.value.isGDPRTermsAccepted,
-              isOtherProcessingPurposesAccepted: this.newPersonForm.value.isOtherProcessingPurposesAccepted,
-              isServiceProcessingPurposesAccepted: this.newPersonForm.value.isServiceProcessingPurposesAccepted,
-              roles:
+              FirstName: this.newPersonForm.value.firstName,
+              LastName: this.newPersonForm.value.lastName,
+              CF: this.newPersonForm.value.cf,
+              OrganizationId: this.organizationId,
+              WorkRole: this.newPersonForm.value.workRole,
+              Phone: this.newPersonForm.value.phone.internationalNumber,
+              Email: this.newPersonForm.value.email,
+              SecondEmail: this.newPersonForm.value.secondEmail,
+              IsGDPRTermsAccepted: this.newPersonForm.value.isGDPRTermsAccepted,
+              IsOtherProcessingPurposesAccepted: this.newPersonForm.value.isOtherProcessingPurposesAccepted,
+              IsServiceProcessingPurposesAccepted: this.newPersonForm.value.isServiceProcessingPurposesAccepted,
+              Roles:
                 this.rolesSelected
 
             };

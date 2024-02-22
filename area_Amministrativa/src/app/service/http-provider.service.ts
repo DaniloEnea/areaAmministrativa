@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {AdminApiService} from "./admin-api.service";
-import {mergeMap, Observable, of} from "rxjs";
+import {buffer, catchError, from, mergeMap, Observable, of} from "rxjs";
 import { EncryptionService } from './encryption.service';
 
 var tempFilterUrl : string;
@@ -146,11 +146,27 @@ export class HttpProviderService {
     );
   }
 
-  public getAllPeople(): Observable<any> {
-    return this.adminApiService.get(getPersonUrl)
+  public  getAllPeople(): Observable<any> {
+    //publicKeyUrl = encodeURIComponent(publicKeyUrl);
+    const Url = `${getPersonUrl}?publicKeyUrl=${encodeURIComponent(publicKeyUrl)}&allEntities=true`;
+
+    return from(this.adminApiService.get(Url)).pipe(
+      catchError(error => {
+        throw error;
+      })
+    );
   }
-  public getAllOrg(): Observable<any> {
-    return this.adminApiService.get(getOrgUrl)
+
+  public getAllOrg(): Observable<any>{
+    //publicKeyUrl = encodeURIComponent(publicKeyUrl);
+    //const Url = `${getOrgUrl}?publicKeyUrl=${encodedPublicKey}&allEntities=true`;
+    const Url = `${getOrgUrl}?publicKeyUrl=${encodeURIComponent(publicKeyUrl)}&allEntities=true`;
+
+    return from(this.adminApiService.get(Url)).pipe(
+      catchError(error => {
+        throw error;
+      })
+    );
   }
 
   public getUtenteByUsername(username: string): Observable<any> {
@@ -292,7 +308,7 @@ export class HttpProviderService {
       }),
       mergeMap((accessToken: string) => {
         // Chiamata successiva con l'access token
-        return this.adminApiService.postWithCc(createUserUrl, model, accessToken);
+        return this.adminApiService.postWithCc(createUserUrl, JSON.stringify(model), accessToken);
       })
     );
   }
@@ -317,11 +333,31 @@ export class HttpProviderService {
   //public updateUser(id: number, model : any) : Observable<any> {
   // return this.adminApiServie.put(updateUtenteUrl,id, model)
   //}
-  public updatePerson(id: string, model: any): Observable<any> {
-    return this.adminApiService.put(updatePersonUrl,id, model)
+  public async updatePerson(id: string, model: any): Promise<Observable<any>> {
+
+    const bcDto: BodyComboDto = {
+      Data1: model,
+      Data2: publicKeyUrl
+    }
+
+    const encryptedDto = await this.encrypt(JSON.stringify(bcDto), personEncryption);
+
+    const eId = await this.encrypt(id, personEncryption)
+
+    return this.adminApiService.putEncrypted(updatePersonUrl, Buffer.from(eId, 'utf-8').toString(), JSON.stringify(encryptedDto))
   }
-  public updateOrg(id: string, model: any): Observable<any> {
-    return this.adminApiService.put(updateOrgUrl, id, model)
+
+  public async updateOrg(id: string, model: any): Promise<Observable<any>> {
+    const bcDto: BodyComboDto = {
+      Data1: model,
+      Data2: publicKeyUrl
+    }
+
+    const encryptedDto = await this.encrypt(JSON.stringify(bcDto), orgEncryption);
+
+    const eId = btoa(await this.encrypt(id, orgEncryption));
+
+    return this.adminApiService.put(updateOrgUrl, eId, JSON.stringify(encryptedDto))
   }
 
   //DELETE

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { ModaleUpdateOrgComponent } from "./modale-update-org/modale-update-org.component";
 import { MatDialog } from "@angular/material/dialog";
 import { MatTableDataSource } from "@angular/material/table";
@@ -9,43 +9,44 @@ import { AuthService } from "../service/auth.service";
 import { ToastrService } from "ngx-toastr";
 import { PersonDTO1 } from '../persone/persone.component';
 import { Router } from '@angular/router';
+import { from } from 'rxjs';
 
 export interface OrganizationDTO {
-  id: string;
-  name: string;
-  vatNumber: string;
-  streetAddress: string;
-  city: string;
-  province_State: string;
-  country: string;
-  zipCode: string;
-  additionalInformation: string;
-  webSite: string;
-  emailAddress: string;
-  emailDomain: string;
-  pec: string;
-  billingCode: string;
-  isSupplier: boolean;
-  isCustomer: boolean;
+  Id: string;
+  Name: string;
+  VATNumber: string;
+  StreetAddress: string;
+  City: string;
+  Province_State: string;
+  Country: string;
+  ZipCode: string;
+  AdditionalInformation: string;
+  WebSite: string;
+  EmailAddress: string;
+  EmailDomain: string;
+  PEC: string;
+  BillingCode: string;
+  IsSupplier: boolean;
+  IsCustomer: boolean;
   IsValid: boolean;
   IsDeleted: boolean;
 }
 export interface OrganizationDTO1 {
-  name: string;
-  vatNumber: string;
-  streetAddress: string;
-  city: string;
-  province_State: string;
-  country: string;
-  zipCode: string;
-  additionalInformation: string;
-  webSite: string;
-  emailAddress: string;
-  emailDomain: string;
-  pec: string;
-  billingCode: string;
-  isSupplier: boolean;
-  isCustomer: boolean;
+  Name: string;
+  VatNumber: string;
+  StreetAddress: string;
+  City: string;
+  Province_State: string;
+  Country: string;
+  ZipCode: string;
+  AdditionalInformation: string;
+  WebSite: string;
+  EmailAddress: string;
+  EmailDomain: string;
+  PEC: string;
+  BillingCode: string;
+  IsSupplier: boolean;
+  IsCustomer: boolean;
   IsValid: boolean;
   IsDeleted: boolean;
 }
@@ -63,19 +64,20 @@ export class OrganizzazioneComponent {
   filterName = '';
   OrgList: OrganizationDTO[] = [];
   displayedColumns: string[] = ['name', 'streetAddress', 'country', 'emailAddress', 'emailDomain', 'update'];
-  dataSource = new MatTableDataSource<OrganizationDTO>(this.OrgList);
+  dataSource = new MatTableDataSource<OrganizationDTO>;
   PeopleList: PersonDTO1[] = [];
   rolefilter: string = '';
   usernamefilter: string = '';
+  resultData: any;
   IsSA: boolean = true;
 
   // modal
-  constructor(public auth: AuthService, private router: Router, private dialog: MatDialog, private httpApi: HttpProviderService, private toastr: ToastrService) {
+  constructor(private changeDetectorRef: ChangeDetectorRef, public auth: AuthService, private router: Router, private dialog: MatDialog, private httpApi: HttpProviderService, private toastr: ToastrService) {
     this.dataSource = new MatTableDataSource<OrganizationDTO>(this.OrgList);
   }
 
-  ngOnInit() {
-    this.allOrg();
+  async ngOnInit() {
+    await this.allOrg();
   }
 
   ngAfterViewInit() {
@@ -88,7 +90,7 @@ export class OrganizzazioneComponent {
     return (data: OrganizationDTO, filter: string): boolean => {
       const searchText = JSON.parse(filter);
       return (
-        data.name.toLowerCase().includes(searchText.name)
+        data.Name.toLowerCase().includes(searchText.name)
       );
     };
   }
@@ -98,60 +100,63 @@ export class OrganizzazioneComponent {
     this.dataSource.filter = JSON.stringify(filterValue);
   }
 
-  allOrg() {
-    this.httpApi.getAllOrg().subscribe({
-      next: (data: any) => {
-
-        if (data != null && data.body != null) {
-          var resultData = data.body;
-
-          if (resultData) {
-            this.httpApi.getAllPeople().subscribe({
-              next: (data: any) => {
-
-                if (data != null && data.body != null) {
-                  var retrieveData = data.body;
-
-                  if (retrieveData) {
-                    this.OrgList = resultData;
-                    this.getOrgIfCrmMgr(resultData, retrieveData);
-                    this.dataSource.data = [...this.OrgList];
+   allOrg() {
+    try {
+      ( this.httpApi.getAllOrg()).subscribe({
+        next:  (data: any) => {
+          if (data != null && data.body != null) {
+            this.resultData = this.httpApi.decrypt(data.body);
+            if (this.resultData) {
+              ( this.httpApi.getAllPeople()).subscribe({
+                next:  (data2: any) => {
+                  if (data2 != null && data2.body != null) {
+                    const retrieveData = this.httpApi.decrypt(data2.body);
+                    if (retrieveData) {
+                      this.OrgList = this.resultData;
+                      this.getOrgIfCrmMgr(this.resultData, retrieveData);
+                      this.dataSource.data = [...this.OrgList];
+                      this.changeDetectorRef.detectChanges();
+                    }
                   }
+                },
+                error: (error: any) => {
+                  console.error("Error fetching user data", error);
                 }
-              },
-              error: (error: any) => {
-                console.error("Error fetching user data", error);
-              }
-            })
+              });
+            }
           }
-        }
-      },
-      error: (error: any) => {
-        if (error) {
-          if (error.status == 404) {
+        },
+        error: (error: any) => {
+          if (error.status === 404) {
             if (error.error && error.error.message) {
               this.OrgList = [];
               this.dataSource.data = [...this.OrgList];
             }
+          } else {
+            console.error("Error fetching org data", error);
           }
         }
-      }
-    });
+      });
+    } catch (error) {
+      console.error("Error fetching org data", error);
+    }
+    
   }
 
   getOrgIfCrmMgr(resultData: any, retrieveData: any) {
     this.usernamefilter = this.auth.getUsernameFromJwt();
 
+    console.log(this.usernamefilter)
     if (this.auth.checkIsSA() === false) {
       this.IsSA = false;
       const ppDTOList: PersonDTO1[] = retrieveData;
       const orgDTOList: OrganizationDTO[] = resultData;
 
-      const CrmOrg = ppDTOList.find(pp => pp.email === this.usernamefilter);
+      const CrmOrg = ppDTOList.find(pp => pp.Email === this.usernamefilter);
       console.log(CrmOrg)
 
       if (CrmOrg != null) {
-        this.OrgList = orgDTOList.filter(og => og.id == CrmOrg.organizationId);
+        this.OrgList = orgDTOList.filter(og => og.Id == CrmOrg.OrganizationId);
         this.OrgList = this.OrgList;
         
       }

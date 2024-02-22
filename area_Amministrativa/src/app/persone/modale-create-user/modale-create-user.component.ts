@@ -12,6 +12,14 @@
   import {HttpProviderService} from "../../service/http-provider.service";
   import {ToastrService} from "ngx-toastr";
 
+export interface SendUser {
+  password: string,
+  email: string,
+  id: string,
+  roles: string[]
+}
+
+
   @Component({
     selector: 'app-modale-create-user',
     standalone: true,
@@ -41,8 +49,10 @@
 
       this.IsSA = auth.checkIsSA();
 
+      console.log(this.data.person)
+
       this.createUserForm = this.formBuilder.group({
-        email: [this.data.person.email, Validators.required],
+        email: [this.data.person.Email, Validators.required],
         Role_SA: [this.roleCheck("ROLE_SA")],
         Role_Admin: [this.roleCheck("ROLE_ADMIN")]
       });
@@ -65,8 +75,8 @@
     }
 
     roleCheck(role: string): boolean {
-      if (this.data.person.roles != null) {
-        return this.data.person.roles.includes(role);
+      if (this.data.person.Roles != null) {
+        return this.data.person.Roles.includes(role);
       }
       else return false;
     }
@@ -86,6 +96,7 @@
 
     onCreateUserClick(): void {
       if (this.auth.isAuthenticated()) {
+        console.log(this.createUserForm)
         if (this.createUserForm.valid) {
 
           if (this.createUserForm.value.Role_SA == true) {
@@ -98,15 +109,15 @@
 
           console.log(this.rolesSelected)
 
-          const createUser: User = {
+          const createUser: SendUser = {
             password: this.generatePassword(12),
-            email: this.data.person.email,
-            id: this.data.person.id,
+            email: this.data.person.Email,
+            id: this.data.person.Id,
             roles: this.rolesSelected,
           };
 
           console.log(createUser);
-          this.createUser(createUser).then();
+          this.createUser(createUser);
         }
       }
       else {
@@ -118,15 +129,13 @@
     }
 
     // funzione per creare l'utenza
-    async createUser(model: any) {
+    createUser(model: any) {
       try {
-        const createUserEncrypt = await this.httpApi.encrypt(JSON.stringify(model), "http://localhost:9000/api/rsa/GetPublicKey");
+        const createUserEncrypt = this.httpApi.encrypt(JSON.stringify(model), "http://localhost:9000/api/rsa/GetPublicKey");
 
         this.httpApi.createUserEncrypted(createUserEncrypt).subscribe({
-          next: async (encryptedResponse) => {
+          next: (encryptedResponse) => {
             this.toastr.success("Create user successful", "Success");
-            console.log(this.data.person.email)
-            console.log(this.createUserForm.value.email);
 
             this.httpApi.sendEmailCreation(this.createUserForm.value.email, null).subscribe(
               {

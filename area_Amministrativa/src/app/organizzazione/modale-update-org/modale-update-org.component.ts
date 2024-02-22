@@ -22,38 +22,38 @@ export class ModaleUpdateOrgComponent {
 
 
     this.updateOrgForm = this.formBuilder.group({
-      name: [this.data.org.name, Validators.required],
-      vatNumber: [this.data.org.vatNumber, Validators.required],
-      streetAddress: [this.data.org.streetAddress, Validators.required],
-      city: [this.data.org.city, Validators.required],
-      province_State: [this.data.org.province_State, Validators.required],
-      country: [this.data.org.country, Validators.required],
-      zipCode: [this.data.org.zipCode, Validators.required],
-      additionalInformation: [this.data.org.additionalInformation],
-      webSite: [this.data.org.webSite, Validators.required],
-      emailAddress: new FormControl(this.data.org.emailAddress, [Validators.email, Validators.required]),
-      emailDomain: [this.data.org.emailDomain, Validators.required],
-      pec: new FormControl(this.data.org.pec, [Validators.email, Validators.required]),
-      billingCode: [this.data.org.billingCode, Validators.required],
-      isSupplier: [this.data.org.isSupplier, Validators.required],
-      isCustomer: [this.data.org.isCustomer, Validators.required],
+      Name: [this.data.org.Name, Validators.required],
+      VATNumber: [this.data.org.VATNumber, Validators.required],
+      StreetAddress: [this.data.org.StreetAddress, Validators.required],
+      City: [this.data.org.City, Validators.required],
+      Province_State: [this.data.org.Province_State, Validators.required],
+      Country: [this.data.org.Country, Validators.required],
+      ZipCode: [this.data.org.ZipCode, Validators.required],
+      AdditionalInformation: [this.data.org.AdditionalInformation],
+      WebSite: [this.data.org.WebSite, Validators.required],
+      EmailAddress: new FormControl(this.data.org.EmailAddress, [Validators.email, Validators.required]),
+      EmailDomain: [this.data.org.EmailDomain, Validators.required],
+      PEC: new FormControl(this.data.org.PEC, [Validators.email, Validators.required]),
+      BillingCode: [this.data.org.BillingCode, Validators.required],
+      IsSupplier: [this.data.org.IsSupplier, Validators.required],
+      IsCustomer: [this.data.org.IsCustomer, Validators.required],
       IsValid: [true],
       IsDeleted: [false]
     });
   }
 
-  get name() { return this.updateOrgForm.get('name'); }
-  get vatNumber() { return this.updateOrgForm.get('vatNumber'); }
-  get streetAddress() { return this.updateOrgForm.get('streetAddress'); }
-  get city() { return this.updateOrgForm.get('city'); }
-  get province_State() { return this.updateOrgForm.get('province_State'); }
-  get country() { return this.updateOrgForm.get('country'); }
-  get zipCode() { return this.updateOrgForm.get('zipCode'); }
-  get webSite() { return this.updateOrgForm.get('webSite'); }
-  get emailAddress() { return this.updateOrgForm.get('emailAddress'); }
-  get emailDomain() { return this.updateOrgForm.get('emailDomain'); }
-  get pec() { return this.updateOrgForm.get('pec'); }
-  get billingCode() { return this.updateOrgForm.get('billingCode'); }
+  get name() { return this.updateOrgForm.get('Name'); }
+  get vatNumber() { return this.updateOrgForm.get('VATNumber'); }
+  get streetAddress() { return this.updateOrgForm.get('StreetAddress'); }
+  get city() { return this.updateOrgForm.get('City'); }
+  get province_State() { return this.updateOrgForm.get('Province_State'); }
+  get country() { return this.updateOrgForm.get('Country'); }
+  get zipCode() { return this.updateOrgForm.get('ZipCode'); }
+  get webSite() { return this.updateOrgForm.get('WebSite'); }
+  get emailAddress() { return this.updateOrgForm.get('EmailAddress'); }
+  get emailDomain() { return this.updateOrgForm.get('EmailDomain'); }
+  get pec() { return this.updateOrgForm.get('PEC'); }
+  get billingCode() { return this.updateOrgForm.get('BillingCode'); }
 
   // @ts-ignore
   getEmailAddressError() {
@@ -160,35 +160,35 @@ export class ModaleUpdateOrgComponent {
   }
 
 
-  onUpdateClick(): void {
+  async onUpdateClick(): Promise<void> {
     if (this.auth.isAuthenticated()) {
       if (this.updateOrgForm.valid) {
-        console.log(this.data.org.id)
+        console.log(this.data.org.Id)
         const updateOrg: OrganizationDTO = {
-          id: this.data.org.id,
-          name: this.updateOrgForm.value.name,
-          vatNumber: this.updateOrgForm.value.vatNumber,
-          streetAddress: this.updateOrgForm.value.streetAddress,
-          city: this.updateOrgForm.value.city,
-          province_State: this.updateOrgForm.value.province_State,
-          country: this.updateOrgForm.value.country,
-          zipCode: this.updateOrgForm.value.zipCode,
-          additionalInformation: this.updateOrgForm.value.additionalInformation,
-          webSite: this.updateOrgForm.value.webSite,
-          emailAddress: this.updateOrgForm.value.emailAddress,
-          emailDomain: this.updateOrgForm.value.emailDomain,
-          pec: this.updateOrgForm.value.pec,
-          billingCode: this.updateOrgForm.value.billingCode,
-          isSupplier: this.updateOrgForm.value.isSupplier,
-          isCustomer: this.updateOrgForm.value.isCustomer,
-          IsValid: this.updateOrgForm.value.isValid,
-          IsDeleted: this.updateOrgForm.value.isDeleted
+          Id: this.data.org.Id,
+          Name: this.updateOrgForm.value.Name,
+          VATNumber: this.updateOrgForm.value.VATNumber,
+          StreetAddress: this.updateOrgForm.value.StreetAddress,
+          City: this.updateOrgForm.value.City,
+          Province_State: this.updateOrgForm.value.Province_State,
+          Country: this.updateOrgForm.value.Country,
+          ZipCode: this.updateOrgForm.value.ZipCode,
+          AdditionalInformation: this.updateOrgForm.value.AdditionalInformation,
+          WebSite: this.updateOrgForm.value.WebSite,
+          EmailAddress: this.updateOrgForm.value.EmailAddress,
+          EmailDomain: this.updateOrgForm.value.EmailDomain,
+          PEC: this.updateOrgForm.value.PEC,
+          BillingCode: this.updateOrgForm.value.BillingCode,
+          IsSupplier: this.updateOrgForm.value.IsSupplier,
+          IsCustomer: this.updateOrgForm.value.IsCustomer,
+          IsValid: this.updateOrgForm.value.IsValid,
+          IsDeleted: this.updateOrgForm.value.IsDeleted
         };
 
 
-
+        console.log(updateOrg);
         // post for create new user
-        this.httpApi.updateOrg(this.data.org.id, updateOrg).subscribe((response) => {
+        (await this.httpApi.updateOrg(this.data.org.Id, updateOrg)).subscribe((response) => {
           this.toastr.success("Data updated successfully", "Success");
           setTimeout(() => {
             window.location.reload();

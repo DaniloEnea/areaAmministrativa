@@ -14,6 +14,7 @@ import { ToastrService } from "ngx-toastr";
 import { OrganizationDTO } from '../organizzazione/organizzazione.component';
 import {ActivatedRoute, Router} from "@angular/router";
 import {ModaleCreateUserComponent} from "./modale-create-user/modale-create-user.component";
+import { from } from 'rxjs';
 
 /*export interface FilterDTO {
   first_name: string;
@@ -21,64 +22,64 @@ import {ModaleCreateUserComponent} from "./modale-create-user/modale-create-user
 }*/
 
 export interface UserDTO {
-  personId: string;
-  username: string;
-  roles: any[];
+  PersonId: string;
+  Username: string;
+  Roles: any[];
 }
 
 export interface PersonDTO {
-  id: string;
-  firstName: string;
-  lastName: string;
-  organizationId: string;
-  workRole: string;
-  phone: string;
-  email: string;
-  secondEmail: string;
-  cf: string;
-  isGDPRTermsAccepted: boolean;
-  isServiceProcessingPurposesAccepted: boolean;
-  isOtherProcessingPurposesAccepted: boolean;
+  Id: string;
+  FirstName: string;
+  LastName: string;
+  OrganizationId: string;
+  WorkRole: string;
+  Phone: string;
+  Email: string;
+  SecondEmail: string;
+  CF: string;
+  IsGDPRTermsAccepted: boolean;
+  IsServiceProcessingPurposesAccepted: boolean;
+  IsOtherProcessingPurposesAccepted: boolean;
   IsValid: boolean;
   IsDeleted: boolean;
 }
 export interface PersonDTO1 {
-  id: string;
-  firstName: string;
-  lastName: string;
-  organizationId: string;
-  organizationName: string;
-  workRole: string;
-  phone: string;
-  email: string;
-  secondEmail: string;
-  cf: string;
-  isGDPRTermsAccepted: boolean;
-  isServiceProcessingPurposesAccepted: boolean;
-  isOtherProcessingPurposesAccepted: boolean;
-  roles: string[];
+  Id: string;
+  FirstName: string;
+  LastName: string;
+  OrganizationId: string;
+  OrganizationName: string;
+  WorkRole: string;
+  Phone: string;
+  Email: string;
+  SecondEmail: string;
+  CF: string;
+  IsGDPRTermsAccepted: boolean;
+  IsServiceProcessingPurposesAccepted: boolean;
+  IsOtherProcessingPurposesAccepted: boolean;
+  Roles: string[];
 }
 
 export interface PersonDTO2 {
-  firstName: string;
-  lastName: string;
-  workRole: string;
-  phone: string;
-  email: string;
-  secondEmail: string;
-  cf: string;
-  organizationId: string;
-  isGDPRTermsAccepted: boolean;
-  isServiceProcessingPurposesAccepted: boolean;
-  isOtherProcessingPurposesAccepted: boolean;
-  roles: string[];
+  FirstName: string;
+  LastName: string;
+  WorkRole: string;
+  Phone: string;
+  Email: string;
+  SecondEmail: string;
+  CF: string;
+  OrganizationId: string;
+  IsGDPRTermsAccepted: boolean;
+  IsServiceProcessingPurposesAccepted: boolean;
+  IsOtherProcessingPurposesAccepted: boolean;
+  Roles: string[];
 }
 
 export interface User {
-  email: string;
-  password: string;
-  id: string;
-  roles: string[];
+  Email: string;
+  Password: string;
+  Id: string;
+  Roles: string[];
 }
 
 @Component({
@@ -155,9 +156,9 @@ export class PersoneComponent implements OnInit {
       const searchText = JSON.parse(filter);
 
       return (
-        data.firstName.toLowerCase().includes(searchText.firstName) &&
-        data.lastName.toLowerCase().includes(searchText.lastName) &&
-        data.organizationName.toLowerCase().includes(searchText.organizationName)
+        data.FirstName.toLowerCase().includes(searchText.firstName) &&
+        data.LastName.toLowerCase().includes(searchText.lastName) &&
+        data.OrganizationName.toLowerCase().includes(searchText.organizationName)
 
       );
     };
@@ -176,18 +177,19 @@ export class PersoneComponent implements OnInit {
 
   allPeople(orgId?: string) {
     this.usernamefilter = this.auth.getUsernameFromJwt();
-
     this.httpApi.getAllPeople().subscribe({
       next: (data: any) => {
         if (data != null && data.body != null) {
-          var resultData = data.body;
+          var decryptedData = this.httpApi.decrypt(data.body)
+          console.log(decryptedData);
+          var resultData = decryptedData;
           if (resultData) {
             this.PeopleList = resultData;
 
             this.getPeopleIfAdmin(this.PeopleList)
 
             if (orgId != null) {
-              this.PeopleList = this.PeopleList.filter(orgs => orgs.organizationId === orgId);
+              this.PeopleList = this.PeopleList.filter(orgs => orgs.OrganizationId === orgId);
             }
 
             this.httpApi.getAllUsers().subscribe({
@@ -204,25 +206,25 @@ export class PersoneComponent implements OnInit {
                       {
                         next: (orgData: any) => {
                           if (orgData != null && orgData.body != null) {
-                            const orgDTOList: OrganizationDTO[] = orgData.body;
+                            const orgDTOList: OrganizationDTO[] = this.httpApi.decrypt(orgData.body);
 
-                            const associatedOrg = orgDTOList.find(org => org.id === person.organizationId);
+                            const associatedOrg = orgDTOList.find(org => org.Id === person.OrganizationId);
 
 
 
-                            const associatedUser = userDTOList.find(user => user.username === person.email);
+                            const associatedUser = userDTOList.find(user => user.Username === person.Email);
 
                             if (associatedUser && associatedOrg) {
-                              this.hideCreateUser[associatedUser.username] = true;
-                              person.roles = associatedUser.roles.map(role => role.role);
+                              this.hideCreateUser[associatedUser.Username] = true;
+                              person.Roles = associatedUser.Roles.map(role => role.role);
 
-                              person.organizationName = associatedOrg.name;
+                              person.OrganizationName = associatedOrg.Name;
                             }
                             if (!associatedUser) {
-                              person.roles = ['Null'];
+                              person.Roles = ['Null'];
                             }
                             if (!associatedOrg) {
-                              person.organizationName = 'No org';
+                              person.OrganizationName = 'No org';
                             }
                           }
                         },
@@ -264,10 +266,10 @@ export class PersoneComponent implements OnInit {
       this.IsSA = false;
       const ppDTOList: PersonDTO1[] = resultData;
 
-      const CrmOrg = ppDTOList.find(pp => pp.email === this.usernamefilter);
+      const CrmOrg = ppDTOList.find(pp => pp.Email === this.usernamefilter);
 
       if (CrmOrg) {
-        this.PeopleList = this.PeopleList.filter(orgs => orgs.organizationId === CrmOrg.organizationId);
+        this.PeopleList = this.PeopleList.filter(orgs => orgs.OrganizationId === CrmOrg.OrganizationId);
       }
       else {
         this.toastr.error("No org data found", 'Error');
@@ -331,7 +333,7 @@ export class PersoneComponent implements OnInit {
     }
   }
 
-    openCreateUserDialog(person: User): void {
+  openCreateUserDialog(person: User): void {
     if (this.auth.isAuthenticated()) {
       const dialogRef = this.dialog.open(ModaleCreateUserComponent, {
         width: '60%',
@@ -387,7 +389,7 @@ export class PersoneComponent implements OnInit {
             this.toastr.success("We have sent a reset password link to the email. Please check.", "Success")
           },
           error: err => {
-            this.toastr.error("Something is error", "Error")
+            this.toastr.error("Something went error", "Error")
           },
           complete: () => {
             setTimeout(() => {
