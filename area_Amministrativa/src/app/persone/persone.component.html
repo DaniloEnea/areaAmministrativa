@@ -133,7 +133,7 @@
           <mat-icon>person_disable</mat-icon>
         </button>
 
-        <button *ngIf="hideDisableUser[element.Email]===true" mat-mini-fab matTooltip="Enable user" [hidden]="hideEnableUser[element.Email]">
+        <button *ngIf="hideDisableUser[element.Email]===true" mat-mini-fab matTooltip="Enable user" (click)="abilityUser(element.Email)" [hidden]="hideEnableUser[element.Email]">
           <mat-icon>person_add</mat-icon>
         </button>
 

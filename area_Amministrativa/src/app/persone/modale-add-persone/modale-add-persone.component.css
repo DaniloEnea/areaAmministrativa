@@ -7,3 +7,11 @@
 .full-width {
   width: 100%;
 }
+
+.roles-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+

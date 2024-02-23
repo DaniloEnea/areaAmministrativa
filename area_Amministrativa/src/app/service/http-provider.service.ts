@@ -25,8 +25,8 @@ let getOrgUrl = "https://localhost:7017/api/Organizations"
 
 //add
 //let addUtenteUrl = genericUrl + "addUtenti"
-//let addPersonUrl = "https://localhost:7131/api/People/CreatePU?isFront=true"
-let addPersonUrl = "https://localhost:7131/api/People/CreatePU"
+let addPersonUrl = "https://localhost:7131/api/People"
+let addPersonUserUrl = "https://localhost:7131/api/People/CreatePU"
 //let addOrgUrl = genericUrl + "addOrganization"
 
 /*details*/
@@ -72,6 +72,8 @@ let getTokenUrl = "http://localhost:9000/api/reset_password"
 let createUserUrl = "http://localhost:9000/api/auth/create"
 
 let disableUserUrl = "http://localhost:9000/api/admin/disableUser"
+
+let abilityUserUrl = "http://localhost:9000/api/admin/abilityUser"
 
 export interface BodyComboDto {
   Data1: any;
@@ -153,6 +155,21 @@ export class HttpProviderService {
     );
   }
 
+  public abilityUser(bodyEncrypt: BodyDtoEncrypt): Observable<any> {
+    return this.adminApiService.postUrlEncoded(apiCredentials).pipe(
+      mergeMap((value: any) => {
+        const accessToken = value.body.access_token;
+
+        return of(accessToken);
+      }),
+      mergeMap((accessToken: string) => {
+
+        // Chiamata successiva con l'access token
+        return this.adminApiService.postWithCcBodyEncrypt(abilityUserUrl, bodyEncrypt , accessToken);
+      })
+    );
+  }
+
   public changeRole(bodyEncrypt: BodyDtoEncrypt): Observable<any> {
     return this.adminApiService.postUrlEncoded(apiCredentials).pipe(
       mergeMap((value: any) => {
@@ -217,6 +234,18 @@ export class HttpProviderService {
   //public async addNewUser(model: any) : Promise<Observable<any>> {
   //  return await this.adminApiService.post(addUtenteUrl, this.encrypt(model))
   //}
+
+  public async addNewPU(model: any): Promise<Observable<any>> {
+
+    const bcDto: BodyComboDto = {
+      Data1: model,
+      Data2: publicKeyUrl
+    }
+
+    const encryptedDto = await this.encrypt(JSON.stringify(bcDto), personEncryption);
+
+    return await this.adminApiService.postEncrypted(addPersonUserUrl, JSON.stringify(encryptedDto))
+  }
 
   public async addNewPerson(model: any): Promise<Observable<any>> {
 
