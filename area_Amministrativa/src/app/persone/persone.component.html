@@ -125,17 +125,21 @@
             <mat-icon>delete</mat-icon>
           </button>
 
-          <button class="reset_pwd" mat-mini-fab matTooltip="Reset password" (click)="resetPassword(element.Email)" [disabled]="resetButtonDisabled[element.email]" [ngStyle]="{ 'background-color': buttonColor[element.email] }">
+          <button class="reset_pwd" mat-mini-fab matTooltip="Reset password" (click)="resetPassword(element.Email)" [disabled]="resetButtonDisabled[element.Email]" [ngStyle]="{ 'background-color': buttonColor[element.Email] }">
             <mat-icon>lock_reset</mat-icon>
           </button>
 
-          <button class="add-user" mat-mini-fab matTooltip="Create user" (click)="openCreateUserDialog(element)" [hidden]="hideCreateUser[element.email]">
-            <mat-icon>person_add</mat-icon>
-          </button>
+        <button class="add-user" mat-mini-fab matTooltip="Create user" (click)="openCreateUserDialog(element)" [hidden]="hideCreateUser[element.Email]">
+          <mat-icon>person_add</mat-icon>
+        </button>
 
-          <button *ngIf="hideCreateUser[element.email]===true" class="delete-user" mat-mini-fab matTooltip="Delete user" (click)="disableUser(element.email)">
-            <mat-icon>person_delete</mat-icon>
-          </button>
+        <button *ngIf="hideCreateUser[element.Email]===true" class="delete-user" mat-mini-fab matTooltip="Disable user" (click)="disableUser(element.Email)" [hidden]="hideDisableUser[element.Email]">
+          <mat-icon>person_disable</mat-icon>
+        </button>
+
+        <button *ngIf="hideDisableUser[element.Email]===true" mat-mini-fab matTooltip="Enable user" (click)="abilityUser(element.Email)" [hidden]="hideEnableUser[element.Email]">
+          <mat-icon>person_add</mat-icon>
+        </button>
 
         </td>
       </ng-container>

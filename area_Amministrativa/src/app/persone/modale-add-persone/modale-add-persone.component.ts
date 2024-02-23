@@ -22,6 +22,7 @@ export interface Roles {
   styleUrls: ['./modale-add-persone.component.css']
 })
 
+
 export class ModaleAddPersoneComponent {
 
   test: string[] = [
@@ -29,6 +30,7 @@ export class ModaleAddPersoneComponent {
     'ROLE_ADMIN'
   ]
 
+  wantToCreateUser: boolean = false;
   newPersonForm: FormGroup;
   rolesSelected: string[] = [];
   organizations: any[] = [];
@@ -96,6 +98,7 @@ export class ModaleAddPersoneComponent {
         isGDPRTermsAccepted: [false],
         isOtherProcessingPurposesAccepted: [true],
         isServiceProcessingPurposesAccepted: [false],
+        wantToCreateUser: [false],
         Role_SA: [false],
         Role_Admin: [false]
       });
@@ -113,6 +116,7 @@ export class ModaleAddPersoneComponent {
         isGDPRTermsAccepted: [false],
         isOtherProcessingPurposesAccepted: [true],
         isServiceProcessingPurposesAccepted: [false],
+        wantToCreateUser: [false],
         Role_SA: [false],
         Role_Admin: [false]
       });
@@ -229,7 +233,7 @@ export class ModaleAddPersoneComponent {
             this.rolesSelected.push("ROLE_USER")
 
             console.log("test 1")
-            
+
             const newPerson: PersonDTO2 = {
               FirstName: this.newPersonForm.value.firstName,
               LastName: this.newPersonForm.value.lastName,
@@ -243,37 +247,57 @@ export class ModaleAddPersoneComponent {
               IsOtherProcessingPurposesAccepted: this.newPersonForm.value.isOtherProcessingPurposesAccepted,
               IsServiceProcessingPurposesAccepted: this.newPersonForm.value.isServiceProcessingPurposesAccepted,
               Roles:
-                this.rolesSelected
+              this.rolesSelected
 
             };
 
-            console.log(newPerson)
-            
-            // post for create new user 
-            const addPersonObservable = from(this.httpApi.addNewPerson(newPerson));
-            addPersonObservable.subscribe({
-              next: (value: any) => {
-                this.httpApi.sendEmailCreation(this.newPersonForm.value.email, null).subscribe(
-                  {
-                    next: value => {
-                      this.toastr.success("The create email has been sent", "Success")
-                    },
-                    error: err => {
-                      this.toastr.warning("Can't inform user about creation", "Warn")
-                    },
-                  }
-                );
-                this.toastr.success("Data updated successfully", "Success");
-                setTimeout(() => {
-                  //console.log(newPerson)
-                  window.location.reload();
-                }, 1500)
-              },
-              error: (err: any) => {
-                this.toastr.error('Something is wrong', 'Error');
-                setTimeout(() => { }, 1500)
-              }
-            });
+            // check if wantToCreateUser
+            if (!this.wantToCreateUser) {
+
+              console.log(newPerson)
+              // post for create new user
+              const addPUObservable = from(this.httpApi.addNewPU(newPerson));
+              addPUObservable.subscribe({
+                next: (value: any) => {
+                  this.httpApi.sendEmailCreation(this.newPersonForm.value.email, null).subscribe(
+                    {
+                      next: value => {
+                        this.toastr.success("The create email has been sent", "Success")
+                      },
+                      error: err => {
+                        this.toastr.warning("Can't inform user about creation", "Warn")
+                      },
+                    }
+                  );
+                  this.toastr.success("Data updated successfully", "Success");
+                  setTimeout(() => {
+                    //console.log(newPerson)
+                    window.location.reload();
+                  }, 1500)
+                },
+                error: (err: any) => {
+                  this.toastr.error('Something is wrong', 'Error');
+                  setTimeout(() => {
+                  }, 1500)
+                }
+              });
+            } else {
+              const addPersonObservable = from(this.httpApi.addNewPerson(newPerson));
+              addPersonObservable.subscribe({
+                next: (value: any) => {
+                  this.toastr.success("Data updated successfully", "Success");
+                  setTimeout(() => {
+                    //console.log(newPerson)
+                    window.location.reload();
+                  }, 1500)
+                },
+                 error: (err: any) => {
+                  this.toastr.error('Something is wrong', 'Error');
+                  setTimeout(() => {
+                  }, 1500)
+                }
+              })
+            }
           }
         })
       }

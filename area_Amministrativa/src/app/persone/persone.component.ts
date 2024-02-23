@@ -15,6 +15,7 @@ import { OrganizationDTO } from '../organizzazione/organizzazione.component';
 import {ActivatedRoute, Router} from "@angular/router";
 import {ModaleCreateUserComponent} from "./modale-create-user/modale-create-user.component";
 import { from } from 'rxjs';
+import {BodyDtoEncrypt} from "../dto/body-dto-encrypt";
 
 /*export interface FilterDTO {
   first_name: string;
@@ -23,8 +24,8 @@ import { from } from 'rxjs';
 
 export interface UserDTO {
   PersonId: string;
-  Username: string;
-  Roles: any[];
+  username: string;
+  roles: any[];
 }
 
 export interface PersonDTO {
@@ -99,6 +100,8 @@ export class PersoneComponent implements OnInit {
   filterOrg = '';
   resetButtonDisabled: { [key: string]: boolean } = {};
   hideCreateUser: { [key: string]: boolean } = {};
+  hideDisableUser: { [key: string]: boolean } = {};
+  hideEnableUser: { [key: string]: boolean } = {};
   IsSA = true;
   buttonColor: { [email: string]: string } = {};
   adminOrgFilter = '';
@@ -204,7 +207,6 @@ export class PersoneComponent implements OnInit {
                   const userDTOList: UserDTO[] = userData.body;
 
 
-                  console.log("testina")
                   console.log(userDTOList)
 
                   this.PeopleList.forEach((person: PersonDTO1) => {
@@ -216,7 +218,9 @@ export class PersoneComponent implements OnInit {
 
                             const associatedOrg = orgDTOList.find(org => org.Id === person.OrganizationId);
 
-                            const associatedUser = userDTOList.find(user => user.Username === person.Email);
+                            const associatedUser = userDTOList.find(user => user.username === person.Email);
+``
+                            console.log(associatedUser)
 
                             if (associatedOrg) {
                               person.OrganizationName = associatedOrg.Name;
@@ -226,10 +230,9 @@ export class PersoneComponent implements OnInit {
                             }
 
                             if (associatedUser) {
-
-                              this.hideCreateUser[associatedUser.Username] = true;
-                              person.Roles = associatedUser.Roles.map(role => role.role);
-
+                              console.log(associatedUser.roles)
+                              this.hideCreateUser[associatedUser.username] = true;
+                              person.Roles = associatedUser.roles.map(role => role.role);
                             }
                             else{
                               person.Roles = ['Null'];
@@ -244,7 +247,7 @@ export class PersoneComponent implements OnInit {
                   });
                   this.LoadedData = true;
                   this.dataSource.data = [...this.PeopleList];
-                  
+
                 }
               },
               error: (error: any) => {
@@ -295,10 +298,29 @@ export class PersoneComponent implements OnInit {
 
   async disableUser(username: string) {
     const usernameEncrypt = await this.httpApi.encrypt(JSON.stringify(username), "http://localhost:9000/api/rsa/GetPublicKey");
+    const bodyEncrypt: BodyDtoEncrypt = {encryptedEmail: usernameEncrypt, encryptedContent: ""}
 
-    this.httpApi.disableUser(usernameEncrypt).subscribe({
+    this.httpApi.disableUser(bodyEncrypt).subscribe({
       next: value =>  {
+        this.hideDisableUser[username] = true;
+         this.hideEnableUser[username] = false;
          this.toastr.success("User disable successfully", 'Success');
+      },
+      error: err => {
+         this.toastr.error("Something's error", 'Error');
+      }
+    })
+  }
+
+  async abilityUser(username: string) {
+    const usernameEncrypt = await this.httpApi.encrypt(JSON.stringify(username), "http://localhost:9000/api/rsa/GetPublicKey");
+    const bodyEncrypt: BodyDtoEncrypt = {encryptedEmail: usernameEncrypt, encryptedContent: ""}
+
+    this.httpApi.abilityUser(bodyEncrypt).subscribe({
+      next: value =>  {
+        this.hideDisableUser[username] = true;
+         this.hideEnableUser[username] = false;
+         this.toastr.success("User enable successfully", 'Success');
       },
       error: err => {
          this.toastr.error("Something's error", 'Error');
@@ -433,4 +455,5 @@ export class PersoneComponent implements OnInit {
   }
 
 
+  protected readonly console = console;
 }

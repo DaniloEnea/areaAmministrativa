@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {catchError, map, Observable, throwError} from "rxjs";
 import { EncryptionService } from './encryption.service';
+import {BodyDtoEncrypt} from "../dto/body-dto-encrypt";
 
 
 @Injectable({
@@ -120,6 +121,22 @@ export class AdminApiService {
     );
   }
 
+  postWithCcBodyEncrypt(url: string, model: any, accessToken: string): Observable<any> {
+    const httpOptions = {
+      headers : new HttpHeaders( {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Authorization': 'Bearer ' + accessToken
+      }),
+      observe: "response" as 'body'
+    };
+
+    return this.http.post(url, JSON.stringify(model) , httpOptions).pipe(
+      map((response : any) => this.ReturnResponseData(response)),
+      catchError(this.handleError)
+    );
+  }
+
 
   getWithCc(url: string, accessToken: string): Observable<any> {
     const httpOptions = {
@@ -152,7 +169,7 @@ export class AdminApiService {
     );
   }
 
-  putWithCc(url: string,id: string, model: any, accessToken: string): Observable<any> {
+  putWithCc(url: string, model: BodyDtoEncrypt, accessToken: string): Observable<any> {
     const httpOptions = {
       headers : new HttpHeaders( {
         'Content-Type': 'application/json',
@@ -160,8 +177,7 @@ export class AdminApiService {
       }),
       observe: "response" as 'body'
     };
-    const putUrl = `${url}/${id}`;
-    return this.http.put(putUrl, model, httpOptions).pipe(
+    return this.http.put(url, model, httpOptions).pipe(
       map((response : any) => this.ReturnResponseData(response)),
       catchError(this.handleError)
     );

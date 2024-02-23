@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {AdminApiService} from "./admin-api.service";
 import {buffer, catchError, from, mergeMap, Observable, of} from "rxjs";
 import { EncryptionService } from './encryption.service';
+import {BodyDtoEncrypt} from "../dto/body-dto-encrypt";
 
 var tempFilterUrl : string;
 // PATH API
@@ -24,8 +25,8 @@ let getOrgUrl = "https://localhost:7017/api/Organizations"
 
 //add
 //let addUtenteUrl = genericUrl + "addUtenti"
-//let addPersonUrl = "https://localhost:7131/api/People/CreatePU?isFront=true"
-let addPersonUrl = "https://localhost:7131/api/People/CreatePU"
+let addPersonUrl = "https://localhost:7131/api/People"
+let addPersonUserUrl = "https://localhost:7131/api/People/CreatePU"
 //let addOrgUrl = genericUrl + "addOrganization"
 
 /*details*/
@@ -71,6 +72,8 @@ let getTokenUrl = "http://localhost:9000/api/reset_password"
 let createUserUrl = "http://localhost:9000/api/auth/create"
 
 let disableUserUrl = "http://localhost:9000/api/admin/disableUser"
+
+let abilityUserUrl = "http://localhost:9000/api/admin/abilityUser"
 
 export interface BodyComboDto {
   Data1: any;
@@ -137,7 +140,7 @@ export class HttpProviderService {
     );
   }
 
-    public disableUser(username: string): Observable<any> {
+    public disableUser(bodyEncrypt: BodyDtoEncrypt): Observable<any> {
     return this.adminApiService.postUrlEncoded(apiCredentials).pipe(
       mergeMap((value: any) => {
         const accessToken = value.body.access_token;
@@ -147,12 +150,12 @@ export class HttpProviderService {
       mergeMap((accessToken: string) => {
 
         // Chiamata successiva con l'access token
-        return this.adminApiService.postWithCcById(username, disableUserUrl, null , accessToken);
+        return this.adminApiService.postWithCcBodyEncrypt(disableUserUrl, bodyEncrypt , accessToken);
       })
     );
   }
 
-  public changeRole(username: string, roles: any ): Observable<any> {
+  public abilityUser(bodyEncrypt: BodyDtoEncrypt): Observable<any> {
     return this.adminApiService.postUrlEncoded(apiCredentials).pipe(
       mergeMap((value: any) => {
         const accessToken = value.body.access_token;
@@ -162,7 +165,22 @@ export class HttpProviderService {
       mergeMap((accessToken: string) => {
 
         // Chiamata successiva con l'access token
-        return this.adminApiService.putWithCc(updatePersonRoleUrl, username, roles, accessToken);
+        return this.adminApiService.postWithCcBodyEncrypt(abilityUserUrl, bodyEncrypt , accessToken);
+      })
+    );
+  }
+
+  public changeRole(bodyEncrypt: BodyDtoEncrypt): Observable<any> {
+    return this.adminApiService.postUrlEncoded(apiCredentials).pipe(
+      mergeMap((value: any) => {
+        const accessToken = value.body.access_token;
+
+        return of(accessToken);
+      }),
+      mergeMap((accessToken: string) => {
+
+        // Chiamata successiva con l'access token
+        return this.adminApiService.putWithCc(updatePersonRoleUrl,bodyEncrypt, accessToken);
 
       })
     );
@@ -216,6 +234,18 @@ export class HttpProviderService {
   //public async addNewUser(model: any) : Promise<Observable<any>> {
   //  return await this.adminApiService.post(addUtenteUrl, this.encrypt(model))
   //}
+
+  public async addNewPU(model: any): Promise<Observable<any>> {
+
+    const bcDto: BodyComboDto = {
+      Data1: model,
+      Data2: publicKeyUrl
+    }
+
+    const encryptedDto = await this.encrypt(JSON.stringify(bcDto), personEncryption);
+
+    return await this.adminApiService.postEncrypted(addPersonUserUrl, JSON.stringify(encryptedDto))
+  }
 
   public async addNewPerson(model: any): Promise<Observable<any>> {
 
@@ -336,7 +366,7 @@ export class HttpProviderService {
   }
 
   //reset_password
-  public resetPwd(username: string, password: any) {
+  public resetPwd(bodyEncrypt: BodyDtoEncrypt) {
     return this.adminApiService.postUrlEncoded(apiCredentials).pipe(
       mergeMap((value: any) => {
         const accessToken = value.body.access_token;
@@ -345,7 +375,7 @@ export class HttpProviderService {
       }),
       mergeMap((accessToken: string) => {
         // Chiamata successiva con l'access token
-        return this.adminApiService.putWithCc(resetPwdUrl,username, password, accessToken);
+        return this.adminApiService.putWithCc(resetPwdUrl,bodyEncrypt, accessToken);
       })
     );
   }

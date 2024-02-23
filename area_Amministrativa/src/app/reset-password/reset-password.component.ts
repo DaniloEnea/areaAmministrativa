@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { HttpProviderService } from '../service/http-provider.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {BodyDtoEncrypt} from "../dto/body-dto-encrypt";
 
 export interface PasswordDTO {
   password: string;
@@ -50,7 +51,9 @@ export class ResetPasswordComponent {
             password: this.PasswordDTOForm.value.password
           };
 
-          this.httpApi.resetPwd(this.data.Username, changePassword).subscribe(
+          const bodyEncrypt: BodyDtoEncrypt = {encryptedEmail: this.data.Username, encryptedContent: this.data.Username}
+
+          this.httpApi.resetPwd(bodyEncrypt).subscribe(
             {
               next: value => {
                 this.toastr.success("Password changed correctly", "Success")

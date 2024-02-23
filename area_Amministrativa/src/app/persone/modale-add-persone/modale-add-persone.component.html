@@ -81,11 +81,13 @@
       </mat-error>
     </mat-form-field>
 
+   <mat-slide-toggle formControlName="wantToCreateUser">Do you want to create a user?</mat-slide-toggle>
 
-    <mat-label>Roles:</mat-label>
-
-    <mat-slide-toggle formControlName="Role_SA" *ngIf="IsSA">Super Admin</mat-slide-toggle>
-    <mat-slide-toggle formControlName="Role_Admin">CRM Admin</mat-slide-toggle>
+    <div *ngIf="newPersonForm.get('wantToCreateUser')?.value" class="roles-container">
+      <span>Roles:</span>
+      <mat-slide-toggle formControlName="Role_SA" *ngIf="IsSA">Super Admin</mat-slide-toggle>
+      <mat-slide-toggle formControlName="Role_Admin">CRM Admin</mat-slide-toggle>
+    </div>
 
 
   </form>

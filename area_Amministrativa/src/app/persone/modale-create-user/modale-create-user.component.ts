@@ -11,10 +11,11 @@
   import {PersonDTO, PersonDTO1, User} from "../persone.component";
   import {HttpProviderService} from "../../service/http-provider.service";
   import {ToastrService} from "ngx-toastr";
+  import {mod} from "ngx-bootstrap/chronos/utils";
 
 export interface SendUser {
-  password: string,
   email: string,
+  password: string,
   id: string,
   roles: string[]
 }
@@ -110,13 +111,12 @@ export interface SendUser {
           console.log(this.rolesSelected)
 
           const createUser: SendUser = {
-            password: this.generatePassword(12),
             email: this.data.person.Email,
+            password: this.generatePassword(12),
             id: this.data.person.Id,
             roles: this.rolesSelected,
           };
 
-          console.log(createUser);
           this.createUser(createUser);
         }
       }
@@ -129,10 +129,11 @@ export interface SendUser {
     }
 
     // funzione per creare l'utenza
-    createUser(model: any) {
+    async createUser(model: any) {
       try {
-        const createUserEncrypt = this.httpApi.encrypt(JSON.stringify(model), "http://localhost:9000/api/rsa/GetPublicKey");
-
+        console.log(model)
+        const createUserEncrypt =  await this.httpApi.encrypt(JSON.stringify(model), "http://localhost:9000/api/rsa/GetPublicKey");
+        console.log(createUserEncrypt)
         this.httpApi.createUserEncrypted(createUserEncrypt).subscribe({
           next: (encryptedResponse) => {
             this.toastr.success("Create user successful", "Success");

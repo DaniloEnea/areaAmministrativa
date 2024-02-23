@@ -8,6 +8,8 @@ import { ToastrService } from "ngx-toastr";
 import { AuthService } from "../../service/auth.service";
 import { CountryISO, PhoneNumberFormat, SearchCountryField } from 'ngx-intl-tel-input';
 import { from } from 'rxjs';
+import {BodyDtoEncrypt} from "../../dto/body-dto-encrypt";
+import {request} from "express";
 
 
 
@@ -36,7 +38,7 @@ export class ModaleUpdatePersoneComponent {
   CountryISO = CountryISO;
   PhoneNumberFormat = PhoneNumberFormat;
   preferredCountries: CountryISO[] = [CountryISO.UnitedStates, CountryISO.UnitedKingdom];
-    
+
   constructor(public auth: AuthService, public dialogRef: MatDialogRef<ModaleUpdatePersoneComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { person: PersonDTO1 },
     private formBuilder: FormBuilder,
@@ -90,7 +92,7 @@ export class ModaleUpdatePersoneComponent {
     else return false;
   }
 
-  onUpdateClick(): void {
+  async onUpdateClick() {
     if (this.auth.isAuthenticated()) {
       if (this.updatePersonForm.valid) {
 
@@ -121,11 +123,16 @@ export class ModaleUpdatePersoneComponent {
           CF: this.updatePersonForm.value.cf
         };
 
+        const usernameEncrypt = await this.httpApi.encrypt(JSON.stringify(this.data.person.Email), "http://localhost:9000/api/rsa/GetPublicKey");
+        const rolesEncrypt = await this.httpApi.encrypt(JSON.stringify( this.rolesSelected), "http://localhost:9000/api/rsa/GetPublicKey");
+
+        const bodyEncrypt: BodyDtoEncrypt = { encryptedEmail: usernameEncrypt, encryptedContent: rolesEncrypt };
         //post for create new user
         const updatePersonObservable = from(this.httpApi.updatePerson(this.data.person.Id, updatePerson));
         updatePersonObservable.subscribe({
           next: (value: any) => {
-            this.httpApi.changeRole(this.data.person.Email, this.rolesSelected).subscribe((response) => {
+            console.log(bodyEncrypt)
+            this.httpApi.changeRole(bodyEncrypt).subscribe((response) => {
               this.toastr.success("Data updated successfully", "Success");
               setTimeout(() => {
                 //console.log(updatePerson);
@@ -136,6 +143,7 @@ export class ModaleUpdatePersoneComponent {
           },
           error: (err: Error) => {
             // show the error
+            console.log(err)
             this.toastr.error('Something is wrong', 'Error');
             setTimeout(() => { }, 1500)
           }
