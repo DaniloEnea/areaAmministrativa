@@ -140,17 +140,19 @@ export class HttpProviderService {
     );
   }
 
-    public disableUser(bodyEncrypt: BodyDtoEncrypt): Observable<any> {
+    public disableUser(username: string): Observable<any> {
     return this.adminApiService.postUrlEncoded(apiCredentials).pipe(
       mergeMap((value: any) => {
         const accessToken = value.body.access_token;
 
         return of(accessToken);
       }),
-      mergeMap((accessToken: string) => {
+      mergeMap(async (accessToken: string) => {
 
-        // Chiamata successiva con l'access token
-        return this.adminApiService.postWithCcBodyEncrypt(disableUserUrl, bodyEncrypt , accessToken);
+        const usernameEncrypt = await this.encrypt(JSON.stringify(username), "http://localhost:9000/api/rsa/GetPublicKey");
+        const bodyEncrypt: BodyDtoEncrypt = { encryptedEmail: usernameEncrypt, encryptedContent: "" }
+
+        return this.adminApiService.postWithCcBodyEncrypt(disableUserUrl, bodyEncrypt, accessToken);
       })
     );
   }
@@ -366,15 +368,16 @@ export class HttpProviderService {
   }
 
   //reset_password
-  public resetPwd(bodyEncrypt: BodyDtoEncrypt) {
+  public resetPwd(username: string) {
     return this.adminApiService.postUrlEncoded(apiCredentials).pipe(
       mergeMap((value: any) => {
         const accessToken = value.body.access_token;
 
         return of(accessToken);
       }),
-      mergeMap((accessToken: string) => {
-        // Chiamata successiva con l'access token
+      mergeMap(async (accessToken: string) => {
+        const usernameEncrypt = await this.encrypt(JSON.stringify(username), "http://localhost:9000/api/rsa/GetPublicKey");
+        const bodyEncrypt: BodyDtoEncrypt = { encryptedEmail: usernameEncrypt, encryptedContent: "" }
         return this.adminApiService.putWithCc(resetPwdUrl,bodyEncrypt, accessToken);
       })
     );
@@ -418,7 +421,7 @@ export class HttpProviderService {
   //}
   public async deletePerson(id: string): Promise<Observable<any>> {
     const eId = btoa(await this.encrypt(id, personEncryption));
-    return this.adminApiService.deleteEncrypted(deletePersonUrl, eId, personEncryption)
+    return this.adminApiService.deleteEncrypted(deletePersonUrl, eId, publicKeyUrl)
   }
 
   public forcedDeletePerson(id: string): Observable<any> {

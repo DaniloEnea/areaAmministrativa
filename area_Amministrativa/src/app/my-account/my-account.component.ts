@@ -4,7 +4,6 @@ import {MatIconModule} from "@angular/material/icon";
 import {AuthService} from "../service/auth.service";
 import {FormGroup} from "@angular/forms";
 import {MatButtonModule} from "@angular/material/button";
-import { ResetPasswordComponent } from '../reset-password/reset-password.component';
 import { MatDialog } from '@angular/material/dialog';
 import {HttpProviderService} from "../service/http-provider.service";
 import {ToastrService} from "ngx-toastr";

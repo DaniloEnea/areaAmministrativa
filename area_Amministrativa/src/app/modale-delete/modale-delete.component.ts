@@ -3,6 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { HttpProviderService } from "../service/http-provider.service";
 import { AuthService } from "../service/auth.service";
 import { ToastrService } from 'ngx-toastr';
+import { async } from 'rxjs';
 
 @Component({
   selector: 'app-modale-delete',
@@ -12,16 +13,27 @@ import { ToastrService } from 'ngx-toastr';
 export class ModaleDeleteComponent {
   constructor(public auth: AuthService, private toastr: ToastrService, private ref: MatDialogRef<ModaleDeleteComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { Id: string, Username: string, ClassForm : string },
-    private httpApi: HttpProviderService) { }
+    private httpApi: HttpProviderService) {}
 
   UserExist: boolean = false;
 
   // delete for call DELETE API
-  confirmForm(): void {
+  confirmForm() {
     if (this.auth.isAuthenticated()) {
+
       this.httpApi.getUtenteByUsername(this.data.Username).subscribe({
         next: (userData: any) => {
-            this.UserExist = true
+          console.log(userData.body)
+          this.UserExist = true
+        },
+        complete: () => {
+          console.log(this.UserExist)
+          this.deletePU()
+
+          console.log("delete: " + this.data.Username)
+          console.log("type: " + this.data.ClassForm)
+
+          this.ref.close()
         }
       })
 
@@ -34,12 +46,7 @@ export class ModaleDeleteComponent {
       //else if (this.data.ClassForm == "Organization") {
       //  //this.httpApi.deleteOrg(this.data.Id).subscribe()
       //}
-      this.deletePU()
 
-      console.log("delete: " + this.data.Username)
-      console.log("type: " + this.data.ClassForm)
-
-      this.ref.close()
     }
     else {
       this.toastr.error("Token is expired", "Error")
@@ -52,6 +59,7 @@ export class ModaleDeleteComponent {
 
 
   async deletePU() {
+    console.log(this.UserExist)
     if (this.UserExist === true) {
       (await this.httpApi.deletePerson(this.data.Id)).subscribe({
         next: (value: any) => {
@@ -80,6 +88,8 @@ export class ModaleDeleteComponent {
       })
     }
   }
+
+  
 
 
   closepopup() {

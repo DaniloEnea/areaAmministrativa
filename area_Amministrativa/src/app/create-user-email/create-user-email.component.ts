@@ -49,7 +49,7 @@ export class CreateUserEmailComponent {
             password: this.PasswordDTOForm.value.password
           };
 
-          this.httpApi.resetPwd(this.data.Username, changePassword).subscribe(
+          this.httpApi.resetPwd(this.data.Username).subscribe(
             {
               next: value => {
                 this.toastr.success("Password changed correctly", "Success")

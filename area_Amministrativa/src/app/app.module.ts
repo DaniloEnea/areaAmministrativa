@@ -4,7 +4,6 @@ import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { OrganizzazioneComponent } from './organizzazione/organizzazione.component';
-import { ResetPasswordComponent } from 'src/app/reset-password/reset-password.component'
 import { PersoneComponent } from './persone/persone.component';
 import { UtentiComponent } from './utenti/utenti.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -45,7 +44,6 @@ import {NgxIntlTelInputModule} from "ngx-intl-tel-input";
     ModaleAddPersoneComponent,
     ModaleAddUserComponent,
     ModaleDeleteComponent,
-    ResetPasswordComponent,
     ModaleDetailsOrgComponent,
     ModaleDetailsPersoneComponent
   ],
