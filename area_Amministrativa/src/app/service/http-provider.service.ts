@@ -386,9 +386,11 @@ export class HttpProviderService {
   //public deleteUser(id: number) : Observable<any> {
   //  return this.adminApiServie.delete(deleteUtenteUrl, id)
   //}
-  public deletePerson(id: string): Observable<any> {
-    return this.adminApiService.deleteFisic(deletePersonUrl, id)
+  public async deletePerson(id: string): Promise<Observable<any>> {
+    const eId = btoa(await this.encrypt(id, personEncryption));
+    return this.adminApiService.deleteEncrypted(deletePersonUrl, eId, personEncryption)
   }
+
   public forcedDeletePerson(id: string): Observable<any> {
     return this.adminApiService.deleteFisic(forcedDeletePersonUrl, id)
   }

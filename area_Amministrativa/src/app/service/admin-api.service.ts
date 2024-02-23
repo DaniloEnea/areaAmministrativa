@@ -292,14 +292,14 @@ export class AdminApiService {
     }
 
   // DELETE operations
-  delete(url: string, id: string): Observable<any> {
+  deleteEncrypted(url: string, id: string, publicKeyUrl: string): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
       }),
       observe: 'response' as 'body'
     };
-    const deleteUrl = `${url}/${id}`;
+    const deleteUrl = `${url}/${id}?logicalDelete=false&publicKeyUrl=${publicKeyUrl}`;
     return this.http.delete(deleteUrl, httpOptions).pipe(
       catchError(this.handleError)
     );

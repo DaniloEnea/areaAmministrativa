@@ -51,9 +51,9 @@ export class ModaleDeleteComponent {
   }
 
 
-  deletePU() {
+  async deletePU() {
     if (this.UserExist === true) {
-      this.httpApi.deletePerson(this.data.Id).subscribe({
+      (await this.httpApi.deletePerson(this.data.Id)).subscribe({
         next: (value: any) => {
           this.toastr.success("Deleted succesfully", "Success")
           setTimeout(() => {

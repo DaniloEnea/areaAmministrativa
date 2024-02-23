@@ -34,6 +34,7 @@ export interface LoginDTO {
 export class AreaLoginComponent {
 
   hide: boolean = true;
+  loading: boolean = false;
   loginForm: FormGroup;
   constructor(private formBuilder: FormBuilder, private httpApi: HttpProviderService, private dialog: MatDialog,
     private router: Router, private toastr: ToastrService, private authService: AuthService, private encryptDecryptService: EncryptionService) {
@@ -56,6 +57,8 @@ export class AreaLoginComponent {
 
   async submit() {
     if (this.loginForm.valid) {
+      this.loading = true;
+
       const newLogin: LoginDTO = {
         username: this.loginForm.value.username,
         password: this.loginForm.value.password,
@@ -91,6 +94,8 @@ export class AreaLoginComponent {
       } catch (error) {
         console.log(error);
         this.toastr.error("Encryption failed or unable to fetch the public key", "Error");
+      } finally {
+        this.loading = false;
       }
     }
   }
