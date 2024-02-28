@@ -11,20 +11,38 @@ import { async } from 'rxjs';
   styleUrls: ['./modale-delete.component.css']
 })
 export class ModaleDeleteComponent {
-  constructor(public auth: AuthService, private toastr: ToastrService, private ref: MatDialogRef<ModaleDeleteComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { Id: string, Username: string, ClassForm : string },
-    private httpApi: HttpProviderService) {}
 
   UserExist: boolean = false;
 
+  constructor(public auth: AuthService, private toastr: ToastrService, private ref: MatDialogRef<ModaleDeleteComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: { Id: string, Username: string, ClassForm : string },
+    private httpApi: HttpProviderService) {
+    
+  }
+
   // delete for call DELETE API
-  confirmForm() {
+  async confirmForm() {
     if (this.auth.isAuthenticated()) {
 
-      this.httpApi.getUtenteByUsername(this.data.Username).subscribe({
+      (await this.httpApi.getUtenteByUsername(this.data.Username)).subscribe({
         next: (userData: any) => {
           console.log(userData.body)
           this.UserExist = true
+
+          console.log(this.UserExist)
+
+          if (this.UserExist === true) {
+            this.deletePU();
+          }
+          else {
+            this.deletePerson();
+          }
+          //this.deletePU()
+
+          console.log("delete: " + this.data.Username)
+          console.log("type: " + this.data.ClassForm)
+
+          this.ref.close()
         }
       })
 
@@ -36,20 +54,12 @@ export class ModaleDeleteComponent {
       //}
       //else if (this.data.ClassForm == "Organization") {
       //  //this.httpApi.deleteOrg(this.data.Id).subscribe()
-      //}
-
-      console.log(this.UserExist)
-      this.deletePU()
-
-      console.log("delete: " + this.data.Username)
-      console.log("type: " + this.data.ClassForm)
-
-      this.ref.close()
+      //}      
     }
     else {
       this.toastr.error("Token is expired", "Error")
       setTimeout(() => {
-        //window.location.reload();
+        window.location.reload();
       }, 500)
 
     }
@@ -57,39 +67,40 @@ export class ModaleDeleteComponent {
 
 
   async deletePU() {
-    console.log(this.UserExist)
-    if (this.UserExist === true) {
-      (await this.httpApi.deletePerson(this.data.Id)).subscribe({
-        next: (value: any) => {
-          this.toastr.success("Deleted succesfully", "Success")
-        },
-        error: (error: Error) => {
-          this.toastr.error("Something went wrong with delete", "Error")
-        }
-      })
-      setTimeout(() => {
-        this.closepopup();
-        window.location.reload();
-      }, 500)
-    }
-    else {
-      this.httpApi.forcedDeletePerson(this.data.Id).subscribe({
-        next: (value: any) => {
-          this.toastr.success("Deleted succesfully", "Success")
-          this.toastr.warning("No user was found", "Warn")
-        },
-        error: (error: Error) => {
-          this.toastr.error("Something went wrong with delete", "Error")
-        },
-        complete: () => {
-          setTimeout(() => {
-            this.closepopup();
-            window.location.reload();
-          }, 500)
-        }
-      })
-    }
+    (await this.httpApi.deletePerson(this.data.Id)).subscribe({
+      next: (value: any) => {
+        this.toastr.success("Deleted succesfully", "Success")
+      },
+      error: (error: Error) => {
+        this.toastr.error("Something went wrong with delete", "Error")
+      },
+      complete: () => {
+        setTimeout(() => {
+          this.closepopup();
+          window.location.reload();
+        }, 500)
+      }
+    })
   }
+
+  deletePerson() {
+    this.httpApi.forcedDeletePerson(this.data.Id).subscribe({
+      next: (value: any) => {
+        this.toastr.success("Deleted succesfully", "Success")
+        this.toastr.warning("No user was found", "Warn")
+      },
+      error: (error: Error) => {
+        this.toastr.error("Something went wrong with delete", "Error")
+      },
+      complete: () => {
+        setTimeout(() => {
+          this.closepopup();
+          window.location.reload();
+        }, 500)
+      }
+    })
+  }
+  
 
   
 
