@@ -97,7 +97,6 @@ export interface SendUser {
 
     onCreateUserClick(): void {
       if (this.auth.isAuthenticated()) {
-        console.log(this.createUserForm)
         if (this.createUserForm.valid) {
 
           if (this.createUserForm.value.Role_SA == true) {
@@ -117,7 +116,7 @@ export interface SendUser {
             roles: this.rolesSelected,
           };
 
-          this.createUser(createUser);
+          this.createUser(createUser).then(r => console.log("complete"));
         }
       }
       else {
@@ -131,12 +130,10 @@ export interface SendUser {
     // funzione per creare l'utenza
     async createUser(model: any) {
       try {
-        console.log(model)
         const createUserEncrypt =  await this.httpApi.encrypt(JSON.stringify(model), "http://localhost:9000/api/rsa/GetPublicKey");
         this.httpApi.createUserEncrypted(createUserEncrypt).subscribe({
           next: (encryptedResponse) => {
             this.toastr.success("Create user successful", "Success");
-
             this.httpApi.sendEmailCreation(this.createUserForm.value.email).subscribe(
               {
                 next: value => {
@@ -145,6 +142,7 @@ export interface SendUser {
                 error: err => {
                   this.toastr.error("There is a problem with the email", "Error")
                 },
+                complete:() => {}
               }
             );
             this.closepopup()

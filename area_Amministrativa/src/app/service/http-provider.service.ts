@@ -12,7 +12,7 @@ let apiCredentials = "http://localhost:8282/oauth2/token"
 //GET PUBLIC KEY
 let orgEncryption = "https://localhost:7017/api/GetPublicKey/"
 let personEncryption = "https://localhost:7131/api/GetPublicKey/"
-let authEncryption = "https://localhost:9000/api/rsa/GetPublicKey/"
+let authEncryption = "http://localhost:9000/api/rsa/GetPublicKey"
 let publicKeyUrl = "http://localhost:3000/api";
 
 //get
@@ -281,6 +281,17 @@ export class HttpProviderService {
       })
     );
   }
+  encodeStringToBase64(utf8String: string): string {
+  // Converti la stringa UTF-8 in una stringa ASCII compatibile
+  const asciiString = encodeURIComponent(utf8String).replace(/%([0-9A-F]{2})/g,
+      function(match, p1) {
+          return String.fromCharCode(parseInt(p1, 16))
+      }
+  );
+
+  // Codifica la stringa ASCII in base64
+  return btoa(asciiString);
+}
 
   public sendEmailCreation(email: string): Observable<any> {
     return this.adminApiService.postUrlEncoded(apiCredentials).pipe(
@@ -291,8 +302,7 @@ export class HttpProviderService {
       }),
       mergeMap(async (accessToken: string) => {
         // Chiamata successiva con l'access token
-        const encEmail = btoa(await this.encrypt(email, authEncryption));
-        return this.adminApiService.postWithCcById(encodeURI(encEmail),sendEmailCreateUrl, null, accessToken);
+        return this.adminApiService.postWithCcById(email,sendEmailCreateUrl, null, accessToken);
       })
     );
   }
@@ -366,7 +376,7 @@ export class HttpProviderService {
       }),
       mergeMap((accessToken: string) => {
         // Chiamata successiva con l'access token
-        return this.adminApiService.postWithCc(createUserUrl, JSON.stringify(model), accessToken);
+        return this.adminApiService.postWithCc(createUserUrl, model, accessToken);
       })
     );
   }
