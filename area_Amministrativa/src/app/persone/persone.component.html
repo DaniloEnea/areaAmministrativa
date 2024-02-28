@@ -129,7 +129,7 @@
             <mat-icon>lock_reset</mat-icon>
           </button>
 
-        <button class="add-user" mat-mini-fab matTooltip="Create user" (click)="openCreateUserDialog(element)" [hidden]="hideCreateUser[element.Email]">
+        <button class="add-user" mat-mini-fab matTooltip="Create user" (click)="openCreateUserDialog(element.Id, element.Email, element.Roles)" [hidden]="hideCreateUser[element.Email]">
           <mat-icon>person_add</mat-icon>
         </button>
 

@@ -157,16 +157,16 @@ export class PersoneComponent implements OnInit {
 
 
   customFilterPredicate() {
-  return (data: PersonDTO1, filter: string): boolean => {
-    const searchText = JSON.parse(filter);
+    return (data: PersonDTO1, filter: string): boolean => {
+      const searchText = JSON.parse(filter);
 
-    return (
-      data.FirstName.toLowerCase().startsWith(searchText.FirstName) &&
-      data.LastName.toLowerCase().startsWith(searchText.LastName) &&
-      (!searchText.OrganizationName || data.OrganizationName.toLowerCase().startsWith(searchText.OrganizationName))
-    );
-  };
-}
+      return (
+        data.FirstName.toLowerCase().startsWith(searchText.FirstName) &&
+        data.LastName.toLowerCase().startsWith(searchText.LastName) &&
+        (!searchText.OrganizationName || data.OrganizationName.toLowerCase().startsWith(searchText.OrganizationName))
+      );
+    };
+  }
 
 
   usernamefilter: string = '';
@@ -190,7 +190,7 @@ export class PersoneComponent implements OnInit {
       next: (data: any) => {
         if (data != null && data.body != null) {
           var decryptedData = this.httpApi.decrypt(data.body)
-          console.log(decryptedData);
+
           var resultData = decryptedData;
           if (resultData) {
             this.PeopleList = resultData;
@@ -207,46 +207,40 @@ export class PersoneComponent implements OnInit {
                   const userDTOList: UserDTO[] = userData.body;
 
 
-                  console.log(userDTOList)
+                  this.httpApi.getAllOrg().subscribe(
+                    {
+                      next: (orgData: any) => {
+                        this.PeopleList.forEach((person: PersonDTO1) => {
+                          person.Roles = ['Null'];
+                          person.OrganizationName = 'No org';
 
-                  this.PeopleList.forEach((person: PersonDTO1) => {
-                    this.httpApi.getAllOrg().subscribe(
-                      {
-                        next: (orgData: any) => {
                           if (orgData != null && orgData.body != null) {
                             const orgDTOList: OrganizationDTO[] = this.httpApi.decrypt(orgData.body);
 
                             const associatedOrg = orgDTOList.find(org => org.Id === person.OrganizationId);
 
                             const associatedUser = userDTOList.find(user => user.username === person.Email);
-``
-                            console.log(associatedUser)
 
-                            if (associatedOrg) {
-                              person.OrganizationName = associatedOrg.Name;
-                            }
-                            else {
-                              person.OrganizationName = 'No org';
-                            }
 
                             if (associatedUser) {
                               console.log(associatedUser.roles)
                               this.hideCreateUser[associatedUser.username] = true;
                               person.Roles = associatedUser.roles.map(role => role.role);
                             }
-                            else{
-                              person.Roles = ['Null'];
+
+                            if (associatedOrg) {
+                              person.OrganizationName = associatedOrg.Name;
                             }
                           }
-                        },
-                        error: (error: any) => {
-                          console.error("Error fetching org data", error);
-                        }
+                        });
+                      },
+                      error: (error: any) => {
+                        console.error("Error fetching org data", error);
                       }
-                    );
-                  });
-                  this.LoadedData = true;
+                    }
+                  );
                   this.dataSource.data = [...this.PeopleList];
+                  this.LoadedData = true;
 
                 }
               },
@@ -298,36 +292,36 @@ export class PersoneComponent implements OnInit {
 
   async disableUser(username: string) {
     this.httpApi.disableUser(username).subscribe({
-      next: value =>  {
+      next: value => {
         this.hideDisableUser[username] = true;
-         this.hideEnableUser[username] = false;
-         this.toastr.success("User disable successfully", 'Success');
+        this.hideEnableUser[username] = false;
+        this.toastr.success("User disable successfully", 'Success');
       },
       error: err => {
-         this.toastr.error("Something's error", 'Error');
+        this.toastr.error("Something's error", 'Error');
       }
     })
   }
 
   async abilityUser(username: string) {
     const usernameEncrypt = await this.httpApi.encrypt(JSON.stringify(username), "http://localhost:9000/api/rsa/GetPublicKey");
-    const bodyEncrypt: BodyDtoEncrypt = {encryptedEmail: usernameEncrypt, encryptedContent: ""}
+    const bodyEncrypt: BodyDtoEncrypt = { encryptedEmail: usernameEncrypt, encryptedContent: "" }
 
     this.httpApi.abilityUser(bodyEncrypt).subscribe({
-      next: value =>  {
+      next: value => {
         this.hideDisableUser[username] = true;
-         this.hideEnableUser[username] = false;
-         this.toastr.success("User enable successfully", 'Success');
+        this.hideEnableUser[username] = false;
+        this.toastr.success("User enable successfully", 'Success');
       },
       error: err => {
-         this.toastr.error("Something's error", 'Error');
+        this.toastr.error("Something's error", 'Error');
       }
     })
   }
 
   openDeleteDialog(id: string, username: string): void {
     const dialogRef = this.dialog.open(ModaleDeleteComponent, {
-      data: { Id: id, Username : username, ClassForm: this.classForm } // passo l'ID
+      data: { Id: id, Username: username, ClassForm: this.classForm } // passo l'ID
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -377,12 +371,12 @@ export class PersoneComponent implements OnInit {
     }
   }
 
-  openCreateUserDialog(person: User): void {
+  openCreateUserDialog(id: string, email: string, roles: string[]): void {
     if (this.auth.isAuthenticated()) {
       const dialogRef = this.dialog.open(ModaleCreateUserComponent, {
         width: '60%',
 
-        data: { person: person }
+        data: { Id: id, Email: email, Roles: roles }
       });
       dialogRef.afterClosed().subscribe((result) => {
         console.log(`Dialog result: ${result}`);

@@ -221,7 +221,7 @@ export class ModaleAddPersoneComponent {
     if (this.auth.isAuthenticated()) {
       if (this.newPersonForm.valid) {
         this.getOrgByLogin().subscribe({
-          next: (orgId: string) => {
+          next: async (orgId: string) => {
             if (this.newPersonForm.value.Role_SA == true) {
               this.rolesSelected.push("ROLE_SA")
               this.RoleSa = true;
@@ -247,56 +247,51 @@ export class ModaleAddPersoneComponent {
               IsOtherProcessingPurposesAccepted: this.newPersonForm.value.isOtherProcessingPurposesAccepted,
               IsServiceProcessingPurposesAccepted: this.newPersonForm.value.isServiceProcessingPurposesAccepted,
               Roles:
-              this.rolesSelected
+                this.rolesSelected
 
             };
 
             // check if wantToCreateUser
-            if (!this.wantToCreateUser) {
+            if (this.newPersonForm.value.wantToCreateUser === true) {
 
-              console.log(newPerson)
+              console.log(newPerson);
               // post for create new user
-              const addPUObservable = from(this.httpApi.addNewPU(newPerson));
-              addPUObservable.subscribe({
-                next: (value: any) => {
-                  this.httpApi.sendEmailCreation(this.newPersonForm.value.email, null).subscribe(
-                    {
-                      next: value => {
-                        this.toastr.success("The create email has been sent", "Success")
-                      },
-                      error: err => {
-                        this.toastr.warning("Can't inform user about creation", "Warn")
-                      },
-                    }
-                  );
-                  this.toastr.success("Data updated successfully", "Success");
-                  setTimeout(() => {
-                    //console.log(newPerson)
-                    window.location.reload();
-                  }, 1500)
-                },
-                error: (err: any) => {
-                  this.toastr.error('Something is wrong', 'Error');
-                  setTimeout(() => {
-                  }, 1500)
-                }
-              });
+              try {
+                const response = await this.httpApi.addNewPU(newPerson);
+                const value = await response;
+                this.httpApi.sendEmailCreation(this.newPersonForm.value.email).subscribe(
+                  {
+                    next: value => {
+                      this.toastr.success("The create email has been sent", "Success")
+                    },
+                    error: err => {
+                      this.toastr.warning("Can't inform user about creation", "Warn")
+                    },
+                  }
+                );
+                this.toastr.success("Data updated successfully", "Success");
+                setTimeout(() => {
+                  window.location.reload();
+                }, 1500);
+              }
+              catch (error) {
+                this.toastr.error('Something is wrong', 'Error');
+                setTimeout(() => {
+                }, 1500);
+              }
             } else {
-              const addPersonObservable = from(this.httpApi.addNewPerson(newPerson));
-              addPersonObservable.subscribe({
-                next: (value: any) => {
-                  this.toastr.success("Data updated successfully", "Success");
-                  setTimeout(() => {
-                    //console.log(newPerson)
-                    window.location.reload();
-                  }, 1500)
-                },
-                 error: (err: any) => {
-                  this.toastr.error('Something is wrong', 'Error');
-                  setTimeout(() => {
-                  }, 1500)
-                }
-              })
+              try {
+                const response = await this.httpApi.addNewPerson(newPerson);
+                const value = await response;
+                this.toastr.success("Data updated successfully", "Success");
+                setTimeout(() => {
+                  window.location.reload();
+                }, 1500);
+              } catch (error) {
+                this.toastr.error('Something is wrong', 'Error');
+                setTimeout(() => {
+                }, 1500);
+              }
             }
           }
         })

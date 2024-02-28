@@ -37,9 +37,17 @@
       </mat-error>
     </mat-form-field>
 
-    <mat-label>Roles:</mat-label>
-    <mat-slide-toggle formControlName="Role_SA" *ngIf="IsSA">Super Admin</mat-slide-toggle>
-    <mat-slide-toggle formControlName="Role_Admin">CRM Admin</mat-slide-toggle>
+    <mat-slide-toggle formControlName="wantToUpdateUser">Do you want to update even user?</mat-slide-toggle>
+
+    <div *ngIf="updatePersonForm.get('wantToUpdateUser')?.value" class="roles-container">
+      <span>Roles:</span>
+      <div>
+        <mat-slide-toggle formControlName="Role_SA" *ngIf="IsSA">Super Admin</mat-slide-toggle>
+      </div>
+      <div>
+      <mat-slide-toggle formControlName="Role_Admin">CRM Admin</mat-slide-toggle>
+      </div>
+    </div>
 
 
 

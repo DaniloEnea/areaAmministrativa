@@ -149,7 +149,7 @@ export class HttpProviderService {
       }),
       mergeMap(async (accessToken: string) => {
 
-        const usernameEncrypt = await this.encrypt(JSON.stringify(username), "http://localhost:9000/api/rsa/GetPublicKey");
+        const usernameEncrypt = await this.encrypt(JSON.stringify(username), authEncryption);
         const bodyEncrypt: BodyDtoEncrypt = { encryptedEmail: usernameEncrypt, encryptedContent: "" }
 
         return this.adminApiService.postWithCcBodyEncrypt(disableUserUrl, bodyEncrypt, accessToken);
@@ -172,17 +172,20 @@ export class HttpProviderService {
     );
   }
 
-  public changeRole(bodyEncrypt: BodyDtoEncrypt): Observable<any> {
+  public changeRole(username: string, roles: any): Observable<any> {
     return this.adminApiService.postUrlEncoded(apiCredentials).pipe(
       mergeMap((value: any) => {
         const accessToken = value.body.access_token;
 
         return of(accessToken);
       }),
-      mergeMap((accessToken: string) => {
+      mergeMap(async (accessToken: string) => {
 
         // Chiamata successiva con l'access token
-        return this.adminApiService.putWithCc(updatePersonRoleUrl,bodyEncrypt, accessToken);
+        const eUsername = btoa(await this.encrypt(JSON.stringify(username), authEncryption));
+        const eRoles = btoa(await this.encrypt(JSON.stringify(roles), authEncryption));
+
+        return this.adminApiService.putWithCc(updatePersonRoleUrl, eUsername, eRoles, accessToken);
 
       })
     );
@@ -279,16 +282,17 @@ export class HttpProviderService {
     );
   }
 
-  public sendEmailCreation(id: string, model: any): Observable<any> {
+  public sendEmailCreation(email: string): Observable<any> {
     return this.adminApiService.postUrlEncoded(apiCredentials).pipe(
       mergeMap((value: any) => {
         const accessToken = value.body.access_token;
 
         return of(accessToken);
       }),
-      mergeMap((accessToken: string) => {
+      mergeMap(async (accessToken: string) => {
         // Chiamata successiva con l'access token
-        return this.adminApiService.postWithCcById(id,sendEmailCreateUrl, model, accessToken);
+        const encEmail = btoa(await this.encrypt(email, authEncryption));
+        return this.adminApiService.postWithCcById(encodeURI(encEmail),sendEmailCreateUrl, null, accessToken);
       })
     );
   }
@@ -368,20 +372,20 @@ export class HttpProviderService {
   }
 
   //reset_password
-  public resetPwd(username: string) {
-    return this.adminApiService.postUrlEncoded(apiCredentials).pipe(
-      mergeMap((value: any) => {
-        const accessToken = value.body.access_token;
+  //public resetPwd(username: string) {
+  //  return this.adminApiService.postUrlEncoded(apiCredentials).pipe(
+  //    mergeMap((value: any) => {
+  //      const accessToken = value.body.access_token;
 
-        return of(accessToken);
-      }),
-      mergeMap(async (accessToken: string) => {
-        const usernameEncrypt = await this.encrypt(JSON.stringify(username), "http://localhost:9000/api/rsa/GetPublicKey");
-        const bodyEncrypt: BodyDtoEncrypt = { encryptedEmail: usernameEncrypt, encryptedContent: "" }
-        return this.adminApiService.putWithCc(resetPwdUrl,bodyEncrypt, accessToken);
-      })
-    );
-  }
+  //      return of(accessToken);
+  //    }),
+  //    mergeMap(async (accessToken: string) => {
+  //      const usernameEncrypt = await this.encrypt(JSON.stringify(username), authEncryption);
+  //      const bodyEncrypt: BodyDtoEncrypt = { encryptedEmail: usernameEncrypt, encryptedContent: "" }
+  //      return this.adminApiService.putWithCc(resetPwdUrl,bodyEncrypt, accessToken);
+  //    })
+  //  );
+  //}
 
 
   //PUT
@@ -397,9 +401,9 @@ export class HttpProviderService {
 
     const encryptedDto = await this.encrypt(JSON.stringify(bcDto), personEncryption);
 
-    const eId = await this.encrypt(id, personEncryption)
+    const eId = btoa(await this.encrypt(id, personEncryption));
 
-    return this.adminApiService.putEncrypted(updatePersonUrl, Buffer.from(eId, 'utf-8').toString(), JSON.stringify(encryptedDto))
+    return this.adminApiService.put(updatePersonUrl, eId, JSON.stringify(encryptedDto))
   }
 
   public async updateOrg(id: string, model: any): Promise<Observable<any>> {

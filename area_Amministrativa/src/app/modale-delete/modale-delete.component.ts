@@ -25,15 +25,6 @@ export class ModaleDeleteComponent {
         next: (userData: any) => {
           console.log(userData.body)
           this.UserExist = true
-        },
-        complete: () => {
-          console.log(this.UserExist)
-          this.deletePU()
-
-          console.log("delete: " + this.data.Username)
-          console.log("type: " + this.data.ClassForm)
-
-          this.ref.close()
         }
       })
 
@@ -47,6 +38,13 @@ export class ModaleDeleteComponent {
       //  //this.httpApi.deleteOrg(this.data.Id).subscribe()
       //}
 
+      console.log(this.UserExist)
+      this.deletePU()
+
+      console.log("delete: " + this.data.Username)
+      console.log("type: " + this.data.ClassForm)
+
+      this.ref.close()
     }
     else {
       this.toastr.error("Token is expired", "Error")
@@ -64,26 +62,30 @@ export class ModaleDeleteComponent {
       (await this.httpApi.deletePerson(this.data.Id)).subscribe({
         next: (value: any) => {
           this.toastr.success("Deleted succesfully", "Success")
-          setTimeout(() => {
-            window.location.reload();
-          }, 500)
         },
         error: (error: Error) => {
           this.toastr.error("Something went wrong with delete", "Error")
         }
       })
+      setTimeout(() => {
+        this.closepopup();
+        window.location.reload();
+      }, 500)
     }
     else {
       this.httpApi.forcedDeletePerson(this.data.Id).subscribe({
         next: (value: any) => {
           this.toastr.success("Deleted succesfully", "Success")
           this.toastr.warning("No user was found", "Warn")
-          setTimeout(() => {
-            window.location.reload();
-          }, 500)
         },
         error: (error: Error) => {
           this.toastr.error("Something went wrong with delete", "Error")
+        },
+        complete: () => {
+          setTimeout(() => {
+            this.closepopup();
+            window.location.reload();
+          }, 500)
         }
       })
     }

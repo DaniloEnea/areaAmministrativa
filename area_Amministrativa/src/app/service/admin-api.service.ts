@@ -169,7 +169,7 @@ export class AdminApiService {
     );
   }
 
-  putWithCc(url: string, model: BodyDtoEncrypt, accessToken: string): Observable<any> {
+  putWithCc(url: string, id: string, model: any, accessToken: string): Observable<any> {
     const httpOptions = {
       headers : new HttpHeaders( {
         'Content-Type': 'application/json',
@@ -177,7 +177,9 @@ export class AdminApiService {
       }),
       observe: "response" as 'body'
     };
-    return this.http.put(url, model, httpOptions).pipe(
+
+    const putUrl: string = `${url}/${id}`;
+    return this.http.put(putUrl, model, httpOptions).pipe(
       map((response : any) => this.ReturnResponseData(response)),
       catchError(this.handleError)
     );
@@ -299,7 +301,8 @@ export class AdminApiService {
         headers: new HttpHeaders({
           'Content-Type': 'application/json'
         }),
-        observe: 'response' as 'body'
+        observe: "response" as 'body',
+        responseType: 'text' as 'json' 
       };
       const putUrl = `${url}/${id}`;
       return this.http.put(putUrl, model, httpOptions).pipe(
@@ -313,7 +316,8 @@ export class AdminApiService {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
       }),
-      observe: 'response' as 'body'
+      observe: "response" as 'body',
+      responseType: 'text' as 'json'
     };
     const deleteUrl = `${url}/${id}?logicalDelete=false&publicKeyUrl=${publicKeyUrl}`;
     return this.http.delete(deleteUrl, httpOptions).pipe(

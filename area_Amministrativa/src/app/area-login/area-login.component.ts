@@ -57,7 +57,7 @@ export class AreaLoginComponent {
 
   async submit() {
     if (this.loginForm.valid) {
-      this.loading = true;
+      
 
       const newLogin: LoginDTO = {
         username: this.loginForm.value.username,
@@ -67,7 +67,7 @@ export class AreaLoginComponent {
       try {
         // Cripta le credenziali di login
         const loginEncrypt = await this.httpApi.encrypt(JSON.stringify(newLogin), "http://localhost:9000/api/rsa/GetPublicKey");
-
+        this.loading = true;
         // Invia le credenziali di login criptate
         this.httpApi.loginEncrypted(loginEncrypt).subscribe({
           next: async (encryptedResponse) => {
@@ -78,15 +78,18 @@ export class AreaLoginComponent {
             localStorage.setItem("accessToken", decryptedResponse.accessToken);
 
             if (this.authService.isAuthenticated()) {
+              this.loading = false;
               this.toastr.success("Login successful", "Success");
               await this.router.navigate([('')]);
             } else {
+              this.loading = false;
               this.toastr.error("Unauthorized", "Error");
               localStorage.removeItem('accessToken');
               localStorage.removeItem('ROLE');
             }
           },
           error: err => {
+            this.loading = false;
             this.toastr.error("Incorrect username or password", "Error");
             console.log(err);
           }
@@ -94,9 +97,8 @@ export class AreaLoginComponent {
       } catch (error) {
         console.log(error);
         this.toastr.error("Encryption failed or unable to fetch the public key", "Error");
-      } finally {
-        this.loading = false;
       }
+      
     }
   }
 

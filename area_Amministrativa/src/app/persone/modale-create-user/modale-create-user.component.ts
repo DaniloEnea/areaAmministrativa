@@ -43,17 +43,17 @@ export interface SendUser {
     IsSA = true;
 
     constructor(public auth: AuthService, public dialogRef: MatDialogRef<ModaleCreateUserComponent>,
-      @Inject(MAT_DIALOG_DATA) public data: { person: User },
+      @Inject(MAT_DIALOG_DATA) public data: { Id: string, Email: string, Roles: string[] },
       private formBuilder: FormBuilder,
       private httpApi: HttpProviderService, private toastr: ToastrService) {
 
 
       this.IsSA = auth.checkIsSA();
 
-      console.log(this.data.person)
+      console.log(this.data)
 
       this.createUserForm = this.formBuilder.group({
-        email: [this.data.person.Email, Validators.required],
+        email: [this.data.Email, Validators.required],
         Role_SA: [this.roleCheck("ROLE_SA")],
         Role_Admin: [this.roleCheck("ROLE_ADMIN")]
       });
@@ -76,8 +76,8 @@ export interface SendUser {
     }
 
     roleCheck(role: string): boolean {
-      if (this.data.person.Roles != null) {
-        return this.data.person.Roles.includes(role);
+      if (this.data.Roles != null) {
+        return this.data.Roles.includes(role);
       }
       else return false;
     }
@@ -111,9 +111,9 @@ export interface SendUser {
           console.log(this.rolesSelected)
 
           const createUser: SendUser = {
-            email: this.data.person.Email,
+            email: this.data.Email,
             password: this.generatePassword(12),
-            id: this.data.person.Id,
+            id: this.data.Id,
             roles: this.rolesSelected,
           };
 
@@ -133,12 +133,11 @@ export interface SendUser {
       try {
         console.log(model)
         const createUserEncrypt =  await this.httpApi.encrypt(JSON.stringify(model), "http://localhost:9000/api/rsa/GetPublicKey");
-        console.log(createUserEncrypt)
         this.httpApi.createUserEncrypted(createUserEncrypt).subscribe({
           next: (encryptedResponse) => {
             this.toastr.success("Create user successful", "Success");
 
-            this.httpApi.sendEmailCreation(this.createUserForm.value.email, null).subscribe(
+            this.httpApi.sendEmailCreation(this.createUserForm.value.email).subscribe(
               {
                 next: value => {
                   this.toastr.success("The create email has been sent", "Success")

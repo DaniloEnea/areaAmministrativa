@@ -15,7 +15,7 @@ export class ModaleUpdateOrgComponent {
 
   updateOrgForm: FormGroup;
 
-  constructor(public auth: AuthService,public dialogRef: MatDialogRef<ModaleUpdateOrgComponent>,
+  constructor(public auth: AuthService, public dialogRef: MatDialogRef<ModaleUpdateOrgComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { org: OrganizationDTO },
     private formBuilder: FormBuilder,
     private httpApi: HttpProviderService, private toastr: ToastrService) {
@@ -188,17 +188,22 @@ export class ModaleUpdateOrgComponent {
 
         console.log(updateOrg);
         // post for create new user
-        (await this.httpApi.updateOrg(this.data.org.Id, updateOrg)).subscribe((response) => {
-          this.toastr.success("Data updated successfully", "Success");
-          setTimeout(() => {
-            window.location.reload();
-          }, 1500)
-        },
-          (error) => {
+        (await this.httpApi.updateOrg(this.data.org.Id, updateOrg)).subscribe({
+          next: (response: any) => {
+            this.toastr.success("Data updated successfully", "Success");
+            setTimeout(() => {
+              window.location.reload();
+            }, 1500)
+          },
+          error: (err: any) => {
+            console.log(err);
             this.toastr.error('Something is wrong', 'Error');
             setTimeout(() => { }, 1500)
-          });
-        this.dialogRef.close(updateOrg);
+          },
+          complete: () => {
+            this.dialogRef.close(updateOrg);
+          }
+        })
       }
     }
     else {
@@ -208,7 +213,9 @@ export class ModaleUpdateOrgComponent {
       }, 500)
 
     }
+
   }
+
   closepopup() {
     this.dialogRef.close();
   }

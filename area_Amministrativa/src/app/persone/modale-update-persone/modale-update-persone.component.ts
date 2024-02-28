@@ -32,7 +32,7 @@ export class ModaleUpdatePersoneComponent {
   updatePersonForm: FormGroup;
   rolesSelected: string[] = [];
   IsSA = true;
-
+  wantToUpdateUser: boolean = true;
   separateDialCode = false;
   SearchCountryField = SearchCountryField;
   CountryISO = CountryISO;
@@ -60,6 +60,7 @@ export class ModaleUpdatePersoneComponent {
       isGDPRTermsAccepted: [this.data.person.IsGDPRTermsAccepted],
       isOtherProcessingPurposesAccepted: [this.data.person.IsOtherProcessingPurposesAccepted],
       isServiceProcessingPurposesAccepted: [this.data.person.IsServiceProcessingPurposesAccepted],
+      wantToUpdateUser: [false],
       Role_SA: [this.roleCheck("ROLE_SA")],
       Role_Admin: [this.roleCheck("ROLE_ADMIN")]
     });
@@ -104,6 +105,8 @@ export class ModaleUpdatePersoneComponent {
         }
         this.rolesSelected.push("ROLE_USER")
 
+        this.wantToUpdateUser = this.updatePersonForm.value.wantToUpdateUser;
+
         console.log(this.rolesSelected)
 
         const updatePerson: PersonDTO = {
@@ -123,32 +126,32 @@ export class ModaleUpdatePersoneComponent {
           CF: this.updatePersonForm.value.cf
         };
 
-        const usernameEncrypt = await this.httpApi.encrypt(JSON.stringify(this.data.person.Email), "http://localhost:9000/api/rsa/GetPublicKey");
-        const rolesEncrypt = await this.httpApi.encrypt(JSON.stringify( this.rolesSelected), "http://localhost:9000/api/rsa/GetPublicKey");
-
-        const bodyEncrypt: BodyDtoEncrypt = { encryptedEmail: usernameEncrypt, encryptedContent: rolesEncrypt };
+        
         //post for create new user
-        const updatePersonObservable = from(this.httpApi.updatePerson(this.data.person.Id, updatePerson));
-        updatePersonObservable.subscribe({
-          next: (value: any) => {
-            console.log(bodyEncrypt)
-            this.httpApi.changeRole(bodyEncrypt).subscribe((response) => {
-              this.toastr.success("Data updated successfully", "Success");
-              setTimeout(() => {
-                //console.log(updatePerson);
-                //console.log(this.rolesSelected);
-                window.location.reload();
-              }, 1500)
-            })
+        (await this.httpApi.updatePerson(this.data.person.Id, updatePerson)).subscribe({
+          next: async (value: any) => {
+            console.log("riuscito")
+            this.toastr.success("Person updated successfully", "Success");
+
+            if (this.updatePersonForm.value.wantToUpdateUser === true) {
+              this.httpApi.changeRole(this.updatePersonForm.value.email, this.rolesSelected).subscribe((response) => {
+                this.toastr.success("User updated successfully", "Success");
+              })
+            }
           },
           error: (err: Error) => {
             // show the error
+            console.log("Fallito")
             console.log(err)
             this.toastr.error('Something is wrong', 'Error');
-            setTimeout(() => { }, 1500)
+          },
+          complete: () => {
+            this.dialogRef.close(updatePerson);
+            setTimeout(() => {
+              //window.location.reload();
+            }, 1500)
           }
         });
-        this.dialogRef.close(updatePerson);
       }
     }
     else {
@@ -159,6 +162,7 @@ export class ModaleUpdatePersoneComponent {
 
     }
   }
+
 
   closepopup(): void {
     this.dialogRef.close();
