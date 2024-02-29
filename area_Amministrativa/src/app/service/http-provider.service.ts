@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {AdminApiService} from "./admin-api.service";
-import {buffer, catchError, from, mergeMap, Observable, of} from "rxjs";
+import {buffer, catchError, combineLatest, from, map, mergeMap, Observable, of} from "rxjs";
 import { EncryptionService } from './encryption.service';
 import {BodyDtoEncrypt} from "../dto/body-dto-encrypt";
 
@@ -176,17 +176,22 @@ export class HttpProviderService {
     return this.adminApiService.postUrlEncoded(apiCredentials).pipe(
       mergeMap((value: any) => {
         const accessToken = value.body.access_token;
-
         return of(accessToken);
       }),
-      mergeMap(async (accessToken: string) => {
+      mergeMap((accessToken: string) => {
+        // Convertire la Promise restituita da encrypt in un Observable
+        const encryptedUsername$ = from(this.encrypt(username, authEncryption));
+        const encryptedRoles$ = from(this.encrypt(JSON.stringify(roles), authEncryption));
 
-        // Chiamata successiva con l'access token
-        const eUsername = btoa(await this.encrypt(JSON.stringify(username), authEncryption));
-        const eRoles = btoa(await this.encrypt(JSON.stringify(roles), authEncryption));
-
-        return this.adminApiService.putWithCc(updatePersonRoleUrl, eUsername, eRoles, accessToken);
-
+        // Utilizzare combineLatest per attendere che entrambe le encryption siano completate
+        return combineLatest([encryptedUsername$, encryptedRoles$]).pipe(
+          map(([eUsername, eRoles]) => {
+            return { eUsername, eRoles };
+          }),
+          mergeMap(({ eUsername, eRoles }) =>
+            this.adminApiService.putWithCc(updatePersonRoleUrl, btoa(eUsername), eRoles, accessToken)
+          )
+        );
       })
     );
   }

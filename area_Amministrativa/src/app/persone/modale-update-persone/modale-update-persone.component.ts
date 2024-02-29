@@ -7,7 +7,7 @@ import { HttpProviderService } from "../../service/http-provider.service";
 import { ToastrService } from "ngx-toastr";
 import { AuthService } from "../../service/auth.service";
 import { CountryISO, PhoneNumberFormat, SearchCountryField } from 'ngx-intl-tel-input';
-import { from } from 'rxjs';
+import {filter, from, mergeMap, tap} from 'rxjs';
 import {BodyDtoEncrypt} from "../../dto/body-dto-encrypt";
 import {request} from "express";
 
@@ -126,32 +126,32 @@ export class ModaleUpdatePersoneComponent {
           CF: this.updatePersonForm.value.cf
         };
 
-        
-        //post for create new user
-        (await this.httpApi.updatePerson(this.data.person.Id, updatePerson)).subscribe({
-          next: async (value: any) => {
-            console.log("riuscito")
-            this.toastr.success("Person updated successfully", "Success");
 
-            if (this.updatePersonForm.value.wantToUpdateUser === true) {
-              this.httpApi.changeRole(this.updatePersonForm.value.email, this.rolesSelected).subscribe((response) => {
-                this.toastr.success("User updated successfully", "Success");
-              })
-            }
-          },
-          error: (err: Error) => {
-            // show the error
-            console.log("Fallito")
-            console.log(err)
-            this.toastr.error('Something is wrong', 'Error');
-          },
-          complete: () => {
-            this.dialogRef.close(updatePerson);
-            setTimeout(() => {
-              //window.location.reload();
-            }, 1500)
-          }
-        });
+    (await this.httpApi.updatePerson(this.data.person.Id, updatePerson)).pipe(
+      tap(() => {
+        console.log("riuscito");
+        this.toastr.success("Person updated successfully", "Success");
+      }),
+      filter(() => this.updatePersonForm.value.wantToUpdateUser === true),
+      mergeMap(() => this.httpApi.changeRole(this.updatePersonForm.value.email, this.rolesSelected)),
+      tap({
+        next: () => {
+          this.toastr.success("User updated successfully", "Success");
+        },
+        error: (err: Error) => {
+          console.log("Fallito");
+          console.log(err);
+          this.toastr.error('Something is wrong', 'Error');
+        }
+      }),
+    ).subscribe({
+      complete: () => {
+        this.dialogRef.close(updatePerson);
+        setTimeout(() => {
+          //window.location.reload();
+        }, 1500);
+      }
+    });
       }
     }
     else {
