@@ -308,10 +308,7 @@ export class PersoneComponent implements OnInit {
   }
 
   async abilityUser(username: string) {
-    const usernameEncrypt = await this.httpApi.encrypt(JSON.stringify(username), "http://localhost:9000/api/rsa/GetPublicKey");
-    const bodyEncrypt: BodyDtoEncrypt = { encryptedEmail: usernameEncrypt, encryptedContent: "" }
-
-    this.httpApi.abilityUser(bodyEncrypt).subscribe({
+    this.httpApi.abilityUser(username).subscribe({
       next: value => {
         this.hideDisableUser[username] = true;
         this.hideEnableUser[username] = false;

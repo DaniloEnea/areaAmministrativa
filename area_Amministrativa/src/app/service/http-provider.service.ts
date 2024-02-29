@@ -140,24 +140,24 @@ export class HttpProviderService {
     );
   }
 
-    public disableUser(username: string): Observable<any> {
+  public disableUser(username: string): Observable<any> {
     return this.adminApiService.postUrlEncoded(apiCredentials).pipe(
       mergeMap((value: any) => {
         const accessToken = value.body.access_token;
-
         return of(accessToken);
       }),
-      mergeMap(async (accessToken: string) => {
-
-        const usernameEncrypt = await this.encrypt(JSON.stringify(username), authEncryption);
-        const bodyEncrypt: BodyDtoEncrypt = { encryptedEmail: usernameEncrypt, encryptedContent: "" }
-
-        return this.adminApiService.postWithCcBodyEncrypt(disableUserUrl, bodyEncrypt, accessToken);
+      mergeMap((accessToken: string) => {
+        return from(this.encrypt(username, authEncryption)).pipe(
+          map(usernameEncrypt => btoa(usernameEncrypt)),
+          mergeMap(usernameEncryptBase64 =>
+            this.adminApiService.postWithCcById(usernameEncryptBase64, disableUserUrl, null, accessToken)
+          )
+        );
       })
     );
   }
 
-  public abilityUser(bodyEncrypt: BodyDtoEncrypt): Observable<any> {
+  public abilityUser(username: string): Observable<any> {
     return this.adminApiService.postUrlEncoded(apiCredentials).pipe(
       mergeMap((value: any) => {
         const accessToken = value.body.access_token;
@@ -165,9 +165,12 @@ export class HttpProviderService {
         return of(accessToken);
       }),
       mergeMap((accessToken: string) => {
-
-        // Chiamata successiva con l'access token
-        return this.adminApiService.postWithCcBodyEncrypt(abilityUserUrl, bodyEncrypt , accessToken);
+        return from(this.encrypt(username, authEncryption)).pipe(
+          map(usernameEncrypt => btoa(usernameEncrypt)),
+          mergeMap(usernameEncryptBase64 =>
+            this.adminApiService.postWithCcById(usernameEncryptBase64, abilityUserUrl, null, accessToken)
+          )
+        );
       })
     );
   }
