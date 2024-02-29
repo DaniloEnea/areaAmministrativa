@@ -44,7 +44,7 @@ openResetPwdDialog(username: string): void {
 }
 */
   resetPasswordByEmail() {
-    this.httpApi.forgotPwdByEmail(this.username, null).subscribe(
+    this.httpApi.forgotPwdByEmail(this.username).subscribe(
       {
         next: value => {
           this.toastr.success("We have sent a reset password link to your email. Please check.", "Success")

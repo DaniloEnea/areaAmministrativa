@@ -12,7 +12,7 @@ import { async } from 'rxjs';
 })
 export class ModaleDeleteComponent {
 
-  UserExist: boolean = false;
+
 
   constructor(public auth: AuthService, private toastr: ToastrService, private ref: MatDialogRef<ModaleDeleteComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { Id: string, Username: string, ClassForm : string },
@@ -27,17 +27,16 @@ export class ModaleDeleteComponent {
       (await this.httpApi.getUtenteByUsername(this.data.Username)).subscribe({
         next: (userData: any) => {
           console.log(userData.body)
-          this.UserExist = true
 
-          console.log(this.UserExist)
+          this.deletePU();
 
-          if (this.UserExist === true) {
-            this.deletePU();
-          }
-          else {
-            this.deletePerson();
-          }
-          //this.deletePU()
+          console.log("delete: " + this.data.Username)
+          console.log("type: " + this.data.ClassForm)
+
+          this.ref.close()
+        },
+        error: () => {
+          this.deletePerson();
 
           console.log("delete: " + this.data.Username)
           console.log("type: " + this.data.ClassForm)
@@ -60,7 +59,7 @@ export class ModaleDeleteComponent {
       this.toastr.error("Token is expired", "Error")
       setTimeout(() => {
         window.location.reload();
-      }, 500)
+      }, 1000)
 
     }
   }
@@ -78,7 +77,7 @@ export class ModaleDeleteComponent {
         setTimeout(() => {
           this.closepopup();
           window.location.reload();
-        }, 500)
+        }, 1000)
       }
     })
   }
@@ -96,7 +95,7 @@ export class ModaleDeleteComponent {
         setTimeout(() => {
           this.closepopup();
           window.location.reload();
-        }, 500)
+        }, 1000)
       }
     })
   }

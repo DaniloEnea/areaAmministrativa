@@ -24,7 +24,7 @@ export class ModaleSendEmailPwdComponent {
 
   sendEmail() {
     if (this.sendEmailForm.valid) {
-      this.httpApi.forgotPwdByEmail(this.sendEmailForm.value.email, null).subscribe(
+      this.httpApi.forgotPwdByEmail(this.sendEmailForm.value.email).subscribe(
         {
           next: value => {
             this.toastr.success("We have sent a reset password link to your email. Please check.", "Success")

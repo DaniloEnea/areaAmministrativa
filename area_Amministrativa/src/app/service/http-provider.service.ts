@@ -268,7 +268,7 @@ export class HttpProviderService {
   //  return this.adminApiService.post(addOrgUrl, this.encrypt(model,orgEncryption))
   //}
 
-  public forgotPwdByEmail(id: string, model: any): Observable<any> {
+  public forgotPwdByEmail(email: string): Observable<any> {
     return this.adminApiService.postUrlEncoded(apiCredentials).pipe(
       mergeMap((value: any) => {
         const accessToken = value.body.access_token;
@@ -277,10 +277,11 @@ export class HttpProviderService {
       }),
       mergeMap((accessToken: string) => {
         // Chiamata successiva con l'access token
-        return this.adminApiService.postWithCcById(id,forgotPwdByEmailUrl, model, accessToken);
+        return this.adminApiService.postWithCcById(email,forgotPwdByEmailUrl, null, accessToken);
       })
     );
   }
+
   encodeStringToBase64(utf8String: string): string {
   // Converti la stringa UTF-8 in una stringa ASCII compatibile
   const asciiString = encodeURIComponent(utf8String).replace(/%([0-9A-F]{2})/g,
@@ -302,7 +303,8 @@ export class HttpProviderService {
       }),
       mergeMap(async (accessToken: string) => {
         // Chiamata successiva con l'access token
-        return this.adminApiService.postWithCcById(email,sendEmailCreateUrl, null, accessToken);
+        email = btoa(encodeURI(await this.encrypt(email, authEncryption)));
+        return this.adminApiService.postWithCcById(JSON.stringify(email),sendEmailCreateUrl, null, accessToken);
       })
     );
   }

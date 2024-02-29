@@ -236,6 +236,7 @@ export class PersoneComponent implements OnInit {
                       },
                       error: (error: any) => {
                         console.error("Error fetching org data", error);
+
                       }
                     }
                   );
@@ -245,7 +246,9 @@ export class PersoneComponent implements OnInit {
                 }
               },
               error: (error: any) => {
-                this.toastr.error("Error fetching user data", "error")
+                this.toastr.error("Error fetching data", "Error")
+                this.dataSource.data = [];
+                this.LoadedData = true;
                 console.error("Error fetching user data", error);
               }
             });
@@ -416,7 +419,7 @@ export class PersoneComponent implements OnInit {
     if (this.auth.isAuthenticated()) {
 
       // Chiamata alla funzione di reset della password
-      this.httpApi.forgotPwdByEmail(email, null).subscribe(
+      this.httpApi.forgotPwdByEmail(email).subscribe(
         {
           next: value => {
             // Disabilita il pulsante
