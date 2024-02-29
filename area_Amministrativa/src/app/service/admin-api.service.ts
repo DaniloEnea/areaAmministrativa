@@ -115,7 +115,7 @@ export class AdminApiService {
       observe: "response" as 'body'
     };
     const postUrl: string = `${url}/${id}`;
-    return this.http.post(postUrl, JSON.stringify(model) , httpOptions).pipe(
+    return this.http.post(postUrl, model , httpOptions).pipe(
       map((response : any) => this.ReturnResponseData(response)),
       catchError(this.handleError)
     );
@@ -302,7 +302,7 @@ export class AdminApiService {
           'Content-Type': 'application/json'
         }),
         observe: "response" as 'body',
-        responseType: 'text' as 'json' 
+        responseType: 'text' as 'json'
       };
       const putUrl = `${url}/${id}`;
       return this.http.put(putUrl, model, httpOptions).pipe(

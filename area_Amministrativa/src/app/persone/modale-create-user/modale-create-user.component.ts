@@ -127,6 +127,18 @@ export interface SendUser {
       }
     }
 
+    async sendEmailCreateUser() {
+        this.httpApi.sendEmailCreation(this.createUserForm.value.email).subscribe(
+              {
+                next: value => {
+                  this.toastr.success("The create email has been sent", "Success")
+                },
+                error: err => {
+                  this.toastr.error("There is a problem with the email", "Error")
+                }
+              });
+    }
+
     // funzione per creare l'utenza
     async createUser(model: any) {
       try {
@@ -134,21 +146,11 @@ export interface SendUser {
         this.httpApi.createUserEncrypted(createUserEncrypt).subscribe({
           next: (encryptedResponse) => {
             this.toastr.success("Create user successful", "Success");
-            this.httpApi.sendEmailCreation(this.createUserForm.value.email).subscribe(
-              {
-                next: value => {
-                  this.toastr.success("The create email has been sent", "Success")
-                },
-                error: err => {
-                  this.toastr.error("There is a problem with the email", "Error")
-                },
-                complete:() => {}
-              }
-            );
+             this.sendEmailCreateUser();
             this.closepopup()
-            setTimeout(() => {
+            /*setTimeout(() => {
               window.location.reload();
-            }, 3000);
+            }, 3000);*/
           },
           error: err => {
             this.toastr.error("User exists", "Error");
