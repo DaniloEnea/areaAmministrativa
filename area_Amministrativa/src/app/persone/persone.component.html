@@ -125,21 +125,22 @@
             <mat-icon>delete</mat-icon>
           </button>
 
-          <button class="reset_pwd" mat-mini-fab matTooltip="Reset password" (click)="resetPassword(element.Email)" [disabled]="resetButtonDisabled[element.Email]" [ngStyle]="{ 'background-color': buttonColor[element.Email] }">
+
+          <button class="reset_pwd" mat-mini-fab matTooltip="Reset password" (click)="resetPassword(element.Email)" [disabled]="resetButtonDisabled[element.Email]" *ngIf="hideCreateUser[element.Email]===true" [ngStyle]="{ 'background-color': buttonColor[element.Email] }">
             <mat-icon>lock_reset</mat-icon>
           </button>
 
-        <button class="add-user" mat-mini-fab matTooltip="Create user" (click)="openCreateUserDialog(element.Id, element.Email, element.Roles)" [hidden]="hideCreateUser[element.Email]">
-          <mat-icon>person_add</mat-icon>
-        </button>
+          <button class="add-user" mat-mini-fab matTooltip="Create user" (click)="openCreateUserDialog(element.Id, element.Email, element.Roles)" [hidden]="hideCreateUser[element.Email]">
+            <mat-icon>person_add</mat-icon>
+          </button>
 
-        <button *ngIf="hideCreateUser[element.Email]===true" class="delete-user" mat-mini-fab matTooltip="Disable user" (click)="disableUser(element.Email)" [hidden]="hideDisableUser[element.Email]">
-          <mat-icon>person_disable</mat-icon>
-        </button>
+          <button *ngIf="hideCreateUser[element.Email]===true" class="delete-user" mat-mini-fab matTooltip="Disable user" (click)="disableUser(element.Email)" [hidden]="hideDisableUser[element.Email]">
+            <mat-icon>person_off</mat-icon>
+          </button>
 
-        <button *ngIf="hideDisableUser[element.Email]===true" mat-mini-fab matTooltip="Enable user" (click)="abilityUser(element.Email)" [hidden]="hideEnableUser[element.Email]">
-          <mat-icon>person_add</mat-icon>
-        </button>
+          <button *ngIf="hideDisableUser[element.Email]===true" mat-mini-fab matTooltip="Enable user" (click)="abilityUser(element.Email)" [hidden]="hideEnableUser[element.Email]">
+            <mat-icon>person</mat-icon>
+          </button>
 
         </td>
       </ng-container>

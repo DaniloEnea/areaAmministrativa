@@ -209,8 +209,8 @@ export class PersoneComponent implements OnInit {
 
                   this.httpApi.getAllOrg().subscribe(
                     {
-                      next: (orgData: any) => {
-                        this.PeopleList.forEach((person: PersonDTO1) => {
+                      next: async (orgData: any) => {
+                        await this.PeopleList.forEach((person: PersonDTO1) => {
                           person.Roles = ['Null'];
                           person.OrganizationName = 'No org';
 
@@ -233,20 +233,21 @@ export class PersoneComponent implements OnInit {
                             }
                           }
                         });
+                        this.dataSource.data = [...this.PeopleList];
                       },
                       error: (error: any) => {
-                        console.error("Error fetching org data", error);
-
+                        console.error("Error fetching organizations data", error);
+                        this.dataSource.data = [];
+                      },
+                      complete: () => {
+                        this.LoadedData = true;
                       }
                     }
                   );
-                  this.dataSource.data = [...this.PeopleList];
-                  this.LoadedData = true;
-
                 }
               },
               error: (error: any) => {
-                this.toastr.error("Error fetching data", "Error")
+                this.toastr.error("Error fetching users data", "Error")
                 this.dataSource.data = [];
                 this.LoadedData = true;
                 console.error("Error fetching user data", error);
