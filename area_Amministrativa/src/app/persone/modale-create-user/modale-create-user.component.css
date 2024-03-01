@@ -7,3 +7,9 @@
 .full-width {
   width: 100%;
 }
+
+.email{
+    text-align:center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}

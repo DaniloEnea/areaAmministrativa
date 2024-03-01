@@ -36,7 +36,6 @@ import {NgxIntlTelInputModule} from "ngx-intl-tel-input";
     NavbarComponent,
     SidebarComponent,
     HomepageComponent,
-    CreateUserEmailComponent,
     ModaleUpdateOrgComponent,
     ModaleSendEmailPwdComponent,
     ModaleUpdatePersoneComponent,

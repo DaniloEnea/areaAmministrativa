@@ -176,8 +176,9 @@ export class ModaleAddPersoneComponent {
         const PersonObservable = from(this.httpApi.getAllPeople())
         PersonObservable.subscribe({
           next: (data: any) => {
-            var resultData = data.body;
-            const ppDTOList: PersonDTO1[] = resultData;
+            var decryptedData = this.httpApi.decrypt(data.body)
+            
+            const ppDTOList: PersonDTO1[] = decryptedData;
 
             const CrmOrg = ppDTOList.find(pp => pp.Email === this.auth.getUsernameFromJwt());
             if (CrmOrg) {

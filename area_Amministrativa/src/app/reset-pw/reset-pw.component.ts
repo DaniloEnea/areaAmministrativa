@@ -16,6 +16,7 @@ import {HttpErrorResponse} from "@angular/common/http";
 import {MaterialModule} from "../material/material.module";
 import {getMatIconFailedToSanitizeLiteralError} from "@angular/material/icon";
 import {catchError, map, of} from "rxjs";
+import { AuthService } from '../service/auth.service';
 
 @Component({
   selector: 'app-reset-pw',
@@ -42,7 +43,7 @@ export class ResetPwComponent  implements OnInit{
 
   private token!: string;
 
-  constructor(private http: HttpProviderService, private route: ActivatedRoute, private router: Router) {
+  constructor(private auth: AuthService, private http: HttpProviderService, private route: ActivatedRoute, private router: Router) {
 
   }
 
@@ -128,11 +129,24 @@ export class ResetPwComponent  implements OnInit{
         this.showSuccess = true;
         this.successMessage = "Your password has been reset.";
 
-
-        // Attendere 3 secondi prima di eseguire il redirect
-        setTimeout(() => {
-          this.router.navigate(['/login']);
-        }, 5000);
+        this.route.queryParams.subscribe(params => {
+          const email = this.auth.getUsernameFromJwt();
+          if (email === params['email']) {
+            setTimeout(() => {
+              this.auth.logout();
+            }, 2000);
+          }
+          else if (email != null) {
+            setTimeout(() => {
+              this.router.navigate(['']);
+            }, 3000);
+          }
+          else {
+            setTimeout(() => {
+              this.router.navigate(['/login']);
+            }, 3000);
+          }
+        });
       },
       error: (err: HttpErrorResponse) => {
         this.showError = true;

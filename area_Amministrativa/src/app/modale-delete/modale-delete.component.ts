@@ -15,7 +15,7 @@ export class ModaleDeleteComponent {
 
 
   constructor(public auth: AuthService, private toastr: ToastrService, private ref: MatDialogRef<ModaleDeleteComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { Id: string, Username: string, ClassForm : string },
+    @Inject(MAT_DIALOG_DATA) public data: { Id: string, Username: string, FirstName : string, LastName: string },
     private httpApi: HttpProviderService) {
     
   }
@@ -31,7 +31,6 @@ export class ModaleDeleteComponent {
           this.deletePU();
 
           console.log("delete: " + this.data.Username)
-          console.log("type: " + this.data.ClassForm)
 
           this.ref.close()
         },
@@ -39,7 +38,6 @@ export class ModaleDeleteComponent {
           this.deletePerson();
 
           console.log("delete: " + this.data.Username)
-          console.log("type: " + this.data.ClassForm)
 
           this.ref.close()
         }

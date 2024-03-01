@@ -1,9 +1,15 @@
 <h1 mat-dialog-title align="center" style="font-size:20px; font-weight:bold">Create User</h1>
 <mat-dialog-content>
-  <form [formGroup]="createUserForm" class="mat-form">
+  <form [formGroup]="createUserForm">
+    <div class="email">
+      <h4>{{data.Email}}</h4>
+    </div>
     <mat-label>Roles:</mat-label>
-    <mat-slide-toggle formControlName="Role_SA" *ngIf="IsSA">Super Admin</mat-slide-toggle>
-    <mat-slide-toggle formControlName="Role_Admin">CRM Admin</mat-slide-toggle>
+    <br />
+    <div class="mat-form">
+      <mat-slide-toggle formControlName="Role_SA" *ngIf="IsSA">Super Admin</mat-slide-toggle>
+      <mat-slide-toggle formControlName="Role_Admin">CRM Admin</mat-slide-toggle>
+    </div>
   </form>
 </mat-dialog-content>
 

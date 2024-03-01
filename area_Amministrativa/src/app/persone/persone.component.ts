@@ -320,9 +320,9 @@ export class PersoneComponent implements OnInit {
     })
   }
 
-  openDeleteDialog(id: string, username: string): void {
+  openDeleteDialog(id: string, username: string, firstname: string, lastname: string): void {
     const dialogRef = this.dialog.open(ModaleDeleteComponent, {
-      data: { Id: id, Username: username, ClassForm: this.classForm } // passo l'ID
+      data: { Id: id, Username: username, FirstName: firstname, LastName: lastname } // passo l'ID
     });
 
     dialogRef.afterClosed().subscribe((result) => {

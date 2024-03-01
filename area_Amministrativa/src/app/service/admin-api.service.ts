@@ -55,6 +55,24 @@ export class AdminApiService {
     }
   }
 
+  async getByEmail(url: string, email: string): Promise<Observable<any>> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      }),
+      observe: 'response' as 'body'
+    };
+    try {
+
+      url = `${url}/${email}`;
+      const response = await this.http.get(url, httpOptions).toPromise();
+      return this.ReturnResponseData(response);
+    } catch (error) {
+      this.handleError(error);
+      throw error; // Rilancia l'errore per gestirlo nell'ambito in cui è stata chiamata la funzione
+    }
+  }
+
   //POST operations
   post(url: string, body:any): Observable<any> {
     const httpOptions = {
@@ -309,6 +327,23 @@ export class AdminApiService {
         catchError(this.handleError)
       );
     }
+
+  //PATCH operations
+  patch(url: string, id: string, propertyname: string, newvalue: boolean, publickey: string): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      }),
+      observe: "response" as 'body',
+      responseType: 'text' as 'json'
+    };
+    url = `${url}/${id}?propertyName=${propertyname}&newValue=${newvalue}&publicKeyUrl=${publickey}`;
+
+
+    return this.http.patch(url, null, httpOptions).pipe(
+      catchError(this.handleError)
+    );
+  }
 
   // DELETE operations
   deleteEncrypted(url: string, id: string, publicKeyUrl: string): Observable<any> {

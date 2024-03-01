@@ -148,9 +148,9 @@ export interface SendUser {
             this.toastr.success("Create user successful", "Success");
              this.sendEmailCreateUser();
             this.closepopup()
-            /*setTimeout(() => {
+            setTimeout(() => {
               window.location.reload();
-            }, 3000);*/
+            }, 3000);
           },
           error: err => {
             this.toastr.error("User exists", "Error");

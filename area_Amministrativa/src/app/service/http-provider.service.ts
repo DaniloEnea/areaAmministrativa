@@ -20,6 +20,7 @@ let publicKeyUrl = "http://localhost:3000/api";
 let getUtenteUrl = "http://localhost:9000/api/global/getAllUsers"
 //let getPersonUrl = genericUrl + "people"
 let getPersonUrl = "https://localhost:7131/api/People"
+let getPersonByEmailUrl = "https://localhost:7131/api/People/FindPersonByEmail"
 let getOrgUrl = "https://localhost:7017/api/Organizations"
 //let getOrgUrl = genericUrl + "organization"
 
@@ -40,6 +41,9 @@ let getOrgByIdUrl = "https://localhost:7017/api/Organizations"
 let updatePersonUrl = "https://localhost:7131/api/People"
 let updatePersonRoleUrl = "http://localhost:9000/api/admin/changeRole"
 let updateOrgUrl = "https://localhost:7017/api/Organizations"
+
+//patch
+let patchPersonUrl = "https://localhost:7131/api/People"
 
 //delete
 //let deleteUtenteUrl = genericUrl + "deleteUtenti"
@@ -199,7 +203,7 @@ export class HttpProviderService {
     );
   }
 
-  public  getAllPeople(): Observable<any> {
+  public getAllPeople(): Observable<any> {
     //publicKeyUrl = encodeURIComponent(publicKeyUrl);
     const Url = `${getPersonUrl}?publicKeyUrl=${encodeURIComponent(publicKeyUrl)}&allEntities=true`;
 
@@ -221,6 +225,17 @@ export class HttpProviderService {
       })
     );
   }
+
+  //public async getPersonByEmail(email: string): Promise<Observable<any>> {
+  //  //publicKeyUrl = encodeURIComponent(publicKeyUrl);
+  //  var encEmail = await this.encrypt(email, personEncryption);
+
+  //  return from(this.adminApiService.getByEmail(getPersonByEmailUrl, encodeURI(encEmail))).pipe(
+  //    catchError(error => {
+  //      throw error;
+  //    })
+  //  );
+  //}
 
   public getUtenteByUsername(username: string): Observable<any> {
     return this.adminApiService.getUrlEncoded(apiCredentials).pipe(
@@ -429,6 +444,13 @@ public sendEmailCreation(email: string): Observable<any> {
     const eId = btoa(await this.encrypt(id, orgEncryption));
 
     return this.adminApiService.put(updateOrgUrl, eId, JSON.stringify(encryptedDto))
+  }
+
+  public async patchGDPRPerson(id: string): Promise<Observable<any>> {
+    
+    id = btoa(await this.encrypt(id, personEncryption));
+
+    return this.adminApiService.patch(patchPersonUrl, id, "IsGDPRTermsAccepted", true, publicKeyUrl)
   }
 
   //DELETE

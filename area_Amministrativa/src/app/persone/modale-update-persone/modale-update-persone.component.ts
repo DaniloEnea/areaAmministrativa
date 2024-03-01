@@ -148,7 +148,7 @@ export class ModaleUpdatePersoneComponent {
       complete: () => {
         this.dialogRef.close(updatePerson);
         setTimeout(() => {
-          //window.location.reload();
+          window.location.reload();
         }, 1500);
       }
     });
