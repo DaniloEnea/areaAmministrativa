@@ -150,7 +150,7 @@ export class CreateUserEmailComponent {
                       // Attendere 3 secondi prima di eseguire il redirect
                       setTimeout(() => {
                         this.router.navigate(['/login']);
-                      }, 5000);
+                      }, 2500);
                     },
                     error: (err: HttpErrorResponse) => {
                       this.LoadedData = true;
@@ -176,4 +176,9 @@ export class CreateUserEmailComponent {
       });
     });
   };
+
+  public reload() {
+    this.router.navigate(['/login']);
+  }
+
 }

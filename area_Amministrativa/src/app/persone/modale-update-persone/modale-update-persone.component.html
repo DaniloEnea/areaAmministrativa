@@ -37,7 +37,7 @@
       </mat-error>
     </mat-form-field>
 
-    <mat-slide-toggle formControlName="wantToUpdateUser">Do you want to update even user?</mat-slide-toggle>
+    <mat-slide-toggle *ngIf="IsSameUser === false" formControlName="wantToUpdateUser">Do you want to update even user?</mat-slide-toggle>
 
     <div *ngIf="updatePersonForm.get('wantToUpdateUser')?.value" class="roles-container">
       <span>Roles:</span>

@@ -12,6 +12,7 @@ import {AuthService} from "../service/auth.service";
 import {MatDialog} from '@angular/material/dialog';
 import {ModaleSendEmailPwdComponent} from '../modale-send-email-pwd/modale-send-email-pwd.component';
 import {EncryptionService} from "../service/encryption.service";
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 export interface LoginDTO {
   username: string,
@@ -26,7 +27,8 @@ export interface LoginDTO {
     MatIconModule,
     MatInputModule,
     NgIf,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatProgressSpinnerModule
   ],
   templateUrl: './area-login.component.html',
   styleUrl: './area-login.component.css'

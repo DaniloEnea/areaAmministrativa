@@ -3,8 +3,17 @@
 
 <h2 style="margin-top: 95px">Organizations List</h2>
 <br>
+
+<div *ngIf="LoadedData===true">
+  <button mat-mini-fab color="primary" (click)="toggleFilters()" matTooltip="Filter" matTooltipPosition="right">
+    <mat-icon>filter_list</mat-icon>
+  </button>
+</div>
+<br>
+
 <div class="loading-overlay" *ngIf="LoadedData===false">
   <mat-spinner *ngIf="LoadedData===false" mode="indeterminate"></mat-spinner>
+  <span>{{progressLoading}}%</span>
 </div>
 
 <div class='spinner' *ngIf="dataSource.data.length === 0; else OrgTable">
@@ -12,13 +21,14 @@
 </div>
 
 <ng-template #OrgTable>
-  <div>
-
+  <div class="filter-fields" [ngClass]="{'expanded': areFiltersVisible}">
     <mat-form-field class="input-filter" appearance="outline" *ngIf="IsSA">
       <mat-label>Filter for org name</mat-label>
       <input #filterNameInput matInput [(ngModel)]="filterName" (input)="applyFilter()" placeholder="Organization name">
     </mat-form-field>
+  </div>
 
+  <div>
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
       <ng-container matColumnDef="id">
         <th mat-header-cell *matHeaderCellDef> ID </th>

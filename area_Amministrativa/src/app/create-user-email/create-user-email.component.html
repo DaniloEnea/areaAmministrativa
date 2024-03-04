@@ -17,7 +17,7 @@
       <span [innerHTML]="successMessage"></span>
     </div>
 
-    <form *ngIf="!errorMessage || changePasswordForm.hasError('mustMatch', 'confirm')" [formGroup]="changePasswordForm" autocomplete="off" novalidate (ngSubmit)="changePassword(changePasswordForm.value)">
+    <form *ngIf="!errorMessage || changePasswordForm.hasError('mustMatch', 'confirm') || !showSuccess" [formGroup]="changePasswordForm" autocomplete="off" novalidate (ngSubmit)="changePassword(changePasswordForm.value)">
       <div class="mb-3 row">
         <mat-form-field class="col-md-5">
           <mat-label>Password</mat-label>
@@ -25,7 +25,7 @@
           <mat-icon matSuffix (click)="hide1 = !hide1">{{ visibilityIconPwd }}</mat-icon>
         </mat-form-field>
         <div class="col-md-5">
-          <em *ngIf="validateControl('password') && hasError('password', 'required')">Password is required</em>
+          <em *ngIf="validateControl('password') && hasError('password', 'required')" style="color:red">Password is required</em>
         </div>
       </div>
 
@@ -36,15 +36,16 @@
           <mat-icon matSuffix (click)="hide2 = !hide2">{{ visibilityIconCheckPwd }}</mat-icon>
         </mat-form-field>
         <div class="col-md-5">
-          <em *ngIf="validateControl('confirm') && hasError('confirm', 'required')">Confirmation is required</em>
-          <em *ngIf="changePasswordForm.get('confirm')?.hasError('mustMatch') && changePasswordForm.get('confirm')?.touched">Passwords must match</em>
+          <em *ngIf="validateControl('confirm') && hasError('confirm', 'required')" style="color:red">Confirmation is required</em>
+          <em *ngIf="changePasswordForm.get('confirm')?.hasError('mustMatch') && changePasswordForm.get('confirm')?.touched" style="color:red">Passwords must match</em>
         </div>
       </div>
 
       <div class="mb-3 row">
         <mat-checkbox formControlName="isGdprAccepted">I accept the GDPR terms</mat-checkbox>
-        <em *ngIf="validateControl('isGdprAccepted') && hasError('isGdprAccepted', 'required')">You must accept GDPR terms</em>
+        <em *ngIf="validateControl('isGdprAccepted') && hasError('isGdprAccepted', 'required')" style="color:red">You must accept GDPR terms</em>
       </div>
+
 
       <div class="mb-3 row">
         <div class="col-md-1">
@@ -52,5 +53,9 @@
         </div>
       </div>
     </form>
+
+    <div *ngIf="errorMessage">
+      <button mat-raised-button (click)="reload()" color="primary">Reload</button>
+    </div>
   </div>
 </div>
