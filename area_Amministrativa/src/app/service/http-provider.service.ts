@@ -31,7 +31,7 @@ let addPersonUserUrl = "https://localhost:7131/api/People/CreatePU"
 //let addOrgUrl = genericUrl + "addOrganization"
 
 /*details*/
-let getUtenteByUsernameUrl = "http://localhost:9000/api/user"
+let getUtenteByUsernameUrl = "https://localhost:9000/api/admin/userByUsername"
 //let getPersonByIdUrl = genericUrl + "person"
 let getOrgByIdUrl = "https://localhost:7017/api/Organizations"
 
@@ -244,7 +244,8 @@ export class HttpProviderService {
 
         return of(accessToken);
       }),
-      mergeMap((accessToken: string) => {
+      mergeMap(async (accessToken: string) => {
+        username = btoa(await this.encrypt(username, authEncryption));
         return this.adminApiService.getByIDWithCc(getUtenteByUsernameUrl, username, accessToken)
       })
     );
@@ -254,8 +255,15 @@ export class HttpProviderService {
   //public getPersonByID(id: number): Observable<any> {
   //  return this.adminApiServie.getById(getPersonByIdUrl, id)
   //}
-  public getOrgByID(id: string): Observable<any> {
-    return this.adminApiService.getById(getOrgByIdUrl, id)
+  public async getOrgByID(id: string): Promise<Observable<any>> {
+
+    id = btoa(await this.encrypt(id, orgEncryption));
+    const Url = `${getOrgByIdUrl}/${encodeURIComponent(id)}?publicKeyUrl=${encodeURIComponent(publicKeyUrl)}&allEntities=true`;
+    return from(this.adminApiService.get(Url)).pipe(
+      catchError(error => {
+        throw error;
+      })
+    );
   }
 
   //POST
@@ -433,6 +441,7 @@ public sendEmailCreation(email: string): Observable<any> {
     return this.adminApiService.put(updatePersonUrl, eId, JSON.stringify(encryptedDto))
   }
 
+
   public async updateOrg(id: string, model: any): Promise<Observable<any>> {
     const bcDto: BodyComboDto = {
       Data1: model,
@@ -445,6 +454,7 @@ public sendEmailCreation(email: string): Observable<any> {
 
     return this.adminApiService.put(updateOrgUrl, eId, JSON.stringify(encryptedDto))
   }
+
 
   public async patchGDPRPerson(id: string): Promise<Observable<any>> {
     
