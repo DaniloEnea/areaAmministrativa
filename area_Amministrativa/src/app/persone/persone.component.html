@@ -2,8 +2,11 @@
 <!--<app-sidebar></app-sidebar>-->
 <h2 style="margin-top: 95px">People List</h2>
 <br>
-<div>
-  <button class="button-add" mat-mini-fab (click)="openAddDialog()" color="primary" matTooltip="Add">
+<div *ngIf="LoadedData===true">
+  <button mat-mini-fab color="primary" (click)="toggleFilters()" matTooltip="Filter" matTooltipPosition="right">
+    <mat-icon>filter_list</mat-icon>
+  </button>
+  <button class="button-add" mat-mini-fab (click)="openAddDialog()" color="primary" matTooltip="Add" matTooltipPosition="left">
     <mat-icon>add</mat-icon>
   </button>
 </div>
@@ -11,6 +14,7 @@
 
 <div class="loading-overlay" *ngIf="LoadedData===false">
   <mat-spinner *ngIf="LoadedData===false" mode="indeterminate"></mat-spinner>
+  <span>{{progressLoading}}%</span>
 </div>
 
 <div class='spinner' *ngIf="dataSource.data.length === 0; else PersonsTable">
@@ -18,24 +22,25 @@
 </div>
 
 <ng-template #PersonsTable>
+
+    <div class="filter-fields" [ngClass]="{'expanded': areFiltersVisible}">
+
+      <mat-form-field class="input-filter" appearance="outline">
+        <mat-label>Filter for name</mat-label>
+        <input #filterFirstNameInput matInput [(ngModel)]="filterFirstName" (input)="applyFilter()" placeholder="First name">
+      </mat-form-field>
+
+      <mat-form-field class="input-filter" appearance="outline">
+        <mat-label>Filter for last name</mat-label>
+        <input #filterLastNameInput matInput [(ngModel)]="filterLastName" (input)="applyFilter()" placeholder="Last name">
+      </mat-form-field>
+
+      <mat-form-field class="input-filter" appearance="outline" *ngIf="IsSA">
+        <mat-label>Filter for organization</mat-label>
+        <input #filterOrgInput matInput [(ngModel)]="filterOrg" (input)="applyFilter()" placeholder="Organization">
+      </mat-form-field>
+    </div>
   <div>
-
-    <mat-form-field class="input-filter" appearance="outline">
-      <mat-label>Filter for name</mat-label>
-      <input #filterFirstNameInput matInput [(ngModel)]="filterFirstName" (input)="applyFilter()" placeholder="First name">
-    </mat-form-field>
-
-    <mat-form-field class="input-filter" appearance="outline">
-      <mat-label>Filter for last name</mat-label>
-      <input #filterLastNameInput matInput [(ngModel)]="filterLastName" (input)="applyFilter()" placeholder="Last name">
-    </mat-form-field>
-
-    <mat-form-field class="input-filter" appearance="outline" *ngIf="IsSA">
-      <mat-label>Filter for organization</mat-label>
-      <input #filterOrgInput matInput [(ngModel)]="filterOrg" (input)="applyFilter()" placeholder="Organization">
-    </mat-form-field>
-
-
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
       <ng-container matColumnDef="id">
@@ -134,14 +139,13 @@
             <mat-icon>person_add</mat-icon>
           </button>
 
-          <button *ngIf="hideCreateUser[element.Email]===true && element.Email != usernamefilter" class="delete-user" mat-mini-fab matTooltip="Disable user" (click)="disableUser(element.Email)" [hidden]="hideDisableUser[element.Email] && element.Email === usernamefilter">
-            <mat-icon>person_off</mat-icon>
+          <button *ngIf="!hideDisableUser[element.Email]" mat-mini-fab (click)="disableUser(element.Email)" color="warn" [hidden]="!hideCreateUser[element.Email] || element.Email === usernamefilter" matTooltip="Disable">
+            <mat-icon>block</mat-icon>
           </button>
 
-          <button *ngIf="hideDisableUser[element.Email]===true && element.Email != usernamefilter" mat-mini-fab matTooltip="Enable user" (click)="abilityUser(element.Email)" [hidden]="hideEnableUser[element.Email] && element.Email === usernamefilter">
-            <mat-icon>person</mat-icon>
+          <button *ngIf="hideDisableUser[element.Email]" mat-mini-fab (click)="abilityUser(element.Email)" color="accent" [hidden]="!hideCreateUser[element.Email] || element.Email === usernamefilter" matTooltip="Enable">
+            <mat-icon>check</mat-icon>
           </button>
-
         </td>
       </ng-container>
 

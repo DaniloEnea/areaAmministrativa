@@ -1,7 +1,8 @@
 <body>
 
   <div class="loading-overlay" *ngIf="loading">
-    <div class="spinner"></div>
+    <mat-spinner mode="indeterminate"></mat-spinner>
+    <span>Login in progress...</span>
   </div>
 
   <div class="bg-login">

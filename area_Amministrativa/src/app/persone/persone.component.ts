@@ -106,7 +106,8 @@ export class PersoneComponent implements OnInit {
   buttonColor: { [email: string]: string } = {};
   adminOrgFilter = '';
   LoadedData: boolean = false;
-
+  progressLoading: number = 0;
+  areFiltersVisible: boolean = false;
 
 
   //filterForm: FormGroup
@@ -132,6 +133,10 @@ export class PersoneComponent implements OnInit {
         this.allPeople();
       }
     });
+  }
+
+  toggleFilters() {
+    this.areFiltersVisible = !this.areFiltersVisible;
   }
 
   /*applyFilter() {
@@ -186,6 +191,9 @@ export class PersoneComponent implements OnInit {
 
   allPeople(orgId?: string) {
     this.usernamefilter = this.auth.getUsernameFromJwt();
+    setTimeout(() => {
+      this.progressLoading = 33;
+    }, 200);    
     this.httpApi.getAllPeople().subscribe({
       next: (data: any) => {
         if (data != null && data.body != null) {
@@ -200,13 +208,13 @@ export class PersoneComponent implements OnInit {
             if (orgId != null) {
               this.PeopleList = this.PeopleList.filter(orgs => orgs.OrganizationId === orgId);
             }
-
+            this.progressLoading = 66;
             this.httpApi.getAllUsers().subscribe({
               next: (userData: any) => {
                 if (userData != null && userData.body != null) {
                   const userDTOList: UserDTO[] = userData.body;
 
-
+                  this.progressLoading = 99;
                   this.httpApi.getAllOrg().subscribe(
                     {
                       next: async (orgData: any) => {
@@ -298,26 +306,24 @@ export class PersoneComponent implements OnInit {
     this.httpApi.disableUser(username).subscribe({
       next: value => {
         this.hideDisableUser[username] = true;
-        this.hideEnableUser[username] = false;
-        this.toastr.success("User disable successfully", 'Success');
+        this.toastr.success("User disabled successfully", 'Success');
       },
       error: err => {
-        this.toastr.error("Something's error", 'Error');
+        this.toastr.error("Something went wrong", 'Error');
       }
-    })
+    });
   }
 
   async abilityUser(username: string) {
     this.httpApi.abilityUser(username).subscribe({
       next: value => {
-        this.hideDisableUser[username] = true;
-        this.hideEnableUser[username] = false;
-        this.toastr.success("User enable successfully", 'Success');
+        this.hideDisableUser[username] = false;
+        this.toastr.success("User enabled successfully", 'Success');
       },
       error: err => {
-        this.toastr.error("Something's error", 'Error');
+        this.toastr.error("Something went wrong", 'Error');
       }
-    })
+    });
   }
 
   openDeleteDialog(id: string, username: string, firstname: string, lastname: string): void {

@@ -71,14 +71,16 @@ export class OrganizzazioneComponent {
   resultData: any;
   IsSA: boolean = true;
   LoadedData: boolean = false;
+  progressLoading: number = 0;
+  areFiltersVisible: boolean = false;
 
   // modal
   constructor(private changeDetectorRef: ChangeDetectorRef, public auth: AuthService, private router: Router, private dialog: MatDialog, private httpApi: HttpProviderService, private toastr: ToastrService) {
     this.dataSource = new MatTableDataSource<OrganizationDTO>(this.OrgList);
   }
 
-  async ngOnInit() {
-    await this.allOrg();
+  ngOnInit() {
+    this.allOrg();
   }
 
   ngAfterViewInit() {
@@ -97,17 +99,27 @@ export class OrganizzazioneComponent {
     };
   }
 
+  toggleFilters() {
+    this.areFiltersVisible = !this.areFiltersVisible;
+  }
+
   applyFilter() {
     const filterValue = { name: this.filterName.toLowerCase() };
     this.dataSource.filter = JSON.stringify(filterValue);
   }
 
-   allOrg() {
+  allOrg() {
+    setTimeout(() => {
+      this.progressLoading = 50;
+    }, 300);   
     try {
-      ( this.httpApi.getAllOrg()).subscribe({
-        next:  (data: any) => {
+      (this.httpApi.getAllOrg()).subscribe({
+        next: (data: any) => {
           if (data != null && data.body != null) {
             this.resultData = this.httpApi.decrypt(data.body);
+            setTimeout(() => {
+              this.progressLoading = 99;
+            }, 500);
             if (this.resultData) {
               (this.httpApi.getAllPeople()).subscribe({
                 next: (data2: any) => {
@@ -147,7 +159,7 @@ export class OrganizzazioneComponent {
     } catch (error) {
       console.error("Error fetching org data", error);
     }
-    
+
   }
 
   getOrgIfCrmMgr(resultData: any, retrieveData: any) {

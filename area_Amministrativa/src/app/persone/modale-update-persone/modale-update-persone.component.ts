@@ -31,6 +31,7 @@ export class ModaleUpdatePersoneComponent {
 
   updatePersonForm: FormGroup;
   rolesSelected: string[] = [];
+  IsSameUser = false;
   IsSA = true;
   wantToUpdateUser: boolean = true;
   separateDialCode = false;
@@ -45,6 +46,7 @@ export class ModaleUpdatePersoneComponent {
     private httpApi: HttpProviderService, private toastr: ToastrService) {
 
 
+    this.IsSameUser = this.checkIfSameUser();
     this.IsSA = auth.checkIsSA();
 
     this.updatePersonForm = this.formBuilder.group({
@@ -83,6 +85,13 @@ export class ModaleUpdatePersoneComponent {
     if (this.secondEmail.hasError('email')) {
       return 'Please enter a valid email address.';
     }
+  }
+
+  checkIfSameUser(): boolean {
+    if (this.data.person.Email === this.auth.getUsernameFromJwt()) {
+      return true;
+    }
+    return false;
   }
 
   roleCheck(role: string): boolean {

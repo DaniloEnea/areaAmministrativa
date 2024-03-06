@@ -116,6 +116,8 @@ export interface SendUser {
             roles: this.rolesSelected,
           };
 
+          console.log(createUser)
+
           this.createUser(createUser).then(r => console.log("complete"));
         }
       }
@@ -149,7 +151,7 @@ export interface SendUser {
              this.sendEmailCreateUser();
             this.closepopup()
             setTimeout(() => {
-              window.location.reload();
+              //window.location.reload();
             }, 3000);
           },
           error: err => {

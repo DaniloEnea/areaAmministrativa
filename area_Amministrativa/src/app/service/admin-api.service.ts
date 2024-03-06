@@ -375,17 +375,23 @@ export class AdminApiService {
   }
 
     // GET BY ID operations
-    getById(url: string, id: string): Observable<any> {
+    getById(url: string, id: string): Promise<Observable<any>> {
       const httpOptions = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json'
         }),
-        observe: 'response' as 'body'
+        observe: 'response' as 'body',
+        responseType: "text" as 'json'
       };
-      const getUrl = `${url}/${id}?valid=true`;
-      return this.http.get(getUrl, httpOptions).pipe(
-        catchError(this.handleError)
-      );
+
+      try {
+        url = `${url}/${id}?valid=true`;
+        const response = this.http.get(url, httpOptions).toPromise();
+        return this.ReturnResponseData(response);
+      } catch (error) {
+        this.handleError(error);
+        throw error;
+      }
     }
 
     /*getFiltered(url:string, endUrl: string): Observable<any>{
