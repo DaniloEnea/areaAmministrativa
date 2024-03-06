@@ -65,12 +65,12 @@
         "serve": {
 
           //comando di avvio https lato front
-          //ng serve --ssl true --ssl-key ".\src\assets\keystore\authServer.key" --ssl-cert ".\src\assets\keystore\authServer.pem"
+          //ng serve --ssl true --ssl-key ".\src\assets\keystore\authServer.key" --ssl-cert ".\src\assets\certificates\authServer.pem"
 
           //"options": {
           //  "ssl": true,
           //  "sslKey": ".src/assets/keystore/authServer.key",
-          //  "sslCert": ".src/assets/keystore/authServer.pem"
+          //  "sslCert": ".src/assets/certificates/authServer.pem"
           //},
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
