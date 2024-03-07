@@ -4,10 +4,11 @@
     <div class="email">
       <h4>{{data.Email}}</h4>
     </div>
-    <mat-label>Roles:</mat-label>
-    <br />
-    <div class="mat-form">
+    <span>Roles:</span>
+    <div>
       <mat-slide-toggle formControlName="Role_SA" *ngIf="IsSA">Super Admin</mat-slide-toggle>
+    </div>
+    <div>
       <mat-slide-toggle formControlName="Role_Admin">CRM Admin</mat-slide-toggle>
     </div>
   </form>

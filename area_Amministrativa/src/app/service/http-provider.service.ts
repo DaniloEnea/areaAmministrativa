@@ -12,12 +12,12 @@ let apiCredentials = "http://localhost:8282/oauth2/token"
 //GET PUBLIC KEY
 let orgEncryption = "https://localhost:7017/api/GetPublicKey/"
 let personEncryption = "https://localhost:7131/api/GetPublicKey/"
-let authEncryption = "http://localhost:9000/api/rsa/GetPublicKey"
+let authEncryption = "https://localhost:9000/api/rsa/GetPublicKey"
 let publicKeyUrl = "http://localhost:3000/api";
 
 //get
 //let getUtenteUrl = genericUrl + "utenti"
-let getUtenteUrl = "http://localhost:9000/api/global/getAllUsers"
+let getUtenteUrl = "https://localhost:9000/api/global/getAllUsers"
 //let getPersonUrl = genericUrl + "people"
 let getPersonUrl = "https://localhost:7131/api/People"
 let getPersonByEmailUrl = "https://localhost:7131/api/People/FindPersonByEmail"
@@ -39,7 +39,7 @@ let getOrgByIdUrl = "https://localhost:7017/api/Organizations"
 
 //let updateUtenteUrl = genericUrl + "updateUtenti"
 let updatePersonUrl = "https://localhost:7131/api/People"
-let updatePersonRoleUrl = "http://localhost:9000/api/admin/changeRole"
+let updatePersonRoleUrl = "https://localhost:9000/api/admin/changeRole"
 let updateOrgUrl = "https://localhost:7017/api/Organizations"
 
 //patch
@@ -52,7 +52,7 @@ let forcedDeletePersonUrl = "https://localhost:7131/api/People/ForceDelete"
 let deleteOrgUrl = "https://localhost:7017/api/Organizations"
 
 //login
-let loginUrl = "http://localhost:9000/api/auth/login"
+let loginUrl = "https://localhost:9000/api/auth/login"
 let getDecryptedMessage = "https://localhost:9000/api/rsa/decrypt"
 
 //reset password
@@ -62,22 +62,22 @@ let resetPwdUrl = "http://localhost:9000/api/admin/changePassword"
 //let personFilterUrl = "https://localhost:7131/api/People/GetPeopleByFiltering"
 
 //forgot password
-let forgotPwdByEmailUrl = "http://localhost:9000/api/forgot_password"
+let forgotPwdByEmailUrl = "https://localhost:9000/api/forgot_password"
 
 //Send email creation
-let sendEmailCreateUrl = "http://localhost:9000/api/send_email_create"
+let sendEmailCreateUrl = "https://localhost:9000/api/send_email_create"
 
 // reset password by email
-let resetPwdByEmailUrl = "http://localhost:9000/api/reset_password"
+let resetPwdByEmailUrl = "https://localhost:9000/api/reset_password"
 
 // get token by url
-let getTokenUrl = "http://localhost:9000/api/reset_password"
+let getTokenUrl = "https://localhost:9000/api/reset_password"
 
-let createUserUrl = "http://localhost:9000/api/auth/create"
+let createUserUrl = "https://localhost:9000/api/auth/create"
 
-let disableUserUrl = "http://localhost:9000/api/admin/disableUser"
+let disableUserUrl = "https://localhost:9000/api/admin/disableUser"
 
-let abilityUserUrl = "http://localhost:9000/api/admin/abilityUser"
+let abilityUserUrl = "https://localhost:9000/api/admin/abilityUser"
 
 export interface BodyComboDto {
   Data1: any;
@@ -306,7 +306,7 @@ export class HttpProviderService {
       return of(accessToken);
     }),
     mergeMap((accessToken: string) => {
-      return from(this.encrypt(email, "http://localhost:9000/api/rsa/GetPublicKey")).pipe(
+      return from(this.encrypt(email, "https://localhost:9000/api/rsa/GetPublicKey")).pipe(
         mergeMap((emailEncrypt: string) => {
           const decodedEmail = btoa(emailEncrypt)
           return this.adminApiService.postWithCcById(decodedEmail, forgotPwdByEmailUrl, null, accessToken);
@@ -323,7 +323,7 @@ public sendEmailCreation(email: string): Observable<any> {
       return of(accessToken);
     }),
     mergeMap((accessToken: string) => {
-      return from(this.encrypt(email, "http://localhost:9000/api/rsa/GetPublicKey")).pipe(
+      return from(this.encrypt(email, "https://localhost:9000/api/rsa/GetPublicKey")).pipe(
         mergeMap((emailEncrypt: string) => {
           const decodedEmail = btoa(emailEncrypt)
           return this.adminApiService.postWithCcById(decodedEmail, sendEmailCreateUrl, null, accessToken);

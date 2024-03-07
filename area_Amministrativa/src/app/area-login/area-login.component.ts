@@ -68,7 +68,7 @@ export class AreaLoginComponent {
 
       try {
         // Cripta le credenziali di login
-        const loginEncrypt = await this.httpApi.encrypt(JSON.stringify(newLogin), "http://localhost:9000/api/rsa/GetPublicKey");
+        const loginEncrypt = await this.httpApi.encrypt(JSON.stringify(newLogin), "https://localhost:9000/api/rsa/GetPublicKey");
         this.loading = true;
         // Invia le credenziali di login criptate
         this.httpApi.loginEncrypted(loginEncrypt).subscribe({

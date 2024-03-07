@@ -144,7 +144,7 @@ export interface SendUser {
     // funzione per creare l'utenza
     async createUser(model: any) {
       try {
-        const createUserEncrypt =  await this.httpApi.encrypt(JSON.stringify(model), "http://localhost:9000/api/rsa/GetPublicKey");
+        const createUserEncrypt =  await this.httpApi.encrypt(JSON.stringify(model), "https://localhost:9000/api/rsa/GetPublicKey");
         this.httpApi.createUserEncrypted(createUserEncrypt).subscribe({
           next: (encryptedResponse) => {
             this.toastr.success("Create user successful", "Success");
