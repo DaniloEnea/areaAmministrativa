@@ -93,6 +93,11 @@
         <td mat-cell *matCellDef="let element"> {{element.CF}} </td>
       </ng-container>
 
+      <ng-container matColumnDef="hasUser">
+        <th mat-header-cell *matHeaderCellDef> CF </th>
+        <td mat-cell *matCellDef="let element"> {{element.HasUser}} </td>
+      </ng-container>
+
       <ng-container matColumnDef="isGDPRTermsAccepted">
         <th mat-header-cell *matHeaderCellDef> GDPR </th>
         <td mat-cell *matCellDef="let element"> {{element.IsGDPRTermsAccepted}} </td>

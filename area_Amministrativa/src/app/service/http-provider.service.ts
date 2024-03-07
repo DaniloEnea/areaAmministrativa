@@ -463,6 +463,13 @@ public sendEmailCreation(email: string): Observable<any> {
     return this.adminApiService.patch(patchPersonUrl, id, "IsGDPRTermsAccepted", true, publicKeyUrl)
   }
 
+
+  public async patchHasUserPerson(id: string): Promise<Observable<any>> {
+
+    id = btoa(await this.encrypt(id, personEncryption));
+
+    return this.adminApiService.patch(patchPersonUrl, id, "HasUser", true, publicKeyUrl)
+  }
   //DELETE
   //public deleteUser(id: number) : Observable<any> {
   //  return this.adminApiServie.delete(deleteUtenteUrl, id)

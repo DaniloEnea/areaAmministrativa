@@ -127,6 +127,7 @@ export class ModaleUpdatePersoneComponent {
           Phone: this.updatePersonForm.value.phone.internationalNumber,
           Email: this.updatePersonForm.value.email,
           SecondEmail: this.updatePersonForm.value.secondEmail,
+          HasUser: this.data.person.HasUser,
           IsGDPRTermsAccepted: this.updatePersonForm.value.isGDPRTermsAccepted,
           IsOtherProcessingPurposesAccepted: this.updatePersonForm.value.isOtherProcessingPurposesAccepted,
           IsServiceProcessingPurposesAccepted: this.updatePersonForm.value.isServiceProcessingPurposesAccepted,

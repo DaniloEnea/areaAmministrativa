@@ -26,6 +26,7 @@ export interface UserDTO {
   PersonId: string;
   username: string;
   roles: any[];
+  enabled: boolean;
 }
 
 export interface PersonDTO {
@@ -38,6 +39,7 @@ export interface PersonDTO {
   Email: string;
   SecondEmail: string;
   CF: string;
+  HasUser: boolean;
   IsGDPRTermsAccepted: boolean;
   IsServiceProcessingPurposesAccepted: boolean;
   IsOtherProcessingPurposesAccepted: boolean;
@@ -55,6 +57,7 @@ export interface PersonDTO1 {
   Email: string;
   SecondEmail: string;
   CF: string;
+  HasUser: boolean;
   IsGDPRTermsAccepted: boolean;
   IsServiceProcessingPurposesAccepted: boolean;
   IsOtherProcessingPurposesAccepted: boolean;
@@ -69,6 +72,7 @@ export interface PersonDTO2 {
   Email: string;
   SecondEmail: string;
   CF: string;
+  HasUser: boolean;
   OrganizationId: string;
   IsGDPRTermsAccepted: boolean;
   IsServiceProcessingPurposesAccepted: boolean;
@@ -227,6 +231,7 @@ export class PersoneComponent implements OnInit {
 
                             const associatedOrg = orgDTOList.find(org => org.Id === person.OrganizationId);
 
+                            
                             const associatedUser = userDTOList.find(user => user.username === person.Email);
 
 

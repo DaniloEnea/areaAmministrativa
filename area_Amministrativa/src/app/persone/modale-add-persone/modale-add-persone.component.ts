@@ -235,6 +235,11 @@ export class ModaleAddPersoneComponent {
 
             console.log("test 1")
 
+            var hasUser = false; 
+            if (this.newPersonForm.value.wantToCreateUser === true) {
+              hasUser = true;
+            }
+
             const newPerson: PersonDTO2 = {
               FirstName: this.newPersonForm.value.firstName,
               LastName: this.newPersonForm.value.lastName,
@@ -244,6 +249,7 @@ export class ModaleAddPersoneComponent {
               Phone: this.newPersonForm.value.phone.internationalNumber,
               Email: this.newPersonForm.value.email,
               SecondEmail: this.newPersonForm.value.secondEmail,
+              HasUser: hasUser,
               IsGDPRTermsAccepted: this.newPersonForm.value.isGDPRTermsAccepted,
               IsOtherProcessingPurposesAccepted: this.newPersonForm.value.isOtherProcessingPurposesAccepted,
               IsServiceProcessingPurposesAccepted: this.newPersonForm.value.isServiceProcessingPurposesAccepted,
