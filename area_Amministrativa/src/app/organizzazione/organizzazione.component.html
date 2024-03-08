@@ -5,7 +5,7 @@
 <br>
 
 <div *ngIf="LoadedData===true">
-  <button mat-mini-fab color="primary" (click)="toggleFilters()" matTooltip="Filter" matTooltipPosition="right">
+  <button *ngIf="dataSource.data.length != 0" mat-mini-fab color="primary" (click)="toggleFilters()" matTooltip="Filter" matTooltipPosition="right">
     <mat-icon>filter_list</mat-icon>
   </button>
 </div>

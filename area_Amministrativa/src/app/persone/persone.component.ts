@@ -72,7 +72,6 @@ export interface PersonDTO2 {
   Email: string;
   SecondEmail: string;
   CF: string;
-  HasUser: boolean;
   OrganizationId: string;
   IsGDPRTermsAccepted: boolean;
   IsServiceProcessingPurposesAccepted: boolean;
@@ -231,14 +230,15 @@ export class PersoneComponent implements OnInit {
 
                             const associatedOrg = orgDTOList.find(org => org.Id === person.OrganizationId);
 
-                            
-                            const associatedUser = userDTOList.find(user => user.username === person.Email);
+                            if (person.HasUser) {
+                              const associatedUser = userDTOList.find(user => user.username === person.Email);
 
-
-                            if (associatedUser) {
-                              console.log(associatedUser.roles)
-                              this.hideCreateUser[associatedUser.username] = true;
-                              person.Roles = associatedUser.roles.map(role => role.role);
+                              if (associatedUser) {
+                                console.log(associatedUser.roles)
+                                this.hideCreateUser[associatedUser.username] = true;
+                                this.hideDisableUser[associatedUser.username] = !associatedUser.enabled;
+                                person.Roles = associatedUser.roles.map(role => role.role);
+                              }
                             }
 
                             if (associatedOrg) {

@@ -249,7 +249,6 @@ export class ModaleAddPersoneComponent {
               Phone: this.newPersonForm.value.phone.internationalNumber,
               Email: this.newPersonForm.value.email,
               SecondEmail: this.newPersonForm.value.secondEmail,
-              HasUser: hasUser,
               IsGDPRTermsAccepted: this.newPersonForm.value.isGDPRTermsAccepted,
               IsOtherProcessingPurposesAccepted: this.newPersonForm.value.isOtherProcessingPurposesAccepted,
               IsServiceProcessingPurposesAccepted: this.newPersonForm.value.isServiceProcessingPurposesAccepted,

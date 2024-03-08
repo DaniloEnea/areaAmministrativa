@@ -24,11 +24,19 @@ export class ModaleDeleteComponent {
   async confirmForm() {
     if (this.auth.isAuthenticated()) {
 
-      (await this.httpApi.getUtenteByUsername(this.data.Username)).subscribe({
+      (await this.httpApi.getUserExists(this.data.Username)).subscribe({
         next: (userData: any) => {
+          console.log(userData)
           console.log(userData.body)
+          var decryptedData = this.httpApi.decrypt(userData.body)
 
-          this.deletePU();
+
+          if (decryptedData == true) {
+            this.deletePU();
+          }
+          else {
+            this.deletePerson();
+          }
 
           console.log("delete: " + this.data.Username)
 

@@ -32,6 +32,7 @@ let addPersonUserUrl = "https://localhost:7131/api/People/CreatePU"
 
 /*details*/
 let getUtenteByUsernameUrl = "https://localhost:9000/api/admin/userByUsername"
+let getUserExistsUrl = "https://localhost:9000/api/global/checkUsername"
 //let getPersonByIdUrl = genericUrl + "person"
 let getOrgByIdUrl = "https://localhost:7017/api/Organizations"
 
@@ -247,6 +248,20 @@ export class HttpProviderService {
       mergeMap(async (accessToken: string) => {
         username = btoa(await this.encrypt(username, authEncryption));
         return this.adminApiService.getByIDWithCc(getUtenteByUsernameUrl, username, accessToken)
+      })
+    );
+  }
+
+  public getUserExists(username: string): Observable<any> {
+    return this.adminApiService.getUrlEncoded(apiCredentials).pipe(
+      mergeMap((value: any) => {
+        const accessToken = value.body.access_token;
+
+        return of(accessToken);
+      }),
+      mergeMap(async (accessToken: string) => {
+        username = btoa(await this.encrypt(username, authEncryption));
+        return this.adminApiService.getByIDWithCc(getUserExistsUrl, username, accessToken)
       })
     );
   }

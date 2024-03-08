@@ -181,7 +181,7 @@ export class AdminApiService {
     };
 
     const getUrl: string = `${url}/${id}`;
-    return this.http.get(getUrl, httpOptions).pipe(
+    return this.http.get(url, httpOptions).pipe(
       map((response: any) => this.ReturnResponseData(response)),
       catchError(this.handleError)
     );
