@@ -196,7 +196,7 @@ export class PersoneComponent implements OnInit {
     this.usernamefilter = this.auth.getUsernameFromJwt();
     setTimeout(() => {
       this.progressLoading = 33;
-    }, 200);    
+    }, 200);
     this.httpApi.getAllPeople().subscribe({
       next: (data: any) => {
         if (data != null && data.body != null) {
@@ -331,9 +331,9 @@ export class PersoneComponent implements OnInit {
     });
   }
 
-  openDeleteDialog(id: string, username: string, firstname: string, lastname: string): void {
+  openDeleteDialog(id: string, username: string, firstname: string, lastname: string, hasUser: boolean): void {
     const dialogRef = this.dialog.open(ModaleDeleteComponent, {
-      data: { Id: id, Username: username, FirstName: firstname, LastName: lastname } // passo l'ID
+      data: { Id: id, Username: username, FirstName: firstname, LastName: lastname, HasUser: hasUser } // passo l'ID
     });
 
     dialogRef.afterClosed().subscribe((result) => {

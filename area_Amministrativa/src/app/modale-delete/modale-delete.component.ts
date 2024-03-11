@@ -15,42 +15,20 @@ export class ModaleDeleteComponent {
 
 
   constructor(public auth: AuthService, private toastr: ToastrService, private ref: MatDialogRef<ModaleDeleteComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { Id: string, Username: string, FirstName : string, LastName: string },
+    @Inject(MAT_DIALOG_DATA) public data: { Id: string, Username: string, FirstName : string, LastName: string, HasUser: boolean },
     private httpApi: HttpProviderService) {
-    
+
   }
 
   // delete for call DELETE API
-  async confirmForm() {
+async confirmForm() {
     if (this.auth.isAuthenticated()) {
-
-      (await this.httpApi.getUserExists(this.data.Username)).subscribe({
-        next: (userData: any) => {
-          console.log(userData)
-          console.log(userData.body)
-          var decryptedData = this.httpApi.decrypt(userData.body)
-
-
-          if (decryptedData == true) {
-            this.deletePU();
-          }
-          else {
-            this.deletePerson();
-          }
-
-          console.log("delete: " + this.data.Username)
-
-          this.ref.close()
-        },
-        error: () => {
-          this.deletePerson();
-
-          console.log("delete: " + this.data.Username)
-
-          this.ref.close()
+        if (this.data.HasUser) {
+          await this.deletePU() // delete with user
         }
-      })
-
+        else {
+          this.deletePerson()
+        }
       //if (this.data.ClassForm == "User") {
       //  //this.httpApi.deleteUser(this.data.Id).subscribe()
       //}
@@ -59,7 +37,7 @@ export class ModaleDeleteComponent {
       //}
       //else if (this.data.ClassForm == "Organization") {
       //  //this.httpApi.deleteOrg(this.data.Id).subscribe()
-      //}      
+      //}
     }
     else {
       this.toastr.error("Token is expired", "Error")
@@ -92,7 +70,7 @@ export class ModaleDeleteComponent {
     this.httpApi.forcedDeletePerson(this.data.Id).subscribe({
       next: (value: any) => {
         this.toastr.success("Deleted succesfully", "Success")
-        this.toastr.warning("No user was found", "Warn")
+        //this.toastr.warning("No user was found", "Warn")
       },
       error: (error: Error) => {
         this.toastr.error("Something went wrong with delete", "Error")
@@ -105,9 +83,9 @@ export class ModaleDeleteComponent {
       }
     })
   }
-  
 
-  
+
+
 
 
   closepopup() {

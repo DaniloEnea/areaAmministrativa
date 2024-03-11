@@ -246,25 +246,32 @@ export class HttpProviderService {
         return of(accessToken);
       }),
       mergeMap(async (accessToken: string) => {
-        username = btoa(await this.encrypt(username, authEncryption));
         return this.adminApiService.getByIDWithCc(getUtenteByUsernameUrl, username, accessToken)
       })
     );
   }
 
-  public getUserExists(username: string): Observable<any> {
+public getUserExists(username: string): Observable<any> {
     return this.adminApiService.getUrlEncoded(apiCredentials).pipe(
       mergeMap((value: any) => {
-        const accessToken = value.body.access_token;
-
-        return of(accessToken);
+        if (value && value.body) {
+          const accessToken = value.body.access_token;
+          return of(accessToken);
+        } else {
+          throw new Error('Unable to get access token');
+        }
       }),
       mergeMap(async (accessToken: string) => {
-        username = btoa(await this.encrypt(username, authEncryption));
-        return this.adminApiService.getByIDWithCc(getUserExistsUrl, username, accessToken)
+        if (username) {
+          const usernameEncoded = btoa(await this.encrypt(username, authEncryption));
+          return this.adminApiService.getByIDWithCc(getUserExistsUrl, usernameEncoded, accessToken);
+        } else {
+          throw new Error('Username is not provided');
+        }
       })
     );
   }
+
 
   //GET BY ID
   //public getPersonByID(id: number): Observable<any> {
@@ -472,7 +479,7 @@ public sendEmailCreation(email: string): Observable<any> {
 
 
   public async patchGDPRPerson(id: string): Promise<Observable<any>> {
-    
+
     id = btoa(await this.encrypt(id, personEncryption));
 
     return this.adminApiService.patch(patchPersonUrl, id, "IsGDPRTermsAccepted", true, publicKeyUrl)
