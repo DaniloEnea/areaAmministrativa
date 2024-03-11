@@ -6,7 +6,6 @@ import {MatDialog} from "@angular/material/dialog";
 import { MatTableDataSource } from "@angular/material/table";
 import {HttpProviderService} from "../service/http-provider.service";
 import { ModaleDetailsPersoneComponent } from './modale-details-persone/modale-details-persone.component';
-//import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {MatInput} from "@angular/material/input";
 import { FormBuilder } from '@angular/forms';
 import { AuthService } from "../service/auth.service";
@@ -14,13 +13,6 @@ import { ToastrService } from "ngx-toastr";
 import { OrganizationDTO } from '../organizzazione/organizzazione.component';
 import {ActivatedRoute, Router} from "@angular/router";
 import {ModaleCreateUserComponent} from "./modale-create-user/modale-create-user.component";
-import { from } from 'rxjs';
-import {BodyDtoEncrypt} from "../dto/body-dto-encrypt";
-
-/*export interface FilterDTO {
-  first_name: string;
-  last_name: string;
-}*/
 
 export interface UserDTO {
   PersonId: string;
@@ -229,41 +221,45 @@ export class PersoneComponent implements OnInit {
                           if (!this.IsSA) {
                             associatedOrg = orgDTOList.find(org => org.Id === this.orgIdFilter);
                           }
-
-                          await this.PeopleList.forEach((person: PersonDTO1) => {
+                          this.PeopleList.forEach((person: PersonDTO1) => {
                             person.Roles = ['Null'];
                             person.OrganizationName = 'No org';
 
-                          if (orgData != null && orgData.body != null) {
-                            const orgDTOList: OrganizationDTO[] = this.httpApi.decrypt(orgData.body);
+                            if (orgData != null && orgData.body != null) {
+                              const orgDTOList: OrganizationDTO[] = this.httpApi.decrypt(orgData.body);
 
-                            const associatedOrg = orgDTOList.find(org => org.Id === person.OrganizationId);
+                              const associatedOrg = orgDTOList.find(org => org.Id === person.OrganizationId);
 
-                            if (person.HasUser) {
-                              const associatedUser = userDTOList.find(user => user.username === person.Email);
+                              if (person.HasUser) {
+                                const associatedUser = userDTOList.find(user => user.username === person.Email);
 
-                              if (associatedUser) {
-                                console.log(associatedUser.roles)
-                                this.hideCreateUser[associatedUser.username] = true;
-                                this.hideDisableUser[associatedUser.username] = !associatedUser.enabled;
-                                person.Roles = associatedUser.roles.map(role => role.role);
+                                if (associatedUser) {
+                                  console.log(associatedUser.roles);
+                                  this.hideCreateUser[associatedUser.username] = true;
+                                  this.hideDisableUser[associatedUser.username] = !associatedUser.enabled;
+                                  person.Roles = associatedUser.roles.map(role => role.role);
+                                }
+                              }
+
+                              if (associatedOrg) {
+                                person.OrganizationName = associatedOrg.Name;
                               }
                             }
+                          });
 
-                            if (associatedOrg) {
-                              person.OrganizationName = associatedOrg.Name;
-                            }
-                          }
-                        });
-                        this.dataSource.data = [...this.PeopleList];
+                          this.dataSource.data = [...this.PeopleList];
+                        }
                       },
-                      error: (error: any) => {
-                        console.error("Error fetching organizations data", error);
-                        this.dataSource.data = [];
-                      },
-                      complete: () => {
-                        this.LoadedData = true;
-                      }
+                        error: (error: any) => {
+                          console.error("Error fetching organizations data", error);
+                          this.dataSource.data = [];
+                        },
+                          complete :
+                        () => {
+                          this.LoadedData = true;
+                        }
+
+
                     }
                   );
                 }
