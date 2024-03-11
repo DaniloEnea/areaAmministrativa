@@ -41,11 +41,12 @@
         </div>
       </div>
 
-      <div class="mb-3 row">
-        <mat-checkbox formControlName="isGdprAccepted">I accept the GDPR terms</mat-checkbox>
-        <em *ngIf="validateControl('isGdprAccepted') && hasError('isGdprAccepted', 'required')" style="color:red">You must accept GDPR terms</em>
+      <div>
+        <mat-checkbox formControlName="isGdprAccepted">
+        </mat-checkbox>
+          <span (click)="openGdprModale()" class="gdpr-link">I have read and accept the privacy policy</span>
+        <em *ngIf="validateControl('isGdprAccepted') && hasError('isGdprAccepted', 'required')" style="color:red"><br />You must accept the privacy policy</em>
       </div>
-
 
       <div class="mb-3 row">
         <div class="col-md-1">

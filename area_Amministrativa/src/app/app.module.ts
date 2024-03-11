@@ -20,6 +20,7 @@ import { ModaleUpdateUserComponent } from './utenti/modale-update-user/modale-up
 import { ModaleAddPersoneComponent } from './persone/modale-add-persone/modale-add-persone.component';
 import { ModaleAddUserComponent } from './utenti/modale-add-user/modale-add-user.component';
 import { ModaleDeleteComponent } from './modale-delete/modale-delete.component';
+import { GdprModaleComponent } from './gdpr-modale/gdpr-modale.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { ModaleDetailsOrgComponent } from './organizzazione/modale-details-org/modale-details-org.component';
 import { ModaleDetailsPersoneComponent } from './persone/modale-details-persone/modale-details-persone.component';
@@ -43,6 +44,7 @@ import {NgxIntlTelInputModule} from "ngx-intl-tel-input";
     ModaleAddPersoneComponent,
     ModaleAddUserComponent,
     ModaleDeleteComponent,
+    GdprModaleComponent,
     ModaleDetailsOrgComponent,
     ModaleDetailsPersoneComponent
   ],

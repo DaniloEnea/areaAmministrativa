@@ -70,3 +70,8 @@ label {
   z-index: 9999;
 }
 
+.gdpr-link {
+  cursor: pointer;
+  text-decoration: underline;
+  color: blue; /* Puoi personalizzare il colore del testo del link */
+}

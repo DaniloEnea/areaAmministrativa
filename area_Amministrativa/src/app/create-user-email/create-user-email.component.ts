@@ -2,7 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { AuthService } from '../service/auth.service';
 import { ToastrService } from 'ngx-toastr';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { HttpProviderService } from '../service/http-provider.service';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NgIf } from '@angular/common';
@@ -11,6 +11,7 @@ import { catchError, find, map, of } from 'rxjs';
 import { ResetPasswordDto } from '../interfaces/ResetPasswordDto';
 import { HttpErrorResponse } from '@angular/common/http';
 import { PersonDTO, PersonDTO1 } from '../persone/persone.component';
+import { GdprModaleComponent } from '../gdpr-modale/gdpr-modale.component';
 
 
 export interface PasswordDTO {
@@ -47,7 +48,7 @@ export class CreateUserEmailComponent {
 
   private token!: string;
 
-  constructor(private http: HttpProviderService, private route: ActivatedRoute, private router: Router) {
+  constructor(public dialog: MatDialog, private http: HttpProviderService, private route: ActivatedRoute, private router: Router) {
 
   }
 
@@ -179,6 +180,13 @@ export class CreateUserEmailComponent {
 
   public reload() {
     this.router.navigate(['/login']);
+  }
+
+  openGdprModale(): void {
+    const dialogRef = this.dialog.open(GdprModaleComponent, {
+      width: '80%',
+      height: '80%'
+    });
   }
 
 }
