@@ -38,6 +38,7 @@ async confirmForm() {
       //else if (this.data.ClassForm == "Organization") {
       //  //this.httpApi.deleteOrg(this.data.Id).subscribe()
       //}
+      this.closepopup()
     }
     else {
       this.toastr.error("Token is expired", "Error")

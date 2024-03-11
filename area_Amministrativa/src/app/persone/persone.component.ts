@@ -221,45 +221,42 @@ export class PersoneComponent implements OnInit {
                           if (!this.IsSA) {
                             associatedOrg = orgDTOList.find(org => org.Id === this.orgIdFilter);
                           }
+
                           this.PeopleList.forEach((person: PersonDTO1) => {
                             person.Roles = ['Null'];
                             person.OrganizationName = 'No org';
 
-                            if (orgData != null && orgData.body != null) {
-                              const orgDTOList: OrganizationDTO[] = this.httpApi.decrypt(orgData.body);
+                            if (this.IsSA) {
+                              associatedOrg = orgDTOList.find(org => org.Id === person.OrganizationId);
+                            }
 
-                              const associatedOrg = orgDTOList.find(org => org.Id === person.OrganizationId);
+                            if (person.HasUser) {
+                              const associatedUser = userDTOList.find(user => user.username === person.Email);
 
-                              if (person.HasUser) {
-                                const associatedUser = userDTOList.find(user => user.username === person.Email);
-
-                                if (associatedUser) {
-                                  console.log(associatedUser.roles);
-                                  this.hideCreateUser[associatedUser.username] = true;
-                                  this.hideDisableUser[associatedUser.username] = !associatedUser.enabled;
-                                  person.Roles = associatedUser.roles.map(role => role.role);
-                                }
-                              }
-
-                              if (associatedOrg) {
-                                person.OrganizationName = associatedOrg.Name;
+                              if (associatedUser) {
+                                console.log(associatedUser.roles);
+                                this.hideCreateUser[associatedUser.username] = true;
+                                this.hideDisableUser[associatedUser.username] = !associatedUser.enabled;
+                                person.Roles = associatedUser.roles.map(role => role.role);
                               }
                             }
+
+                            if (associatedOrg) {
+                              person.OrganizationName = associatedOrg.Name;
+                            }
+
                           });
 
                           this.dataSource.data = [...this.PeopleList];
                         }
                       },
-                        error: (error: any) => {
-                          console.error("Error fetching organizations data", error);
-                          this.dataSource.data = [];
-                        },
-                          complete :
-                        () => {
-                          this.LoadedData = true;
-                        }
-
-
+                      error: (error: any) => {
+                        console.error("Error fetching organizations data", error);
+                        this.dataSource.data = [];
+                      },
+                      complete: () => {
+                        this.LoadedData = true;
+                      }
                     }
                   );
                 }
@@ -271,11 +268,11 @@ export class PersoneComponent implements OnInit {
                 console.error("Error fetching user data", error);
               }
             });
-
           }
         }
         else {
           this.LoadedData = true;
+          this.dataSource.data = [];
           this.toastr.warning("No people data found", "Warn");
         }
       },
@@ -292,7 +289,7 @@ export class PersoneComponent implements OnInit {
     });
   }
 
-  getPeopleIfAdmin(resultData: any, orgId ?: any) {
+  getPeopleIfAdmin(resultData: any, orgId?: any) {
     if (orgId != null) {
       this.IsSA = false;
       this.orgIdFilter = orgId;
