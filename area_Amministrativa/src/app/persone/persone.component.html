@@ -131,7 +131,7 @@
             <mat-icon>edit</mat-icon>
           </button>
 
-          <button mat-mini-fab (click)="openDeleteDialog(element.Id, element.Email, element.FirstName, element.LastName)" color="warn" [hidden]="element.Email === usernamefilter" matTooltip="Delete">
+          <button mat-mini-fab (click)="openDeleteDialog(element.Id, element.Email, element.FirstName, element.LastName, element.HasUser)" color="warn" [hidden]="element.Email === usernamefilter" matTooltip="Delete">
             <mat-icon>delete</mat-icon>
           </button>
 
