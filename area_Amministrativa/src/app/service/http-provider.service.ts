@@ -1,84 +1,70 @@
 import { Injectable } from '@angular/core';
 import {AdminApiService} from "./admin-api.service";
-import {buffer, catchError, combineLatest, from, map, mergeMap, Observable, of} from "rxjs";
+import { catchError, combineLatest, from, map, mergeMap, Observable, of} from "rxjs";
 import { EncryptionService } from './encryption.service';
-import {BodyDtoEncrypt} from "../dto/body-dto-encrypt";
+import config from '../conf_url.json'
 
-var tempFilterUrl : string;
 // PATH API
-//let genericUrl = "http://localhost:8080/api/"
-let apiCredentials = "http://localhost:8282/oauth2/token"
+let apiCredentials = config.auth.apiCredentials
 
 //GET PUBLIC KEY
-let orgEncryption = "https://localhost:7017/api/GetPublicKey/"
-let personEncryption = "https://localhost:7131/api/GetPublicKey/"
-let authEncryption = "https://localhost:9000/api/rsa/GetPublicKey"
-let publicKeyUrl = "http://localhost:3000/api";
+let orgEncryption = config.orgEncryption
+let personEncryption = config.personEncryption
+let authEncryption = config.auth.authEncryption
+let publicKeyUrl = config.publicKeyUrl
 
 //get
-//let getUtenteUrl = genericUrl + "utenti"
-let getUtenteUrl = "https://localhost:9000/api/global/getAllUsers"
-//let getPersonUrl = genericUrl + "people"
-let getPersonUrl = "https://localhost:7131/api/People"
-let getPersonByEmailUrl = "https://localhost:7131/api/People/FindPersonByEmail"
-let getOrgUrl = "https://localhost:7017/api/Organizations"
-//let getOrgUrl = genericUrl + "organization"
+let getUtenteUrl = config.auth.getUtenteUrl
+let getPersonUrl = config.getPersonUrl
+let getPersonByEmailUrl = config.getPersonByEmailUrl
+let getOrgUrl = config.getOrgUrl
 
 //add
-//let addUtenteUrl = genericUrl + "addUtenti"
-let addPersonUrl = "https://localhost:7131/api/People"
-let addPersonUserUrl = "https://localhost:7131/api/People/CreatePU"
-//let addOrgUrl = genericUrl + "addOrganization"
+let addPersonUrl = config.addPersonUrl
+let addPersonUserUrl = config.addPersonUserUrl
 
 /*details*/
-let getUtenteByUsernameUrl = "https://localhost:9000/api/admin/userByUsername"
-let getUserExistsUrl = "https://localhost:9000/api/global/checkUsername"
-//let getPersonByIdUrl = genericUrl + "person"
-let getOrgByIdUrl = "https://localhost:7017/api/Organizations"
+let getUtenteByUsernameUrl = config.auth.getUtenteByUsernameUrl
+let getUserExistsUrl = config.auth.getUserExistsUrl
+let getOrgByIdUrl = config.getOrgByIdUrl
 
 //update
-
-//let updateUtenteUrl = genericUrl + "updateUtenti"
-let updatePersonUrl = "https://localhost:7131/api/People"
-let updatePersonRoleUrl = "https://localhost:9000/api/admin/changeRole"
-let updateOrgUrl = "https://localhost:7017/api/Organizations"
+let updatePersonUrl = config.updatePersonUrl
+let updatePersonRoleUrl = config.auth.updatePersonRoleUrl
+let updateOrgUrl = config.updateOrgUrl
 
 //patch
-let patchPersonUrl = "https://localhost:7131/api/People"
+let patchPersonUrl = config.patchPersonUrl
 
 //delete
-//let deleteUtenteUrl = genericUrl + "deleteUtenti"
-let deletePersonUrl = "https://localhost:7131/api/People"
-let forcedDeletePersonUrl = "https://localhost:7131/api/People/ForceDelete"
-let deleteOrgUrl = "https://localhost:7017/api/Organizations"
+let deletePersonUrl = config.deletePersonUrl
+let forcedDeletePersonUrl = config.forcedDeletePersonUrl
+let deleteOrgUrl = config.deleteOrgUrl
 
 //login
-let loginUrl = "https://localhost:9000/api/auth/login"
-let getDecryptedMessage = "https://localhost:9000/api/rsa/decrypt"
+let loginUrl = config.auth.loginUrl
+let getDecryptedMessage = config.auth.getDecryptedMessage
 
 //reset password
-let resetPwdUrl = "http://localhost:9000/api/admin/changePassword"
-
-//filer
-//let personFilterUrl = "https://localhost:7131/api/People/GetPeopleByFiltering"
+let resetPwdUrl = config.auth.resetPwdUrl
 
 //forgot password
-let forgotPwdByEmailUrl = "https://localhost:9000/api/forgot_password"
+let forgotPwdByEmailUrl = config.auth.forgotPwdByEmailUrl
 
 //Send email creation
-let sendEmailCreateUrl = "https://localhost:9000/api/send_email_create"
+let sendEmailCreateUrl = config.auth.sendEmailCreateUrl
 
 // reset password by email
-let resetPwdByEmailUrl = "https://localhost:9000/api/reset_password"
+let resetPwdByEmailUrl = config.auth.resetPwdByEmailUrl
 
 // get token by url
-let getTokenUrl = "https://localhost:9000/api/reset_password"
+let getTokenUrl = config.auth.getTokenUrl
 
-let createUserUrl = "https://localhost:9000/api/auth/create"
+let createUserUrl = config.auth.createUserUrl
 
-let disableUserUrl = "https://localhost:9000/api/admin/disableUser"
+let disableUserUrl = config.auth.disableUserUrl
 
-let abilityUserUrl = "https://localhost:9000/api/admin/abilityUser"
+let abilityUserUrl = config.auth.abilityUserUrl
 
 export interface BodyComboDto {
   Data1: any;
@@ -328,7 +314,7 @@ public getUserExists(username: string): Observable<any> {
       return of(accessToken);
     }),
     mergeMap((accessToken: string) => {
-      return from(this.encrypt(email, "https://localhost:9000/api/rsa/GetPublicKey")).pipe(
+      return from(this.encrypt(email, config.auth.authEncryption)).pipe(
         mergeMap((emailEncrypt: string) => {
           const decodedEmail = btoa(emailEncrypt)
           return this.adminApiService.postWithCcById(decodedEmail, forgotPwdByEmailUrl, null, accessToken);
@@ -345,7 +331,7 @@ public sendEmailCreation(email: string): Observable<any> {
       return of(accessToken);
     }),
     mergeMap((accessToken: string) => {
-      return from(this.encrypt(email, "https://localhost:9000/api/rsa/GetPublicKey")).pipe(
+      return from(this.encrypt(email, config.auth.authEncryption)).pipe(
         mergeMap((emailEncrypt: string) => {
           const decodedEmail = btoa(emailEncrypt)
           return this.adminApiService.postWithCcById(decodedEmail, sendEmailCreateUrl, null, accessToken);

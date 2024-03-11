@@ -3,24 +3,15 @@ import {ModaleDeleteComponent} from "../modale-delete/modale-delete.component";
 import {ModaleUpdatePersoneComponent} from "./modale-update-persone/modale-update-persone.component";
 import {ModaleAddPersoneComponent} from "./modale-add-persone/modale-add-persone.component";
 import {MatDialog} from "@angular/material/dialog";
-import { MatTableDataSource } from "@angular/material/table";
+import {MatTableDataSource} from "@angular/material/table";
 import {HttpProviderService} from "../service/http-provider.service";
-import { ModaleDetailsPersoneComponent } from './modale-details-persone/modale-details-persone.component';
-//import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {ModaleDetailsPersoneComponent} from './modale-details-persone/modale-details-persone.component';
 import {MatInput} from "@angular/material/input";
-import { FormBuilder } from '@angular/forms';
-import { AuthService } from "../service/auth.service";
-import { ToastrService } from "ngx-toastr";
-import { OrganizationDTO } from '../organizzazione/organizzazione.component';
-import {ActivatedRoute, Router} from "@angular/router";
+import {AuthService} from "../service/auth.service";
+import {ToastrService} from "ngx-toastr";
+import {OrganizationDTO} from '../organizzazione/organizzazione.component';
+import {ActivatedRoute} from "@angular/router";
 import {ModaleCreateUserComponent} from "./modale-create-user/modale-create-user.component";
-import { from } from 'rxjs';
-import {BodyDtoEncrypt} from "../dto/body-dto-encrypt";
-
-/*export interface FilterDTO {
-  first_name: string;
-  last_name: string;
-}*/
 
 export interface UserDTO {
   PersonId: string;
@@ -104,27 +95,20 @@ export class PersoneComponent implements OnInit {
   resetButtonDisabled: { [key: string]: boolean } = {};
   hideCreateUser: { [key: string]: boolean } = {};
   hideDisableUser: { [key: string]: boolean } = {};
-  hideEnableUser: { [key: string]: boolean } = {};
   IsSA = true;
   buttonColor: { [email: string]: string } = {};
-  adminOrgFilter = '';
   LoadedData: boolean = false;
   progressLoading: number = 0;
   areFiltersVisible: boolean = false;
 
 
   //filterForm: FormGroup
-  classForm: string = "People";
   PeopleList: PersonDTO1[] = [];
   displayedColumns: string[] = ['firstName', 'lastName', 'phone', 'email', 'roles', 'update'];
   dataSource = new MatTableDataSource<PersonDTO1>;
 
-  constructor(public auth: AuthService, private route: ActivatedRoute, private dialog: MatDialog, private formBuilder: FormBuilder, private httpApi: HttpProviderService, private toastr: ToastrService) {
+  constructor(public auth: AuthService, private route: ActivatedRoute, private dialog: MatDialog, private httpApi: HttpProviderService, private toastr: ToastrService) {
     this.dataSource = new MatTableDataSource<PersonDTO1>(this.PeopleList);
-    /*this.filterForm = this.formBuilder.group({
-      first_name: [null],
-      last_name: [null]
-    });*/
   }
 
   ngOnInit() {
@@ -142,26 +126,11 @@ export class PersoneComponent implements OnInit {
     this.areFiltersVisible = !this.areFiltersVisible;
   }
 
-  /*applyFilter() {
-    console.log(this.filterForm.value.first_name)
-    if (this.filterForm.valid) {
-
-      this.httpApi.filterPeople(this.filterForm.value.first_name, this.filterForm.value.last_name).subscribe({
-        next: value=> {
-          this.dataSource = new MatTableDataSource<PersonDTO>(value.body);
-        },
-        error: err => {
-          console.log("error")
-        }
-      })
-    }
-  }*/
 
   ngAfterViewInit() {
     // Imposta la funzione di filtro personalizzata per il dataSource
     this.dataSource.filterPredicate = this.customFilterPredicate();
   }
-
 
 
   customFilterPredicate() {
@@ -177,9 +146,7 @@ export class PersoneComponent implements OnInit {
   }
 
 
-  usernamefilter: string = '';
-  rolefilter: string = '';
-
+  userNameFilter: string = '';
 
   applyFilter() {
     // Applica il filtro in base alle proprietà firstName e lastName
@@ -193,16 +160,14 @@ export class PersoneComponent implements OnInit {
 
 
   allPeople(orgId?: string) {
-    this.usernamefilter = this.auth.getUsernameFromJwt();
+    this.userNameFilter = this.auth.getUsernameFromJwt();
     setTimeout(() => {
       this.progressLoading = 33;
     }, 200);
     this.httpApi.getAllPeople().subscribe({
       next: (data: any) => {
         if (data != null && data.body != null) {
-          var decryptedData = this.httpApi.decrypt(data.body)
-
-          var resultData = decryptedData;
+          const resultData = this.httpApi.decrypt(data.body);
           if (resultData) {
             this.PeopleList = resultData;
 
@@ -221,7 +186,7 @@ export class PersoneComponent implements OnInit {
                   this.httpApi.getAllOrg().subscribe(
                     {
                       next: async (orgData: any) => {
-                        await this.PeopleList.forEach((person: PersonDTO1) => {
+                        this.PeopleList.forEach((person: PersonDTO1) => {
                           person.Roles = ['Null'];
                           person.OrganizationName = 'No org';
 
@@ -234,7 +199,7 @@ export class PersoneComponent implements OnInit {
                               const associatedUser = userDTOList.find(user => user.username === person.Email);
 
                               if (associatedUser) {
-                                console.log(associatedUser.roles)
+                                console.log(associatedUser.roles);
                                 this.hideCreateUser[associatedUser.username] = true;
                                 this.hideDisableUser[associatedUser.username] = !associatedUser.enabled;
                                 person.Roles = associatedUser.roles.map(role => role.role);
@@ -288,11 +253,11 @@ export class PersoneComponent implements OnInit {
   }
 
   getPeopleIfAdmin(resultData: any) {
-    if (this.auth.checkIsSA() === false) {
+    if (!this.auth.checkIsSA()) {
       this.IsSA = false;
       const ppDTOList: PersonDTO1[] = resultData;
 
-      const CrmOrg = ppDTOList.find(pp => pp.Email === this.usernamefilter);
+      const CrmOrg = ppDTOList.find(pp => pp.Email === this.userNameFilter);
 
       if (CrmOrg) {
         this.PeopleList = this.PeopleList.filter(orgs => orgs.OrganizationId === CrmOrg.OrganizationId);

@@ -131,7 +131,7 @@
             <mat-icon>edit</mat-icon>
           </button>
 
-          <button mat-mini-fab (click)="openDeleteDialog(element.Id, element.Email, element.FirstName, element.LastName, element.HasUser)" color="warn" [hidden]="element.Email === usernamefilter" matTooltip="Delete">
+          <button mat-mini-fab (click)="openDeleteDialog(element.Id, element.Email, element.FirstName, element.LastName, element.HasUser)" color="warn" [hidden]="element.Email === userNameFilter" matTooltip="Delete">
             <mat-icon>delete</mat-icon>
           </button>
 
@@ -144,11 +144,11 @@
             <mat-icon>person_add</mat-icon>
           </button>
 
-          <button *ngIf="!hideDisableUser[element.Email]" mat-mini-fab (click)="disableUser(element.Email)" color="warn" [hidden]="!hideCreateUser[element.Email] || element.Email === usernamefilter" matTooltip="Disable">
+          <button *ngIf="!hideDisableUser[element.Email]" mat-mini-fab (click)="disableUser(element.Email)" color="warn" [hidden]="!hideCreateUser[element.Email] || element.Email === userNameFilter" matTooltip="Disable">
             <mat-icon>block</mat-icon>
           </button>
 
-          <button *ngIf="hideDisableUser[element.Email]" mat-mini-fab (click)="abilityUser(element.Email)" color="accent" [hidden]="!hideCreateUser[element.Email] || element.Email === usernamefilter" matTooltip="Enable">
+          <button *ngIf="hideDisableUser[element.Email]" mat-mini-fab (click)="abilityUser(element.Email)" color="accent" [hidden]="!hideCreateUser[element.Email] || element.Email === userNameFilter" matTooltip="Enable">
             <mat-icon>check</mat-icon>
           </button>
         </td>

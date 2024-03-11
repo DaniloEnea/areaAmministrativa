@@ -13,6 +13,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {ModaleSendEmailPwdComponent} from '../modale-send-email-pwd/modale-send-email-pwd.component';
 import {EncryptionService} from "../service/encryption.service";
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import config from '../conf_url.json'
 
 export interface LoginDTO {
   username: string,
@@ -59,7 +60,7 @@ export class AreaLoginComponent {
 
   async submit() {
     if (this.loginForm.valid) {
-      
+
 
       const newLogin: LoginDTO = {
         username: this.loginForm.value.username,
@@ -68,7 +69,7 @@ export class AreaLoginComponent {
 
       try {
         // Cripta le credenziali di login
-        const loginEncrypt = await this.httpApi.encrypt(JSON.stringify(newLogin), "https://localhost:9000/api/rsa/GetPublicKey");
+        const loginEncrypt = await this.httpApi.encrypt(JSON.stringify(newLogin), config.auth.authEncryption);
         this.loading = true;
         // Invia le credenziali di login criptate
         this.httpApi.loginEncrypted(loginEncrypt).subscribe({
@@ -100,7 +101,7 @@ export class AreaLoginComponent {
         console.log(error);
         this.toastr.error("Encryption failed or unable to fetch the public key", "Error");
       }
-      
+
     }
   }
 

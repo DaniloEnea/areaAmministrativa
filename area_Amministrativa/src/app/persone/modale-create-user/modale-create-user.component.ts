@@ -11,7 +11,7 @@
   import {PersonDTO, PersonDTO1, User} from "../persone.component";
   import {HttpProviderService} from "../../service/http-provider.service";
   import {ToastrService} from "ngx-toastr";
-  import {mod} from "ngx-bootstrap/chronos/utils";
+  import config from "../../conf_url.json"
 
 export interface SendUser {
   email: string,
@@ -144,7 +144,7 @@ export interface SendUser {
     // funzione per creare l'utenza
     async createUser(model: any) {
       try {
-        const createUserEncrypt =  await this.httpApi.encrypt(JSON.stringify(model), "https://localhost:9000/api/rsa/GetPublicKey");
+        const createUserEncrypt =  await this.httpApi.encrypt(JSON.stringify(model), config.auth.authEncryption);
         this.httpApi.createUserEncrypted(createUserEncrypt).subscribe({
           next: async (encryptedResponse) => {
             (await this.httpApi.patchHasUserPerson(this.data.Id)).subscribe({
