@@ -178,6 +178,7 @@ export class PersoneComponent implements OnInit {
 
 
   usernamefilter: string = '';
+  orgIdFilter: string = '';
   rolefilter: string = '';
 
 
@@ -206,11 +207,8 @@ export class PersoneComponent implements OnInit {
           if (resultData) {
             this.PeopleList = resultData;
 
-            this.getPeopleIfAdmin(this.PeopleList)
+            this.getPeopleIfAdmin(this.PeopleList, orgId)
 
-            if (orgId != null) {
-              this.PeopleList = this.PeopleList.filter(orgs => orgs.OrganizationId === orgId);
-            }
             this.progressLoading = 66;
             this.httpApi.getAllUsers().subscribe({
               next: (userData: any) => {
@@ -221,14 +219,23 @@ export class PersoneComponent implements OnInit {
                   this.httpApi.getAllOrg().subscribe(
                     {
                       next: async (orgData: any) => {
-                        await this.PeopleList.forEach((person: PersonDTO1) => {
-                          person.Roles = ['Null'];
-                          person.OrganizationName = 'No org';
+                        if (orgData != null && orgData.body != null) {
+                          const orgDTOList: OrganizationDTO[] = this.httpApi.decrypt(orgData.body);
 
-                          if (orgData != null && orgData.body != null) {
-                            const orgDTOList: OrganizationDTO[] = this.httpApi.decrypt(orgData.body);
+                          var associatedOrg: OrganizationDTO | undefined;
 
-                            const associatedOrg = orgDTOList.find(org => org.Id === person.OrganizationId);
+                          if (!this.IsSA) {
+                            associatedOrg = orgDTOList.find(org => org.Id === this.orgIdFilter);
+                          }
+
+                          await this.PeopleList.forEach((person: PersonDTO1) => {
+                            person.Roles = ['Null'];
+                            person.OrganizationName = 'No org';
+
+
+                            if (this.IsSA) {
+                              associatedOrg = orgDTOList.find(org => org.Id === person.OrganizationId);
+                            }
 
                             if (person.HasUser) {
                               const associatedUser = userDTOList.find(user => user.username === person.Email);
@@ -244,9 +251,10 @@ export class PersoneComponent implements OnInit {
                             if (associatedOrg) {
                               person.OrganizationName = associatedOrg.Name;
                             }
-                          }
-                        });
-                        this.dataSource.data = [...this.PeopleList];
+
+                          });
+                          this.dataSource.data = [...this.PeopleList];
+                        }
                       },
                       error: (error: any) => {
                         console.error("Error fetching organizations data", error);
@@ -271,6 +279,7 @@ export class PersoneComponent implements OnInit {
         }
         else {
           this.LoadedData = true;
+          this.dataSource.data = [];
           this.toastr.warning("No people data found", "Warn");
         }
       },
@@ -287,14 +296,20 @@ export class PersoneComponent implements OnInit {
     });
   }
 
-  getPeopleIfAdmin(resultData: any) {
-    if (this.auth.checkIsSA() === false) {
+  getPeopleIfAdmin(resultData: any, orgId ?: any) {
+    if (orgId != null) {
+      this.IsSA = false;
+      this.orgIdFilter = orgId;
+      this.PeopleList = this.PeopleList.filter(orgs => orgs.OrganizationId === orgId);
+    }
+    else if (this.auth.checkIsSA() === false) {
       this.IsSA = false;
       const ppDTOList: PersonDTO1[] = resultData;
 
       const CrmOrg = ppDTOList.find(pp => pp.Email === this.usernamefilter);
 
       if (CrmOrg) {
+        this.orgIdFilter = CrmOrg.OrganizationId;
         this.PeopleList = this.PeopleList.filter(orgs => orgs.OrganizationId === CrmOrg.OrganizationId);
       }
       else {

@@ -70,7 +70,7 @@ async confirmForm() {
     this.httpApi.forcedDeletePerson(this.data.Id).subscribe({
       next: (value: any) => {
         this.toastr.success("Deleted succesfully", "Success")
-        //this.toastr.warning("No user was found", "Warn")
+        this.toastr.warning("No user was found", "Warn")
       },
       error: (error: Error) => {
         this.toastr.error("Something went wrong with delete", "Error")
