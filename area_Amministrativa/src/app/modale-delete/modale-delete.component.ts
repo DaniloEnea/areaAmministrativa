@@ -11,24 +11,22 @@ import { async } from 'rxjs';
   styleUrls: ['./modale-delete.component.css']
 })
 export class ModaleDeleteComponent {
-
-
-
+  
   constructor(public auth: AuthService, private toastr: ToastrService, private ref: MatDialogRef<ModaleDeleteComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { Id: string, Username: string, FirstName : string, LastName: string, HasUser: boolean },
+    @Inject(MAT_DIALOG_DATA) public data: { Id: string, Username: string, FirstName: string, LastName: string, HasUser: boolean },
     private httpApi: HttpProviderService) {
 
   }
 
   // delete for call DELETE API
-async confirmForm() {
+  async confirmForm() {
     if (this.auth.isAuthenticated()) {
-        if (this.data.HasUser) {
-          await this.deletePU() // delete with user
-        }
-        else {
-          this.deletePerson()
-        }
+      if (this.data.HasUser) {
+        await this.deletePU() // delete with user
+      }
+      else {
+        this.deletePerson()
+      }
       //if (this.data.ClassForm == "User") {
       //  //this.httpApi.deleteUser(this.data.Id).subscribe()
       //}

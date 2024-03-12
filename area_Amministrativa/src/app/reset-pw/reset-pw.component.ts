@@ -36,6 +36,7 @@ export class ResetPwComponent  implements OnInit{
   showSuccess!: boolean;
   showError!: boolean;
   errorMessage!: string;
+  resetButtonDisabled: boolean = false;
   successMessage!: string;
 
   hide1: boolean = true;
@@ -109,6 +110,7 @@ export class ResetPwComponent  implements OnInit{
 
   // function to call api
   public resetPassword = (resetPasswordFormValue: any) => {
+    this.resetButtonDisabled = true;
     this.showError = this.showSuccess = false;
     const resetPass = { ...resetPasswordFormValue };
 
@@ -139,12 +141,12 @@ export class ResetPwComponent  implements OnInit{
           else if (email != null) {
             setTimeout(() => {
               this.router.navigate(['']);
-            }, 3000);
+            }, 2000);
           }
           else {
             setTimeout(() => {
               this.router.navigate(['/login']);
-            }, 3000);
+            }, 2000);
           }
         });
       },

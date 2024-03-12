@@ -41,7 +41,7 @@
 
       <div class="mb-3 row">
         <div class="col-md-1">
-          <button type="submit" mat-raised-button color="primary" [disabled]="!resetPasswordForm.valid">Submit</button>
+          <button type="submit" mat-raised-button color="primary" [disabled]="!resetPasswordForm.valid || resetButtonDisabled === true">Submit</button>
         </div>
       </div>
     </form>

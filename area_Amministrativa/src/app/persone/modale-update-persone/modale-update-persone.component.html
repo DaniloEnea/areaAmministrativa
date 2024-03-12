@@ -21,7 +21,7 @@
                           SearchCountryField.Name]"
                         [selectFirstCountry]="false"
                         [selectedCountryISO]="CountryISO.Italy"
-                        [maxLength]="15"
+                        [maxLength]="16"
                         [phoneValidation]="true"
                         [separateDialCode]="separateDialCode"
                         [numberFormat]="PhoneNumberFormat.National"
@@ -37,7 +37,7 @@
       </mat-error>
     </mat-form-field>
 
-    <mat-slide-toggle *ngIf="IsSameUser === false" formControlName="wantToUpdateUser">Do you want to update even user?</mat-slide-toggle>
+    <mat-slide-toggle *ngIf="IsSameUser === false" [hidden]="this.data.person.HasUser === false" formControlName="wantToUpdateUser">Do you want to update even user?</mat-slide-toggle>
 
     <div *ngIf="updatePersonForm.get('wantToUpdateUser')?.value" class="roles-container">
       <span>Roles:</span>

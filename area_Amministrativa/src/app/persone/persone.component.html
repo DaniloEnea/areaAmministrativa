@@ -25,17 +25,17 @@
 
     <div class="filter-fields" [ngClass]="{'expanded': areFiltersVisible}">
 
-      <mat-form-field class="input-filter" appearance="outline">
+      <mat-form-field class="input-filter" appearance="fill">
         <mat-label>Filter for name</mat-label>
         <input #filterFirstNameInput matInput [(ngModel)]="filterFirstName" (input)="applyFilter()" placeholder="First name">
       </mat-form-field>
 
-      <mat-form-field class="input-filter" appearance="outline">
+      <mat-form-field class="input-filter" appearance="fill">
         <mat-label>Filter for last name</mat-label>
         <input #filterLastNameInput matInput [(ngModel)]="filterLastName" (input)="applyFilter()" placeholder="Last name">
       </mat-form-field>
 
-      <mat-form-field class="input-filter" appearance="outline" *ngIf="IsSA">
+      <mat-form-field class="input-filter" appearance="fill" *ngIf="IsSA">
         <mat-label>Filter for organization</mat-label>
         <input #filterOrgInput matInput [(ngModel)]="filterOrg" (input)="applyFilter()" placeholder="Organization">
       </mat-form-field>

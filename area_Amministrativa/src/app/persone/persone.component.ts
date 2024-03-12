@@ -223,7 +223,7 @@ export class PersoneComponent implements OnInit {
                           }
 
                           this.PeopleList.forEach((person: PersonDTO1) => {
-                            person.Roles = ['Null'];
+                            person.Roles = ['No user linked'];
                             person.OrganizationName = 'No org';
 
                             if (this.IsSA) {
