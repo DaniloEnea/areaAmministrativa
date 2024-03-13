@@ -20,7 +20,7 @@
 
     <mat-form-field class="full-width">
       <mat-label>CF</mat-label>
-      <input autocomplete="off" matInput formControlName="cf">
+      <input autocomplete="off" matInput formControlName="cf" (input)="onInputChange($event)">
       <mat-error *ngIf="!cf?.valid">
         {{getCFError()}}
       </mat-error>

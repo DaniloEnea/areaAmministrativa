@@ -235,7 +235,7 @@ export class ModaleAddPersoneComponent {
 
             console.log("test 1")
 
-            var hasUser = false; 
+            var hasUser = false;
             if (this.newPersonForm.value.wantToCreateUser === true) {
               hasUser = true;
             }
@@ -313,6 +313,13 @@ export class ModaleAddPersoneComponent {
       setTimeout(() => {
         window.location.reload();
       }, 500)
+    }
+  }
+
+  onInputChange(event: any) {
+    const value = event.target.value.toUpperCase();
+    if (this.cf) {
+      this.cf.setValue(value, { emitEvent: false });
     }
   }
 

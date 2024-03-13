@@ -237,23 +237,19 @@ export class HttpProviderService {
     );
   }
 
-public getUserExists(username: string): Observable<any> {
+  public getUserExists(username: string) {
     return this.adminApiService.getUrlEncoded(apiCredentials).pipe(
       mergeMap((value: any) => {
-        if (value && value.body) {
-          const accessToken = value.body.access_token;
-          return of(accessToken);
-        } else {
-          throw new Error('Unable to get access token');
-        }
+        const accessToken = value.body.access_token;
+        return of(accessToken);
       }),
-      mergeMap(async (accessToken: string) => {
-        if (username) {
-          const usernameEncoded = btoa(await this.encrypt(username, authEncryption));
-          return this.adminApiService.getByIDWithCc(getUserExistsUrl, usernameEncoded, accessToken);
-        } else {
-          throw new Error('Username is not provided');
-        }
+      mergeMap((accessToken: string) => {
+        return from(this.encrypt(username, config.auth.authEncryption)).pipe(
+          mergeMap((username: string) => {
+            const decodedUsername = btoa(username)
+            return this.adminApiService.getByIDWithCc(getUserExistsUrl, decodedUsername, accessToken);
+          })
+        );
       })
     );
   }
