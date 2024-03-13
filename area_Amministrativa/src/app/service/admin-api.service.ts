@@ -180,7 +180,7 @@ export class AdminApiService {
       observe: "response" as 'body'
     };
 
-    const getUrl: string = `${url}/${id}`;
+    url = `${url}/${id}`;
     return this.http.get(url, httpOptions).pipe(
       map((response: any) => this.ReturnResponseData(response)),
       catchError(this.handleError)
@@ -393,6 +393,27 @@ export class AdminApiService {
         throw error;
       }
     }
+
+  //public checkUserExists(url: string, id: string, ): Observable<boolean> {
+  //  const httpOptions = {
+  //    headers: new HttpHeaders({
+  //      'Content-Type': 'application/json'
+  //    }),
+  //    observe: 'response' as 'body',
+  //    responseType: "text" as 'json'
+  //  };
+
+  //  url = `${url}/${id}?valid=true`;
+  //  return this.http.get<boolean>(url, httpOptions)
+  //    .pipe(
+  //      catchError((error) => {
+  //        console.error('Error checking user existence:', error);
+  //        return new Observable<boolean>((observer) => {
+  //          observer.next(false);
+  //        });
+  //      })
+  //    );
+  //}
 
     /*getFiltered(url:string, endUrl: string): Observable<any>{
       const httpOptions = {
