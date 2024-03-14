@@ -42,6 +42,36 @@ export class AuthService {
     return !this.jwtHelper.isTokenExpired(token) && checkRole;
   }
 
+  public testIsAuthenticated(callback: (authenticated: boolean) => void): void {
+    const token = localStorage.getItem('accessToken');
+    localStorage.setItem('ROLE', this.getRoleFromJwt());
+    const role = localStorage.getItem('ROLE');
+
+    this.http.getUserExists(this.getUsernameFromJwt()).subscribe({
+      next: (value: any) => {
+        const checkUser: boolean = value.body;
+        let checkRole: boolean = false;
+        if (role == 'ROLE_SA' || role == 'ROLE_ADMIN' && checkUser) {
+          checkRole = true;
+        }
+
+        if (this.jwtHelper.isTokenExpired(token)) {
+          localStorage.removeItem("accessToken");
+          localStorage.removeItem("ROLE");
+          this.loggedIn.next(false);
+          callback(false); // Call the callback with false if token is expired
+        } else {
+          callback(!this.jwtHelper.isTokenExpired(token) && checkRole); // Call the callback with authentication result
+        }
+      },
+      error: (error: any) => {
+        // Handle error
+        console.error(error);
+        callback(false); // Call the callback with false in case of error
+      }
+    });
+  }
+
   public getRoleFromJwt(): string {
     const token = localStorage.getItem('accessToken');
     // verifica se il token non è null

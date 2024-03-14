@@ -103,74 +103,76 @@ export class ModaleUpdatePersoneComponent {
   }
 
   async onUpdateClick() {
-    if (this.auth.isAuthenticated()) {
-      if (this.updatePersonForm.valid) {
 
-        if (this.updatePersonForm.value.Role_SA == true) {
-          this.rolesSelected.push("ROLE_SA")
+    this.auth.testIsAuthenticated(async (authenticated: boolean) => {
+      if (authenticated) {
+        if (this.updatePersonForm.valid) {
+
+          if (this.updatePersonForm.value.Role_SA == true) {
+            this.rolesSelected.push("ROLE_SA")
+          }
+          if (this.updatePersonForm.value.Role_Admin == true) {
+            this.rolesSelected.push("ROLE_ADMIN")
+          }
+          this.rolesSelected.push("ROLE_USER")
+
+          this.wantToUpdateUser = this.updatePersonForm.value.wantToUpdateUser;
+
+          console.log(this.rolesSelected)
+
+          const updatePerson: PersonDTO = {
+            Id: this.data.person.Id,
+            FirstName: this.updatePersonForm.value.firstName,
+            LastName: this.updatePersonForm.value.lastName,
+            OrganizationId: this.data.person.OrganizationId,
+            WorkRole: this.updatePersonForm.value.workRole,
+            Phone: this.updatePersonForm.value.phone.internationalNumber,
+            Email: this.updatePersonForm.value.email,
+            SecondEmail: this.updatePersonForm.value.secondEmail,
+            HasUser: this.data.person.HasUser,
+            IsGDPRTermsAccepted: this.updatePersonForm.value.isGDPRTermsAccepted,
+            IsOtherProcessingPurposesAccepted: this.updatePersonForm.value.isOtherProcessingPurposesAccepted,
+            IsServiceProcessingPurposesAccepted: this.updatePersonForm.value.isServiceProcessingPurposesAccepted,
+            IsDeleted: false,
+            IsValid: true,
+            CF: this.updatePersonForm.value.cf
+          };
+
+
+          (await this.httpApi.updatePerson(this.data.person.Id, updatePerson)).pipe(
+            tap(() => {
+              console.log("riuscito");
+              this.toastr.success("Person updated successfully", "Success");
+            }),
+            filter(() => this.updatePersonForm.value.wantToUpdateUser === true),
+            mergeMap(() => this.httpApi.changeRole(this.updatePersonForm.value.email, this.rolesSelected)),
+            tap({
+              next: () => {
+                this.toastr.success("User updated successfully", "Success");
+              },
+              error: (err: Error) => {
+                console.log("Fallito");
+                console.log(err);
+                this.toastr.error('Something is wrong', 'Error');
+              }
+            }),
+          ).subscribe({
+            complete: () => {
+              this.dialogRef.close(updatePerson);
+              setTimeout(() => {
+                window.location.reload();
+              }, 1500);
+            }
+          });
         }
-        if (this.updatePersonForm.value.Role_Admin == true) {
-          this.rolesSelected.push("ROLE_ADMIN")
-        }
-        this.rolesSelected.push("ROLE_USER")
-
-        this.wantToUpdateUser = this.updatePersonForm.value.wantToUpdateUser;
-
-        console.log(this.rolesSelected)
-
-        const updatePerson: PersonDTO = {
-          Id: this.data.person.Id,
-          FirstName: this.updatePersonForm.value.firstName,
-          LastName: this.updatePersonForm.value.lastName,
-          OrganizationId: this.data.person.OrganizationId,
-          WorkRole: this.updatePersonForm.value.workRole,
-          Phone: this.updatePersonForm.value.phone.internationalNumber,
-          Email: this.updatePersonForm.value.email,
-          SecondEmail: this.updatePersonForm.value.secondEmail,
-          HasUser: this.data.person.HasUser,
-          IsGDPRTermsAccepted: this.updatePersonForm.value.isGDPRTermsAccepted,
-          IsOtherProcessingPurposesAccepted: this.updatePersonForm.value.isOtherProcessingPurposesAccepted,
-          IsServiceProcessingPurposesAccepted: this.updatePersonForm.value.isServiceProcessingPurposesAccepted,
-          IsDeleted: false,
-          IsValid: true,
-          CF: this.updatePersonForm.value.cf
-        };
-
-
-    (await this.httpApi.updatePerson(this.data.person.Id, updatePerson)).pipe(
-      tap(() => {
-        console.log("riuscito");
-        this.toastr.success("Person updated successfully", "Success");
-      }),
-      filter(() => this.updatePersonForm.value.wantToUpdateUser === true),
-      mergeMap(() => this.httpApi.changeRole(this.updatePersonForm.value.email, this.rolesSelected)),
-      tap({
-        next: () => {
-          this.toastr.success("User updated successfully", "Success");
-        },
-        error: (err: Error) => {
-          console.log("Fallito");
-          console.log(err);
-          this.toastr.error('Something is wrong', 'Error');
-        }
-      }),
-    ).subscribe({
-      complete: () => {
-        this.dialogRef.close(updatePerson);
+      } else {
+        this.toastr.error("Token is expired", "Error")
         setTimeout(() => {
           window.location.reload();
-        }, 1500);
+        }, 500)
       }
     });
-      }
-    }
-    else {
-      this.toastr.error("Token is expired", "Error")
-      setTimeout(() => {
-        window.location.reload();
-      }, 500)
 
-    }
   }
 
 
