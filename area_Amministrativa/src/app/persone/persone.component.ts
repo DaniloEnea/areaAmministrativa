@@ -302,6 +302,7 @@ export class PersoneComponent implements OnInit {
       const CrmOrg = ppDTOList.find(pp => pp.Email === this.usernamefilter);
 
       if (CrmOrg) {
+        this.orgIdFilter = CrmOrg?.OrganizationId
         this.PeopleList = this.PeopleList.filter(orgs => orgs.OrganizationId === CrmOrg.OrganizationId);
       }
       else {
