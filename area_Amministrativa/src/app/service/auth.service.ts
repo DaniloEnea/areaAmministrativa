@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import {JwtHelperService} from "@auth0/angular-jwt";
-import { BehaviorSubject, Observable } from 'rxjs';
+import {BehaviorSubject, catchError, mergeMap, Observable, of} from 'rxjs';
 import {ToastrService} from "ngx-toastr";
 import { HttpProviderService } from './http-provider.service';
 
@@ -43,34 +43,32 @@ export class AuthService {
   }
 
   public testIsAuthenticated(callback: (authenticated: boolean) => void): void {
-    const token = localStorage.getItem('accessToken');
-    localStorage.setItem('ROLE', this.getRoleFromJwt());
-    const role = localStorage.getItem('ROLE');
+  const token = localStorage.getItem('accessToken');
+  const role = localStorage.getItem('ROLE') ?? '';
 
-    this.http.getUserExists(this.getUsernameFromJwt()).subscribe({
-      next: (value: any) => {
-        const checkUser: boolean = value.body;
-        let checkRole: boolean = false;
-        if (role == 'ROLE_SA' || role == 'ROLE_ADMIN' && checkUser) {
-          checkRole = true;
-        }
+  this.http.getUserExists(this.getUsernameFromJwt()).pipe(
+    mergeMap((value: any) => {
+      const checkUser: boolean = value.body;
+      const checkRole: boolean = role.includes('ROLE_ADMIN' || 'ROLE_SA') && checkUser;
 
-        if (this.jwtHelper.isTokenExpired(token)) {
-          localStorage.removeItem("accessToken");
-          localStorage.removeItem("ROLE");
-          this.loggedIn.next(false);
-          callback(false); // Call the callback with false if token is expired
-        } else {
-          callback(!this.jwtHelper.isTokenExpired(token) && checkRole); // Call the callback with authentication result
-        }
-      },
-      error: (error: any) => {
-        // Handle error
-        console.error(error);
-        callback(false); // Call the callback with false in case of error
+      if (this.jwtHelper.isTokenExpired(token)) {
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("ROLE");
+        this.loggedIn.next(false);
+        return of(false);
+      } else {
+        return of(checkRole);
       }
-    });
-  }
+    }),
+    catchError((error: any) => {
+      console.error(error);
+      return of(false);
+    })
+  ).subscribe((authenticated: boolean) => {
+    callback(authenticated);
+  });
+}
+
 
   public getRoleFromJwt(): string {
     const token = localStorage.getItem('accessToken');
