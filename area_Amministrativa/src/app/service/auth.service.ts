@@ -49,8 +49,7 @@ export class AuthService {
   this.http.getUserExists(this.getUsernameFromJwt()).pipe(
     mergeMap((value: any) => {
       const checkUser: boolean = value.body;
-      const checkRole: boolean = role.includes('ROLE_ADMIN' || 'ROLE_SA') && checkUser;
-
+     const checkRole: boolean = role.includes('ROLE_SA') || role.includes('ROLE_ADMIN') && checkUser;
       if (this.jwtHelper.isTokenExpired(token)) {
         localStorage.removeItem("accessToken");
         localStorage.removeItem("ROLE");
