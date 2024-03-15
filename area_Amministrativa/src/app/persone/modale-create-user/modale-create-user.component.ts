@@ -83,62 +83,64 @@ export interface SendUser {
     }
 
     generatePassword(length: number): string {
-    // Definizione dei caratteri che la password può contenere
-    const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+~`|}{[]:;?><,./-=";
-    let password = "";
+      // Definizione dei caratteri che la password può contenere
+      const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+~`|}{[]:;?><,./-=";
+      let password = "";
 
-    // Generazione della password
-    for (let i = 0, n = charset.length; i < length; ++i) {
-      password += charset.charAt(Math.floor(Math.random() * n));
+      // Generazione della password
+      for (let i = 0, n = charset.length; i < length; ++i) {
+        password += charset.charAt(Math.floor(Math.random() * n));
+      }
+
+      return password;
     }
 
-    return password;
-  }
-
     onCreateUserClick(): void {
-      if (this.auth.isAuthenticated()) {
-        if (this.createUserForm.valid) {
+      this.auth.testIsAuthenticated(async (authenticated: boolean) => {
+        if (authenticated) {
+          if (this.createUserForm.valid) {
 
-          if (this.createUserForm.value.Role_SA == true) {
-            this.rolesSelected.push("ROLE_SA")
+            if (this.createUserForm.value.Role_SA == true) {
+              this.rolesSelected.push("ROLE_SA")
+            }
+            if (this.createUserForm.value.Role_Admin == true) {
+              this.rolesSelected.push("ROLE_ADMIN")
+            }
+            this.rolesSelected.push("ROLE_USER")
+
+            console.log(this.rolesSelected)
+
+            const createUser: SendUser = {
+              email: this.data.Email,
+              password: this.generatePassword(12),
+              id: this.data.Id,
+              roles: this.rolesSelected,
+            };
+
+            console.log(createUser)
+
+            this.createUser(createUser).then(r => console.log("complete"));
           }
-          if (this.createUserForm.value.Role_Admin == true) {
-            this.rolesSelected.push("ROLE_ADMIN")
-          }
-          this.rolesSelected.push("ROLE_USER")
+        } else {
+          this.toastr.error("Token is expired", "Error")
+          setTimeout(() => {
+            window.location.reload();
+          }, 500)
 
-          console.log(this.rolesSelected)
-
-          const createUser: SendUser = {
-            email: this.data.Email,
-            password: this.generatePassword(12),
-            id: this.data.Id,
-            roles: this.rolesSelected,
-          };
-
-          console.log(createUser)
-
-          this.createUser(createUser).then(r => console.log("complete"));
         }
-      }
-      else {
-        this.toastr.error("Token is expired", "Error")
-        setTimeout(() => {
-          window.location.reload();
-        }, 500)
-      }
+      });
     }
 
     async sendEmailCreateUser() {
-        this.httpApi.sendEmailCreation(this.createUserForm.value.email).subscribe(
-              {
-                next: value => {
-                  this.toastr.success("The create email has been sent", "Success")
-                },
-                error: err => {
-                  this.toastr.error("There is a problem with the email", "Error")
-                }
-              });
+      this.httpApi.sendEmailCreation(this.createUserForm.value.email).subscribe(
+        {
+          next: value => {
+            this.toastr.success("The create email has been sent", "Success")
+          },
+          error: err => {
+            this.toastr.error("There is a problem with the email", "Error")
+          }
+        });
     }
 
     // funzione per creare l'utenza

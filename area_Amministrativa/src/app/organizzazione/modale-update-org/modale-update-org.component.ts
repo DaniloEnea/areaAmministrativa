@@ -160,59 +160,59 @@ export class ModaleUpdateOrgComponent {
   }
 
 
-  async onUpdateClick(): Promise<void> {
-    if (this.auth.isAuthenticated()) {
-      if (this.updateOrgForm.valid) {
-        console.log(this.data.org.Id)
-        const updateOrg: OrganizationDTO = {
-          Id: this.data.org.Id,
-          Name: this.updateOrgForm.value.Name,
-          VATNumber: this.updateOrgForm.value.VATNumber,
-          StreetAddress: this.updateOrgForm.value.StreetAddress,
-          City: this.updateOrgForm.value.City,
-          Province_State: this.updateOrgForm.value.Province_State,
-          Country: this.updateOrgForm.value.Country,
-          ZipCode: this.updateOrgForm.value.ZipCode,
-          AdditionalInformation: this.updateOrgForm.value.AdditionalInformation,
-          WebSite: this.updateOrgForm.value.WebSite,
-          EmailAddress: this.updateOrgForm.value.EmailAddress,
-          EmailDomain: this.updateOrgForm.value.EmailDomain,
-          PEC: this.updateOrgForm.value.PEC,
-          BillingCode: this.updateOrgForm.value.BillingCode,
-          IsSupplier: this.updateOrgForm.value.IsSupplier,
-          IsCustomer: this.updateOrgForm.value.IsCustomer,
-          IsValid: this.updateOrgForm.value.IsValid,
-          IsDeleted: this.updateOrgForm.value.IsDeleted
-        };
+  onUpdateClick(){
+    this.auth.testIsAuthenticated(async (authenticated: boolean) => {
+      if (authenticated) {
+        if (this.updateOrgForm.valid) {
+          console.log(this.data.org.Id)
+          const updateOrg: OrganizationDTO = {
+            Id: this.data.org.Id,
+            Name: this.updateOrgForm.value.Name,
+            VATNumber: this.updateOrgForm.value.VATNumber,
+            StreetAddress: this.updateOrgForm.value.StreetAddress,
+            City: this.updateOrgForm.value.City,
+            Province_State: this.updateOrgForm.value.Province_State,
+            Country: this.updateOrgForm.value.Country,
+            ZipCode: this.updateOrgForm.value.ZipCode,
+            AdditionalInformation: this.updateOrgForm.value.AdditionalInformation,
+            WebSite: this.updateOrgForm.value.WebSite,
+            EmailAddress: this.updateOrgForm.value.EmailAddress,
+            EmailDomain: this.updateOrgForm.value.EmailDomain,
+            PEC: this.updateOrgForm.value.PEC,
+            BillingCode: this.updateOrgForm.value.BillingCode,
+            IsSupplier: this.updateOrgForm.value.IsSupplier,
+            IsCustomer: this.updateOrgForm.value.IsCustomer,
+            IsValid: this.updateOrgForm.value.IsValid,
+            IsDeleted: this.updateOrgForm.value.IsDeleted
+          };
 
 
-        console.log(updateOrg);
-        // post for create new user
-        (await this.httpApi.updateOrg(this.data.org.Id, updateOrg)).subscribe({
-          next: (response: any) => {
-            this.toastr.success("Data updated successfully", "Success");
-            setTimeout(() => {
-              window.location.reload();
-            }, 1500)
-          },
-          error: (err: any) => {
-            console.log(err);
-            this.toastr.error('Something is wrong', 'Error');
-            setTimeout(() => { }, 1500)
-          },
-          complete: () => {
-            this.dialogRef.close(updateOrg);
-          }
-        })
+          console.log(updateOrg);
+          // post for create new user
+          (await this.httpApi.updateOrg(this.data.org.Id, updateOrg)).subscribe({
+            next: (response: any) => {
+              this.toastr.success("Data updated successfully", "Success");
+              setTimeout(() => {
+                window.location.reload();
+              }, 1500)
+            },
+            error: (err: any) => {
+              console.log(err);
+              this.toastr.error('Something is wrong', 'Error');
+              setTimeout(() => { }, 1500)
+            },
+            complete: () => {
+              this.dialogRef.close(updateOrg);
+            }
+          })
+        }
+      } else {
+        this.toastr.error("Token is expired", "Error")
+        setTimeout(() => {
+          window.location.reload();
+        }, 500)
       }
-    }
-    else {
-      this.toastr.error("Token is expired", "Error")
-      setTimeout(() => {
-        window.location.reload();
-      }, 500)
-
-    }
+    });    
 
   }
 

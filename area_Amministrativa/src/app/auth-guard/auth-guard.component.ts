@@ -16,6 +16,7 @@ class AuthGuardComponent{
   }
 
    checkUserLogin(route: ActivatedRouteSnapshot, url: any): boolean {
+
      if (this.auth.isAuthenticated()) {
        const userRoles = this.auth.getRoleFromJwt();
        console.log(userRoles);

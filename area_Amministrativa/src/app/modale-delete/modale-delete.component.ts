@@ -19,32 +19,24 @@ export class ModaleDeleteComponent {
   }
 
   // delete for call DELETE API
-  async confirmForm() {
-    if (this.auth.isAuthenticated()) {
-      if (this.data.HasUser) {
-        await this.deletePU() // delete with user
-      }
-      else {
-        this.deletePerson()
-      }
-      //if (this.data.ClassForm == "User") {
-      //  //this.httpApi.deleteUser(this.data.Id).subscribe()
-      //}
-      //else if (this.data.ClassForm == "People") {
-      //  this.deletePU()
-      //}
-      //else if (this.data.ClassForm == "Organization") {
-      //  //this.httpApi.deleteOrg(this.data.Id).subscribe()
-      //}
-      this.closepopup()
-    }
-    else {
-      this.toastr.error("Token is expired", "Error")
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000)
+  confirmForm() {
+    this.auth.testIsAuthenticated(async (authenticated: boolean) => {
+      if (authenticated) {
+        if (this.data.HasUser) {
+          await this.deletePU() // delete with user
+        }
+        else {
+          this.deletePerson()
+        }
+        this.closepopup()
+      } else {
+        this.toastr.error("Token is expired", "Error")
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000)
 
-    }
+      }
+    });
   }
 
 

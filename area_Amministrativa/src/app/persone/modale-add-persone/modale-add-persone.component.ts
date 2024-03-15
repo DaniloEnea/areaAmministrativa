@@ -218,102 +218,103 @@ export class ModaleAddPersoneComponent {
   }
 
   onAddClick(): void {
-
-    if (this.auth.isAuthenticated()) {
-      if (this.newPersonForm.valid) {
-        this.getOrgByLogin().subscribe({
-          next: async (orgId: string) => {
-            if (this.newPersonForm.value.Role_SA == true) {
-              this.rolesSelected.push("ROLE_SA")
-              this.RoleSa = true;
-            }
-            if (this.newPersonForm.value.Role_Admin == true) {
-              this.rolesSelected.push("ROLE_ADMIN")
-              this.RoleAdmin = true
-            }
-            this.rolesSelected.push("ROLE_USER")
-
-            console.log("test 1")
-
-            var hasUser = false;
-            if (this.newPersonForm.value.wantToCreateUser === true) {
-              hasUser = true;
-            }
-
-            const newPerson: PersonDTO2 = {
-              FirstName: this.newPersonForm.value.firstName,
-              LastName: this.newPersonForm.value.lastName,
-              CF: this.newPersonForm.value.cf,
-              OrganizationId: this.organizationId,
-              WorkRole: this.newPersonForm.value.workRole,
-              Phone: this.newPersonForm.value.phone.internationalNumber,
-              Email: this.newPersonForm.value.email,
-              SecondEmail: this.newPersonForm.value.secondEmail,
-              IsGDPRTermsAccepted: this.newPersonForm.value.isGDPRTermsAccepted,
-              IsOtherProcessingPurposesAccepted: this.newPersonForm.value.isOtherProcessingPurposesAccepted,
-              IsServiceProcessingPurposesAccepted: this.newPersonForm.value.isServiceProcessingPurposesAccepted,
-              Roles:
-                this.rolesSelected
-
-            };
-
-            // check if wantToCreateUser
-            if (this.newPersonForm.value.wantToCreateUser === true) {
-
-              console.log(newPerson);
-              // post for create new user
-              try {
-                const response = await this.httpApi.addNewPU(newPerson);
-                const value = await response;
-                this.httpApi.sendEmailCreation(this.newPersonForm.value.email).subscribe(
-                  {
-                    next: value => {
-                      this.toastr.success("The create email has been sent", "Success")
-                    },
-                    error: err => {
-                      this.toastr.warning("Can't inform user about creation", "Warn")
-                    },
-                  }
-                );
-                this.toastr.success("Data updated successfully", "Success");
-                setTimeout(() => {
-                  window.location.reload();
-                }, 1500);
+    this.auth.testIsAuthenticated(async (authenticated: boolean) => {
+      if (authenticated) {
+        if (this.newPersonForm.valid) {
+          this.getOrgByLogin().subscribe({
+            next: async (orgId: string) => {
+              if (this.newPersonForm.value.Role_SA == true) {
+                this.rolesSelected.push("ROLE_SA")
+                this.RoleSa = true;
               }
-              catch (error) {
-                this.toastr.error('Something is wrong', 'Error');
-                setTimeout(() => {
-                }, 1500);
+              if (this.newPersonForm.value.Role_Admin == true) {
+                this.rolesSelected.push("ROLE_ADMIN")
+                this.RoleAdmin = true
               }
-            } else {
-              try {
-                const response = await this.httpApi.addNewPerson(newPerson);
-                const value = await response;
-                this.toastr.success("Data updated successfully", "Success");
-                setTimeout(() => {
-                  window.location.reload();
-                }, 1500);
-              } catch (error) {
-                this.toastr.error('Something is wrong', 'Error');
-                setTimeout(() => {
-                }, 1500);
+              this.rolesSelected.push("ROLE_USER")
+
+              console.log("test 1")
+
+              var hasUser = false;
+              if (this.newPersonForm.value.wantToCreateUser === true) {
+                hasUser = true;
+              }
+
+              const newPerson: PersonDTO2 = {
+                FirstName: this.newPersonForm.value.firstName,
+                LastName: this.newPersonForm.value.lastName,
+                CF: this.newPersonForm.value.cf,
+                OrganizationId: this.organizationId,
+                WorkRole: this.newPersonForm.value.workRole,
+                Phone: this.newPersonForm.value.phone.internationalNumber,
+                Email: this.newPersonForm.value.email,
+                SecondEmail: this.newPersonForm.value.secondEmail,
+                IsGDPRTermsAccepted: this.newPersonForm.value.isGDPRTermsAccepted,
+                IsOtherProcessingPurposesAccepted: this.newPersonForm.value.isOtherProcessingPurposesAccepted,
+                IsServiceProcessingPurposesAccepted: this.newPersonForm.value.isServiceProcessingPurposesAccepted,
+                Roles:
+                  this.rolesSelected
+
+              };
+
+              // check if wantToCreateUser
+              if (this.newPersonForm.value.wantToCreateUser === true) {
+
+                console.log(newPerson);
+                // post for create new user
+                try {
+                  const response = await this.httpApi.addNewPU(newPerson);
+                  const value = await response;
+                  this.httpApi.sendEmailCreation(this.newPersonForm.value.email).subscribe(
+                    {
+                      next: value => {
+                        this.toastr.success("The create email has been sent", "Success")
+                      },
+                      error: err => {
+                        this.toastr.warning("Can't inform user about creation", "Warn")
+                      },
+                    }
+                  );
+                  this.toastr.success("Data updated successfully", "Success");
+                  setTimeout(() => {
+                    window.location.reload();
+                  }, 1500);
+                }
+                catch (error) {
+                  this.toastr.error('Something is wrong', 'Error');
+                  setTimeout(() => {
+                  }, 1500);
+                }
+              } else {
+                try {
+                  const response = await this.httpApi.addNewPerson(newPerson);
+                  const value = await response;
+                  this.toastr.success("Data updated successfully", "Success");
+                  setTimeout(() => {
+                    window.location.reload();
+                  }, 1500);
+                } catch (error) {
+                  this.toastr.error('Something is wrong', 'Error');
+                  setTimeout(() => {
+                  }, 1500);
+                }
               }
             }
-          }
-        })
+          })
+        }
+        else {
+          this.toastr.error('The form is wrong', 'Error');
+          setTimeout(() => { }, 1500)
+        }
+        this.closepopup();
+      } else {
+        this.toastr.error("Token is expired", "Error")
+        setTimeout(() => {
+          window.location.reload();
+        }, 500)
+
       }
-      else {
-        this.toastr.error('The form is wrong', 'Error');
-        setTimeout(() => { }, 1500)
-      }
-      this.closepopup();
-    }
-    else {
-      this.toastr.error("Token is expired", "Error")
-      setTimeout(() => {
-        window.location.reload();
-      }, 500)
-    }
+    });
   }
 
   onInputChange(event: any) {
