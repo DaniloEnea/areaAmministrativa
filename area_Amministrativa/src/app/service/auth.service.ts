@@ -65,6 +65,11 @@ export class AuthService {
     })
   ).subscribe((authenticated: boolean) => {
     callback(authenticated);
+    if (authenticated === false) {
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("ROLE")
+      this.loggedIn.next(false);
+    }
   });
 }
 
