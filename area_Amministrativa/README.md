@@ -3,8 +3,7 @@
 
 ## Which branch use
 
-The branch to use is: `business-logic`
-
+The branch to use is: `encryption-service`
 
 ## How to start the program
 
@@ -28,10 +27,17 @@ For use `Area Amministrativa` you should start:
 - auth on branch `encrypt&Decrypt` (only after that you have started `oauth2`)
 
 You can have them on these URLs:
-  - https://github.com/jtabilas/oauth2/tree/v2
-  - https://github.com/jtabilas/auth/tree/encrypt%26Decrypt
-  
+  - https://dev.azure.com/5EMMEInformatica/CRM-SaaS/_git/msOrg
+  - https://github.com/jtabilas/oauth2/
+  - https://github.com/jtabilas/auth/
 
+  
+You also must have to run this two commands on the terminal for the correct usage of the program:
+  - cd [pathToTheFolder]\areaAmministrativa\src\assets
+  - node public-key-api.js
+
+If you see Encryption failed issue on login form,
+see the documentation on this repository for install self-signed SSL certificate: https://github.com/jtabilas/auth/
 
 ## Build
 
