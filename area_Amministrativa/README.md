@@ -34,8 +34,8 @@ You can have them on these URLs:
 ---
   
 You also must have to run this two commands on the terminal for the correct usage of the application:
-  - cd [pathToTheFolder]\areaAmministrativa\src\assets
-  - node public-key-api.js
+  - `cd [pathToTheFolder]\areaAmministrativa\src\assets`
+  - `node public-key-api.js`
 
 ---
 
