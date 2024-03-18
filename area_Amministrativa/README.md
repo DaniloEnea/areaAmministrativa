@@ -37,7 +37,11 @@ You also must have to run this two commands on the terminal for the correct usag
   - node public-key-api.js
 
 If you see Encryption failed issue on login form,
-see the documentation on this repository for install self-signed SSL certificate: https://github.com/jtabilas/auth/
+see the documentation on this repository for install self-signed SSL certificate: https://github.com/jtabilas/auth/.
+
+Also, if you use chrome, you should type this on your search bar: `chrome://flags/#allow-insecure-localhost`
+
+and enable **Allow invalid certificates for resources load from localhost**
 
 ## Build
 
