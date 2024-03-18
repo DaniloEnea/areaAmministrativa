@@ -35,6 +35,7 @@ export class ModaleSendEmailPwdComponent {
         }
       );
     }
+    this.closepopup();
   }
 
   closepopup() {
