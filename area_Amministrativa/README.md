@@ -10,6 +10,10 @@ Inside the application you could `see` and `update` information of the organizat
 
 The branch to use is: `encryption-service`
 
+## Build
+
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+
 ## How to start the program
 
 If is the first time that you start the program, you must type on terminal: `npm install`.
@@ -53,9 +57,6 @@ and enable **Allow invalid certificates for resources load from localhost**
 
 ![Screenshot 2024-03-18 124907](https://github.com/DaniloEnea/areaAmministrativa/assets/96554342/6f307c27-95a2-4a91-8d9e-ef9fae71c608)
 
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
 
 ## For Test
 
