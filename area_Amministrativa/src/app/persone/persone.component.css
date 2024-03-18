@@ -25,3 +25,11 @@ button.wrap-delete-button {
     right : 10px;
 }
 
+.input-filter{
+    margin-right:20px;
+}
+
+.reset_pwd {
+  background-color: #FFA000;
+}
+

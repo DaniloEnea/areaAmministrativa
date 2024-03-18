@@ -1,0 +1,53 @@
+<h1 mat-dialog-title align="center" style="font-size:20px; font-weight:bold">Update Person</h1>
+<mat-dialog-content>
+  <form [formGroup]="updatePersonForm" class="mat-form">
+
+    <mat-form-field class="full-width">
+      <mat-label>Work role</mat-label>
+      <input matInput formControlName="workRole">
+      <mat-error autocomplete="off" *ngIf="!workRole?.valid">
+        {{getWorkroleError()}}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-label>Phone number</mat-label>
+    <ngx-intl-tel-input [cssClass]="'custom'"
+                        [preferredCountries]="preferredCountries"
+                        [enableAutoCountrySelect]="true"
+                        [enablePlaceholder]="true"
+                        [searchCountryFlag]="true"
+                        [searchCountryField]="[
+                          SearchCountryField.Iso2,
+                          SearchCountryField.Name]"
+                        [selectFirstCountry]="false"
+                        [selectedCountryISO]="CountryISO.Italy"
+                        [maxLength]="15"
+                        [phoneValidation]="true"
+                        [separateDialCode]="separateDialCode"
+                        [numberFormat]="PhoneNumberFormat.National"
+                        name="phone"
+                        formControlName="phone">
+    </ngx-intl-tel-input>
+
+    <mat-form-field class="full-width">
+      <mat-label>Secondary email</mat-label>
+      <input matInput formControlName="secondEmail" type="email">
+      <mat-error *ngIf="!secondEmail?.valid">
+        {{getSecondEmailError()}}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-label>Roles:</mat-label>
+    <mat-slide-toggle formControlName="Role_SA" *ngIf="IsSA">Super Admin</mat-slide-toggle>
+    <mat-slide-toggle formControlName="Role_Admin">CRM Admin</mat-slide-toggle>
+
+
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+  <button mat-raised-button type="button" color="primary" (click)="onUpdateClick()">Save</button>
+  <button mat-raised-button type="button" (click)="closepopup()" color="warn">Close</button>
+</mat-dialog-actions>
+

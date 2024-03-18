@@ -1,0 +1,98 @@
+<h1 mat-dialog-title align="center" style="font-size:20px; font-weight:bold">Add Person</h1>
+<mat-dialog-content>
+  <form [formGroup]="newPersonForm" class="mat-form">
+
+    <mat-form-field class="full-width">
+      <mat-label>First Name</mat-label>
+      <input autocomplete="off" formControlName="firstName" matInput>
+      <mat-error *ngIf="!firstName?.valid">
+        {{getFirstNameError()}}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Last Name</mat-label>
+      <input autocomplete="off" formControlName="lastName" matInput>
+      <mat-error *ngIf="!lastName?.valid">
+        {{getLastNameError()}}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>CF</mat-label>
+      <input autocomplete="off" matInput formControlName="cf">
+      <mat-error *ngIf="!cf?.valid">
+        {{getCFError()}}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="full-width" *ngIf="IsSA">
+      <mat-label>Organizzazione</mat-label>
+      <mat-select formControlName="organizationId">
+        <mat-option *ngFor="let org of organizations" [value]="org.id">{{ org.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+
+    <mat-form-field class="full-width">
+      <mat-label>Select a work role</mat-label>
+      <input matInput formControlName="workRole">
+      <mat-error autocomplete="off" *ngIf="!workRole?.valid">
+        {{getWorkroleError()}}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-label>Phone number</mat-label>
+      <ngx-intl-tel-input
+        [cssClass]="'custom'"
+        [preferredCountries]="preferredCountries"
+        [enableAutoCountrySelect]="true"
+        [enablePlaceholder]="true"
+        [searchCountryFlag]="true"
+        [searchCountryField]="[
+          SearchCountryField.Iso2,
+          SearchCountryField.Name
+        ]"
+        [selectFirstCountry]="false"
+        [selectedCountryISO]="CountryISO.Italy"
+        [maxLength]="15"
+        [phoneValidation]="true"
+        [separateDialCode]="separateDialCode"
+        [numberFormat]="PhoneNumberFormat.National"
+        name="phone"
+        formControlName="phone"
+      >
+      </ngx-intl-tel-input>
+
+
+    <mat-form-field>
+      <mat-label>Email</mat-label>
+      <input autocomplete="off" matInput placeholder="Email" type="email" formControlName="email">
+      <mat-error *ngIf="!email?.valid">
+        {{getEmailError()}}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Secondary email</mat-label>
+      <input matInput formControlName="secondEmail" type="email">
+      <mat-error *ngIf="!secondEmail?.valid">
+        {{getSecondEmailError()}}
+      </mat-error>
+    </mat-form-field>
+
+
+    <mat-label>Roles:</mat-label>
+
+    <mat-slide-toggle formControlName="Role_SA" *ngIf="IsSA">Super Admin</mat-slide-toggle>
+    <mat-slide-toggle formControlName="Role_Admin">CRM Admin</mat-slide-toggle>
+
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+  <button mat-raised-button type="button" color="primary" (click)="onAddClick()">Save</button>
+  <button mat-raised-button type="button" (click)="closepopup()" color="warn">Close</button>
+</mat-dialog-actions>
+

@@ -1,0 +1,47 @@
+<!-- Nel tuo componente.html -->
+<div class="card">
+  <div class="card-body">
+    <h1 class="card-title">Reset Password</h1>
+
+    <div *ngIf="errorMessage && !resetPasswordForm.hasError('mustMatch', 'confirm')" class="alert alert-danger" role="alert">
+      <span [innerHTML]="errorMessage"></span>
+    </div>
+
+    <div *ngIf="showSuccess" class="alert alert-success" role="alert">
+      <span [innerHTML]="successMessage"></span>
+    </div>
+
+    <form *ngIf="!errorMessage || resetPasswordForm.hasError('mustMatch', 'confirm')" [formGroup]="resetPasswordForm" autocomplete="off" novalidate (ngSubmit)="resetPassword(resetPasswordForm.value)">
+      <div class="mb-3 row">
+        <mat-form-field class="col-md-5">
+          <mat-label>Password</mat-label>
+          <input matInput id="password" formControlName="password" [type]="hide1 ? 'password' : 'text'">
+          <mat-icon matSuffix (click)="hide1 = !hide1">{{ visibilityIconPwd }}</mat-icon>
+        </mat-form-field>
+        <div class="col-md-5">
+          <em *ngIf="validateControl('password') && hasError('password', 'required')">Password is required</em>
+        </div>
+      </div>
+
+      <div class="mb-3 row">
+        <mat-form-field class="col-md-5">
+          <mat-label>Confirm Password</mat-label>
+          <input matInput id="confirm" formControlName="confirm" [type]="hide2 ? 'password' : 'text'">
+          <mat-icon matSuffix (click)="hide2 = !hide2">{{ visibilityIconCheckPwd }}</mat-icon>
+        </mat-form-field>
+        <div class="col-md-5">
+          <em *ngIf="validateControl('confirm') && hasError('confirm', 'required')">Confirmation is required</em>
+          <em *ngIf="resetPasswordForm.get('confirm')?.hasError('mustMatch') && resetPasswordForm.get('confirm')?.touched">Passwords must match</em>
+        </div>
+      </div>
+
+      <br>
+
+      <div class="mb-3 row">
+        <div class="col-md-1">
+          <button type="submit" mat-raised-button color="primary" [disabled]="!resetPasswordForm.valid">Submit</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

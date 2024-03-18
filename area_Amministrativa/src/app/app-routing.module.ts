@@ -3,12 +3,44 @@ import { RouterModule, Routes } from '@angular/router';
 import {OrganizzazioneComponent} from "./organizzazione/organizzazione.component";
 import {UtentiComponent} from "./utenti/utenti.component";
 import {PersoneComponent} from "./persone/persone.component";
+import {AreaLoginComponent} from "./area-login/area-login.component";
+import {HomepageComponent } from "./homepage/homepage.component";
+import {isAuthGuardComponent} from "./auth-guard/auth-guard.component";
+import {MyAccountComponent} from "./my-account/my-account.component";
+import {ResetPwComponent} from "./reset-pw/reset-pw.component";
 
 // vari path
 const routes: Routes = [
-  {path: 'organizzazione', component : OrganizzazioneComponent},
-  {path: 'utenti', component : UtentiComponent},
-  {path: 'persone', component : PersoneComponent}
+  { path: 'login', component: AreaLoginComponent },
+
+  {path: '', component: HomepageComponent, canActivate: [isAuthGuardComponent],
+    data: {
+      role: ['ROLE_SA', 'ROLE_ADMIN']
+    }
+  },
+
+  {path: 'organizzazione', component : OrganizzazioneComponent,
+      canActivate: [isAuthGuardComponent],
+      data: {
+        role: ['ROLE_SA', 'ROLE_ADMIN']
+    }
+  },
+
+  {path: 'persone', component : PersoneComponent,
+      canActivate: [isAuthGuardComponent],
+      data: {
+        role: ['ROLE_SA', 'ROLE_ADMIN']
+    }
+  },
+
+  {path: 'my-account', component: MyAccountComponent,
+      canActivate: [isAuthGuardComponent],
+      data: {
+        role: ['ROLE_SA', 'ROLE_ADMIN']
+    }
+  },
+
+  {path: 'reset_password', component: ResetPwComponent}
 ];
 
 @NgModule({

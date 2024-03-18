@@ -1,0 +1,24 @@
+<h1 mat-dialog-title align="center" style="font-size:20px; font-weight:bold">Update User</h1>
+<mat-dialog-content>
+  <form [formGroup]="updateUserForm" class="mat-form">
+    <mat-form-field class="full-width">
+      <mat-label>Username</mat-label>
+      <input formControlName="username" matInput>
+    </mat-form-field>
+    <mat-form-field class="full-width">
+      <mat-label>Password</mat-label>
+      <input matInput formControlName="password">
+    </mat-form-field>
+    <mat-form-field class="full-width">
+      <mat-label>Select a role</mat-label>
+      <mat-select formControlName="role" name="role">
+        <mat-option value="ROLE_ADMIN">ROLE_ADMIN</mat-option>
+        <mat-option value="ROLE_USER">ROLE_USER</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+  <button mat-raised-button type="button" color="primary" (click)="onUpdateClick()">Save</button>
+  <button mat-raised-button type="button" (click)="closepopup()" color="warn">Close</button>
+</mat-dialog-actions>

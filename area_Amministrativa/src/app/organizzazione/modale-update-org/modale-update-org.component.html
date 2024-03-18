@@ -1,0 +1,115 @@
+<h1 mat-dialog-title align="center" style="font-size:20px; font-weight:bold">Update Organization</h1>
+<mat-dialog-content>
+  <form [formGroup]="updateOrgForm" class="mat-form">
+
+    <mat-form-field class="full-width">
+      <mat-label>Org name</mat-label>
+      <input formControlName="name" matInput>
+      <mat-error *ngIf="!name?.valid">
+        {{getNameError()}}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>VAT</mat-label>
+      <input formControlName="vatNumber" matInput>
+      <mat-error *ngIf="!vatNumber?.valid">
+        {{getVatNumberError()}}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Street address</mat-label>
+      <input matInput formControlName="streetAddress">
+      <mat-error autocomplete="off" *ngIf="!streetAddress?.valid">
+        {{getStreetAddressError()}}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>City</mat-label>
+      <input matInput formControlName="city">
+      <mat-error autocomplete="off" *ngIf="!city?.valid">
+        {{getCityError()}}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Province state</mat-label>
+      <input matInput formControlName="province_State">
+      <mat-error autocomplete="off" *ngIf="!province_State?.valid">
+        {{getProvinceStateError()}}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Country</mat-label>
+      <input matInput formControlName="country">
+      <mat-error autocomplete="off" *ngIf="!country?.valid">
+        {{getCountryError()}}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Zip code</mat-label>
+      <input matInput type="number" formControlName="zipCode">
+      <mat-error autocomplete="off" *ngIf="!zipCode?.valid">
+        {{getZipCodeError()}}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Additional info</mat-label>
+      <input matInput formControlName="additionalInformation">
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Website</mat-label>
+      <input matInput formControlName="webSite">
+      <mat-error autocomplete="off" *ngIf="!webSite?.valid">
+        {{getWebSiteError()}}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Email</mat-label>
+      <input matInput type="email" formControlName="emailAddress">
+      <mat-error *ngIf="!emailAddress?.valid">
+        {{getEmailAddressError()}}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Domain</mat-label>
+      <input matInput formControlName="emailDomain">
+      <mat-error *ngIf="!emailDomain?.valid">
+        {{getEmailAddressError()}}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>PEC</mat-label>
+      <input matInput formControlName="pec" type="email">
+      <mat-error *ngIf="!pec?.valid">
+        {{getPecError()}}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Billing Code</mat-label>
+      <input matInput formControlName="billingCode">
+      <mat-error autocomplete="off" *ngIf="!billingCode?.valid">
+        {{getBillingCodeError()}}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-slide-toggle formControlName="isSupplier">Is Supplier?</mat-slide-toggle>
+    <mat-slide-toggle formControlName="isCustomer">Is Customer?</mat-slide-toggle>
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+  <button mat-raised-button type="button" color="primary" (click)="onUpdateClick()">Save</button>
+  <button mat-raised-button type="button" (click)="closepopup()" color="warn">Close</button>
+</mat-dialog-actions>

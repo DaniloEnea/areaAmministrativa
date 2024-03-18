@@ -1,5 +1,5 @@
-<h1 mat-dialog-title align="center">Sicuro di voler eliminare</h1>
+<h1 mat-dialog-title align="center">Are you sure you want to delete it?</h1>
 <div mat-dialog-actions align="center">
-  <button mat-raised-button type="submit" color="primary">Conferma</button>
-  <button (click)="closepopup()" mat-raised-button color="warn">Annulla</button>
+  <button mat-raised-button type="submit" color="warn" (click)="confirmForm()">Delete</button>
+  <button (click)="closepopup()" mat-raised-button color="primary">Cancel</button>
 </div>

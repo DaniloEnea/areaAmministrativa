@@ -3,6 +3,10 @@ div{
   margin-inline: auto;
 }
 
+button {
+  margin-right: 10px;
+}
+
 h2 {
   text-align: center;
   margin-bottom: 2%;
@@ -10,6 +14,14 @@ h2 {
 
 button.wrap-update-button {
   color: white;
+}
+
+.input-filter {
+  margin-right: 20px;
+}
+
+.go-to {
+  background-color: #FFA000;
 }
 
 

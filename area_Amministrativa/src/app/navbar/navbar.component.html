@@ -1,18 +1,19 @@
-<mat-toolbar color="primary" class="custom-toolbar">
-  <span>Area Amministrativa</span>
 
-  <div class="wrap-route">
-      <a mat-button [routerLink]="'/organizzazione'"> Organizzazione </a>
-      <a mat-button [routerLink]="'/persone'"> Persone </a>
-      <a mat-button [routerLink]="'/utenti'"> Utenti </a>
-  </div>
+<mat-toolbar color="primary" class="custom-toolbar" *ngIf="isLoggedIn$ | async as isLoggedIn">
+  <button mat-icon-button (click)="toggleSidenav()">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <button mat-button [routerLink]="''">Admin area</button>
 
-  <button class="right-button" mat-icon-button>
-    <mat-icon
-      aria-hidden="false"
-      aria-label="logout icon"
-      fontIcon="logout"
-      color="accent"
-    ></mat-icon>
+  <button mat-icon-button [routerLink]="'/my-account'" class="right-button" matTooltip="Account">
+    <mat-icon fontIcon="person" color="accent"></mat-icon>
+  </button>
+
+
+  <button mat-icon-button (click)="logout()" matTooltip="Logout">
+    <mat-icon aria-hidden="false"
+              aria-label="logout icon"
+              fontIcon="logout"
+              color="accent"></mat-icon>
   </button>
 </mat-toolbar>

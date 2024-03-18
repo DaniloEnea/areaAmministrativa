@@ -398,3 +398,8 @@ FodyWeavers.xsd
 *.sln.iml
 
 /.angular/cache/*
+/.idea/areaAmministrativa.iml
+/.idea/inspectionProfiles/Project_Default.xml
+/.idea/vcs.xml
+/.idea/inspectionProfiles/profiles_settings.xml
+/.idea/misc.xml

@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "username": "cbetun0",
+    "password": "$2a$04$.mVk9foP7l0UlulDGIHbEOHg7MmtC9IZ/UcNAKijn2atiqh82LYAO",
+    "role": "ROLE_ADMIN"
+  },
+  {
+    "id": 2,
+    "username": "ihewlings1",
+    "password": "$2a$04$WF.SXRfANszz1.gR7bdNnuMthdJPvAU7s8pc0hCIaoXSZc3BWtyBy",
+    "role": "ROLE_USER"
+  },
+  {
+    "id": 3,
+    "username": "kmcguff2",
+    "password": "$2a$04$EZ0GT1R5kE46FHzDZ3ZAgOsNhUiI5bILt5mHaFSIu0FOGfF5ZadCK",
+    "role": "ROLE_ADMIN"
+  },
+  {
+    "id": 4,
+    "username": "wricharz3",
+    "password": "$2a$04$wh3gPKimJsEr4K0VUPSOC.jk9peIEcpAxTReBh15HgT1bECr9zp6y",
+    "role": "ROLE_USER"
+  },
+  {
+    "id": 5,
+    "username": "ssabbins4",
+    "password": "$2a$04$c7xSiCfh3JkJbHPYv0QAfu3zt7fNRR1dDUyaBEFrLFP8c2PbOdyge",
+    "role": "ROLE_ADMIN"
+  },
+  {
+    "id": 6,
+    "username": "cbecker5",
+    "password": "$2a$04$TVfH3NVGZdDkhZ6woYIU6O28QeDU7Rwy3axCpNt7iRTJVNufnriYO",
+    "role": "ROLE_USER"
+  },
+  {
+    "id": 7,
+    "username": "mast6",
+    "password": "$2a$04$pBc8g9asbPhOC9Y/xC4vuet/GtKGyv5wDGMyqq8XZJYjba9DHdbUu",
+    "role": "ROLE_USER"
+  },
+  {
+    "id": 8,
+    "username": "gdibartolommeo7",
+    "password": "$2a$04$eqISlJEyg6qKvMOIfQts/.jOw1Rmt7fAlQMHFw3PYmS7DNuQA/W1m",
+    "role": "ROLE_ADMIN"
+  },
+  {
+    "id": 9,
+    "username": "vhowse8",
+    "password": "$2a$04$NHEQV4ZbsyAtQSYZNog27e2zGdRoVpOq8Z5ozKwg.9q0wsVaPgXE2",
+    "role": "ROLE_ADMIN"
+  },
+  {
+    "id": 10,
+    "username": "mdrayton9",
+    "password": "$2a$04$9sUBHCs0SOoItZET/GTGmelba4ASMRVUSk8K15A1kP9CJEyhJPUDK",
+    "role": "ROLE_USER"
+  }
+]

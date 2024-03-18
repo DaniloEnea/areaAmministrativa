@@ -1,26 +1,55 @@
-import { Component } from '@angular/core';
-import {ModaleComponent} from "./modale-update/modale.component";
-import {MatDialog} from "@angular/material/dialog";
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ModaleUpdateOrgComponent } from "./modale-update-org/modale-update-org.component";
+import { MatDialog } from "@angular/material/dialog";
+import { MatTableDataSource } from "@angular/material/table";
+import { HttpProviderService } from "../service/http-provider.service";
+import { ModaleDetailsOrgComponent } from './modale-details-org/modale-details-org.component';
+import { MatInput } from '@angular/material/input';
+import { AuthService } from "../service/auth.service";
+import { ToastrService } from "ngx-toastr";
+import { PersonDTO1 } from '../persone/persone.component';
+import { Router } from '@angular/router';
 
-export interface PeriodicElement {
+export interface OrganizationDTO {
+  id: string;
   name: string;
-  position: number;
-  weight: number;
-  symbol: string;
+  vatNumber: string;
+  streetAddress: string;
+  city: string;
+  province_State: string;
+  country: string;
+  zipCode: string;
+  additionalInformation: string;
+  webSite: string;
+  emailAddress: string;
+  emailDomain: string;
+  pec: string;
+  billingCode: string;
+  isSupplier: boolean;
+  isCustomer: boolean;
+  IsValid: boolean;
+  IsDeleted: boolean;
+}
+export interface OrganizationDTO1 {
+  name: string;
+  vatNumber: string;
+  streetAddress: string;
+  city: string;
+  province_State: string;
+  country: string;
+  zipCode: string;
+  additionalInformation: string;
+  webSite: string;
+  emailAddress: string;
+  emailDomain: string;
+  pec: string;
+  billingCode: string;
+  isSupplier: boolean;
+  isCustomer: boolean;
+  IsValid: boolean;
+  IsDeleted: boolean;
 }
 
-const ELEMENT_DATA: PeriodicElement[] = [
-  {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
-  {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
-  {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
-  {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be'},
-  {position: 5, name: 'Boron', weight: 10.811, symbol: 'B'},
-  {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C'},
-  {position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N'},
-  {position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O'},
-  {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
-  {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
-];
 @Component({
   selector: 'app-organizzazione',
   templateUrl: './organizzazione.component.html',
@@ -28,24 +57,163 @@ const ELEMENT_DATA: PeriodicElement[] = [
 })
 
 
-
-
 export class OrganizzazioneComponent {
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol', 'update'];
-  dataSource = ELEMENT_DATA;
-  protected readonly alert = alert;
+  @ViewChild('filterName') filterNameInput!: MatInput;
+
+  filterName = '';
+  OrgList: OrganizationDTO[] = [];
+  displayedColumns: string[] = ['name', 'streetAddress', 'country', 'emailAddress', 'emailDomain', 'update'];
+  dataSource = new MatTableDataSource<OrganizationDTO>(this.OrgList);
+  PeopleList: PersonDTO1[] = [];
+  rolefilter: string = '';
+  usernamefilter: string = '';
+  IsSA: boolean = true;
 
   // modal
- constructor(private dialog: MatDialog) {}
+  constructor(public auth: AuthService, private router: Router, private dialog: MatDialog, private httpApi: HttpProviderService, private toastr: ToastrService) {
+    this.dataSource = new MatTableDataSource<OrganizationDTO>(this.OrgList);
+  }
 
-  openDialog(): void {
-    const dialogRef = this.dialog.open(ModaleComponent,{
-      width:'60%',   // Set width to 60%  of the window's total width
-      height:'50%',  // Set height to 50% of the window's total height
-    });
+  ngOnInit() {
+    this.allOrg();
+  }
 
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log(`Dialog result: ${result}`);
+  ngAfterViewInit() {
+    this.dataSource.filterPredicate = this.customFilterPredicate();
+  }
+
+  
+
+  customFilterPredicate() {
+    return (data: OrganizationDTO, filter: string): boolean => {
+      const searchText = JSON.parse(filter);
+      return (
+        data.name.toLowerCase().includes(searchText.name)
+      );
+    };
+  }
+
+  applyFilter() {
+    const filterValue = { name: this.filterName.toLowerCase() };
+    this.dataSource.filter = JSON.stringify(filterValue);
+  }
+
+  allOrg() {
+    this.httpApi.getAllOrg().subscribe({
+      next: (data: any) => {
+
+        if (data != null && data.body != null) {
+          var resultData = data.body;
+
+          if (resultData) {
+            this.httpApi.getAllPeople().subscribe({
+              next: (data: any) => {
+
+                if (data != null && data.body != null) {
+                  var retrieveData = data.body;
+
+                  if (retrieveData) {
+                    this.OrgList = resultData;
+                    this.getOrgIfCrmMgr(resultData, retrieveData);
+                    this.dataSource.data = [...this.OrgList];
+                  }
+                }
+              },
+              error: (error: any) => {
+                console.error("Error fetching user data", error);
+              }
+            })
+          }
+        }
+      },
+      error: (error: any) => {
+        if (error) {
+          if (error.status == 404) {
+            if (error.error && error.error.message) {
+              this.OrgList = [];
+              this.dataSource.data = [...this.OrgList];
+            }
+          }
+        }
+      }
     });
+  }
+
+  getOrgIfCrmMgr(resultData: any, retrieveData: any) {
+    this.usernamefilter = this.auth.getUsernameFromJwt();
+
+    if (this.auth.checkIsSA() === false) {
+      this.IsSA = false;
+      const ppDTOList: PersonDTO1[] = retrieveData;
+      const orgDTOList: OrganizationDTO[] = resultData;
+
+      const CrmOrg = ppDTOList.find(pp => pp.email === this.usernamefilter);
+      console.log(CrmOrg)
+
+      if (CrmOrg != null) {
+        this.OrgList = orgDTOList.filter(og => og.id == CrmOrg.organizationId);
+        this.OrgList = this.OrgList;
+        
+      }
+      else {
+        this.toastr.error("No org data found", 'Error');
+        this.OrgList = [];
+      }
+    }
+  }
+
+  openGoTo(orgId: string): void {
+    if (this.auth.isAuthenticated()) {
+      this.router.navigate(['/persone'], { queryParams: { orgId: orgId } });
+    }
+    else {
+      this.toastr.error("Token is expired", "Error")
+      setTimeout(() => {
+        window.location.reload();
+      }, 500)
+
+    }
+  }
+
+  openUpdateDialog(org: OrganizationDTO): void {
+    if (this.auth.isAuthenticated()) {
+      const dialogRef = this.dialog.open(ModaleUpdateOrgComponent, {
+        width: '60%',
+
+        data: { org: org }
+      });
+
+      dialogRef.afterClosed().subscribe((result) => {
+        console.log(`Dialog result: ${result}`);
+      });
+    }
+    else {
+      this.toastr.error("Token is expired", "Error")
+      setTimeout(() => {
+        window.location.reload();
+      }, 500)
+
+    }
+  }
+
+  openDetailsDialog(org: OrganizationDTO): void {
+    if (this.auth.isAuthenticated()) {
+      const dialogRef = this.dialog.open(ModaleDetailsOrgComponent, {
+        width: '60%',
+
+        data: { org: org }
+      });
+
+      dialogRef.afterClosed().subscribe((result) => {
+        console.log(`Dialog result: ${result}`);
+      });
+    }
+    else {
+      this.toastr.error("Token is expired", "Error")
+      setTimeout(() => {
+        window.location.reload();
+      }, 500)
+
+    }
   }
 }
