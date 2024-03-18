@@ -31,10 +31,13 @@ You can have them on these URLs:
   - https://github.com/jtabilas/oauth2/
   - https://github.com/jtabilas/auth/
 
+---
   
 You also must have to run this two commands on the terminal for the correct usage of the application:
   - cd [pathToTheFolder]\areaAmministrativa\src\assets
   - node public-key-api.js
+
+---
 
 If you see Encryption failed issue on login form,
 see the documentation on this repository for install self-signed SSL certificate: https://github.com/jtabilas/auth/.
