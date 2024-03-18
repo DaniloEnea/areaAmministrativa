@@ -2,7 +2,7 @@
 
 ## What is AreaAmministrativa
 
-AreaAmministrativa is a simple and intuitive Web-App on Angular 5 that manage the Customer-Relationship-Management between `Organizations` and `Users` that takes part of the Organizations. 
+**AreaAmministrativa** is a simple and intuitive Web-App made with **Angular 5** that manage the Customer-Relationship-Management between `Organizations` and `Users` that takes part of the Organizations. 
 
 Inside the application you could `see` and `update` information of the organizations, and you could do `CRUD` operation on people and users linked to the organization
 
