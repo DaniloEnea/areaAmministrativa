@@ -1,25 +1,25 @@
-# AreaAmministrativa
+# AreaAmministrativa  
 
-## What is AreaAmministrativa
+## What is AreaAmministrativa  
 
 **AreaAmministrativa** is a simple and intuitive Web-App made with **Angular 5** that manage the Customer-Relationship-Management between `Organizations` and `Users` that takes part of the Organizations. 
 
-Inside the application you could `see` and `update` information of the organizations, and you could do `CRUD` operation on people and users linked to the organization
+Inside the application you could `see` and `update` information of the organizations, and you could do `CRUD` operation on people and users linked to the organization  
 
 ## Which branch use
 
-The branch to use is: `encryption-service`
+The branch to use is: `encryption-service`  
 
 ## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.  
 
 ## How to start the program
 
 If is the first time that you start the program, you must type on terminal: `npm install`.
 
 After that, if you want to start the program, you must type: `ng serve`. 
-You can use it on this link: http://localhost:4200.
+You can use it on this link: http://localhost:4200.  
 
 
 ## What you should start for use it
@@ -38,13 +38,13 @@ For use `Area Amministrativa` you should start:
 You can have them on these URLs:
   - https://dev.azure.com/5EMMEInformatica/CRM-SaaS/_git/msOrg
   - https://github.com/jtabilas/oauth2/
-  - https://github.com/jtabilas/auth/
+  - https://github.com/jtabilas/auth/  
 
 ---
   
 You also must have to run this two commands on the terminal for the correct usage of the application:
   - `cd [pathToTheFolder]\areaAmministrativa\src\assets`
-  - `node public-key-api.js`
+  - `node public-key-api.js`  
 
 ---
 
@@ -55,7 +55,7 @@ Also, if you use chrome, you should type this on your search bar: `chrome://flag
 
 and enable **Allow invalid certificates for resources load from localhost**
 
-![Screenshot 2024-03-18 124907](https://github.com/DaniloEnea/areaAmministrativa/assets/96554342/6f307c27-95a2-4a91-8d9e-ef9fae71c608)
+![Screenshot 2024-03-18 124907](https://github.com/DaniloEnea/areaAmministrativa/assets/96554342/6f307c27-95a2-4a91-8d9e-ef9fae71c608)  
 
 
 ## For Test
@@ -64,7 +64,7 @@ For test our application you can use this credential:
 
   >Email: **danilo@gmail.com**
 
-  >Password: **secret**
+  >Password: **secret**  
 
 ## Further help
 
