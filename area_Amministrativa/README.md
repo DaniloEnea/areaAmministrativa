@@ -9,7 +9,7 @@ The branch to use is: `encryption-service`
 
 If is the first time that you start the program, you must type on terminal: `npm install`.
 
-After that, if you want to start the program, you should type: `ng serve`. 
+After that, if you want to start the program, you must type: `ng serve`. 
 You can use it on this link: http://localhost:4200.
 
 
@@ -32,7 +32,7 @@ You can have them on these URLs:
   - https://github.com/jtabilas/auth/
 
   
-You also must have to run this two commands on the terminal for the correct usage of the program:
+You also must have to run this two commands on the terminal for the correct usage of the application:
   - cd [pathToTheFolder]\areaAmministrativa\src\assets
   - node public-key-api.js
 
@@ -43,6 +43,11 @@ see the documentation on this repository for install self-signed SSL certificate
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
 
+## For Test
+
+For test our application you can use this credential:
+Email: **danilo@gmail.com**
+Password: **secret**
 
 ## Further help
 
