@@ -186,9 +186,9 @@ export class PersoneComponent implements OnInit {
 
   allPeople(orgId?: string) {
     this.usernamefilter = this.auth.getUsernameFromJwt();
-    setTimeout(() => {
-      this.progressLoading = 33;
-    }, 200);
+
+    this.progressLoading = 33;
+
     this.httpApi.getAllPeople().subscribe({
       next: (data: any) => {
         if (data != null && data.body != null) {

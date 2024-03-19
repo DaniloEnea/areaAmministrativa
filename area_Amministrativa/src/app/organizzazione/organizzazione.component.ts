@@ -109,17 +109,17 @@ export class OrganizzazioneComponent {
   }
 
   allOrg() {
-    setTimeout(() => {
-      this.progressLoading = 50;
-    }, 300);   
+
+    this.progressLoading = 50;
+  
     try {
       (this.httpApi.getAllOrg()).subscribe({
         next: (data: any) => {
           if (data != null && data.body != null) {
             this.resultData = this.httpApi.decrypt(data.body);
-            setTimeout(() => {
+
               this.progressLoading = 99;
-            }, 500);
+
             if (this.resultData) {
               (this.httpApi.getAllPeople()).subscribe({
                 next: (data2: any) => {

@@ -200,11 +200,9 @@ export class ModaleUpdateOrgComponent {
               console.log(err);
               this.toastr.error('Something is wrong', 'Error');
               setTimeout(() => { }, 1500)
-            },
-            complete: () => {
-              this.dialogRef.close(updateOrg);
             }
           })
+        this.dialogRef.close(updateOrg);
         }
       } else {
         this.toastr.error("Token is expired", "Error")

@@ -158,12 +158,12 @@ export class ModaleUpdatePersoneComponent {
             }),
           ).subscribe({
             complete: () => {
-              this.dialogRef.close(updatePerson);
               setTimeout(() => {
                 window.location.reload();
               }, 1500);
             }
           });
+              this.dialogRef.close(updatePerson);
         }
       } else {
         this.toastr.error("Token is expired", "Error")

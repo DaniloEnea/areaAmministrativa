@@ -55,7 +55,7 @@
 </mat-dialog-content>
 
 <mat-dialog-actions align="center">
-  <button mat-raised-button type="button" color="primary" (click)="onUpdateClick()">Save</button>
+  <button mat-raised-button type="button" color="primary" [disabled]="!this.updatePersonForm.valid" (click)="onUpdateClick()">Save</button>
   <button mat-raised-button type="button" (click)="closepopup()" color="warn">Close</button>
 </mat-dialog-actions>
 

@@ -96,7 +96,7 @@
     </mat-form-field>
 
     <mat-form-field class="full-width">
-      <mat-label>Billing Code</mat-label>
+      <mat-label>SD</mat-label>
       <input matInput formControlName="BillingCode">
       <mat-error autocomplete="off" *ngIf="!billingCode?.valid">
         {{getBillingCodeError()}}
@@ -110,6 +110,6 @@
 </mat-dialog-content>
 
 <mat-dialog-actions align="center">
-  <button mat-raised-button type="button" color="primary" (click)="onUpdateClick()">Save</button>
+  <button mat-raised-button type="button" color="primary" [disabled]="!this.updateOrgForm.valid" (click)="onUpdateClick()">Save</button>
   <button mat-raised-button type="button" (click)="closepopup()" color="warn">Close</button>
 </mat-dialog-actions>
