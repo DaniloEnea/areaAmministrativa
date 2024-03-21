@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import {AdminApiService} from "./admin-api.service";
 import { catchError, combineLatest, from, map, mergeMap, Observable, of} from "rxjs";
-import { EncryptionService } from './encryption.service';
 import config from '../conf_url.json'
 
 // PATH API
@@ -83,34 +82,9 @@ export class HttpProviderService {
 
 
 
-  constructor(private adminApiService: AdminApiService, private encryptionService: EncryptionService) { }
+  constructor(private adminApiService: AdminApiService) { }
 
   /* ALL METHOD API FOR USER'S */
-
-  public async encrypt(obj: string, backUrl: string): Promise<string> {
-    // Convert the form data to a JSON string and then encrypt it
-    return await this.encryptionService.encryptRSASplit(obj, backUrl);
-  }
-
-  public decrypt(encryptedObj: string): any {
-    // Decrypt the encrypted form data
-    const decryptedString = this.encryptionService.decryptRSASplit(encryptedObj);
-
-    if (decryptedString) {
-      try {
-        // Parse the decrypted JSON string
-        const decryptedFormValue = JSON.parse(decryptedString);
-        return decryptedFormValue;
-      } catch (error) {
-        console.error('Error parsing decrypted JSON:', error);
-        return null;
-      }
-    } else {
-      // Handle decryption failure
-      console.error('Error decrypting form data');
-      return null;
-    }
-  }
 
   private decryptToken(accessToken: string): any {
     return this.adminApiService.getWithCc(getDecryptedMessage, accessToken)
@@ -138,12 +112,9 @@ export class HttpProviderService {
         return of(accessToken);
       }),
       mergeMap((accessToken: string) => {
-        return from(this.encrypt(username, authEncryption)).pipe(
-          map(usernameEncrypt => btoa(usernameEncrypt)),
-          mergeMap(usernameEncryptBase64 =>
-            this.adminApiService.postWithCcById(usernameEncryptBase64, disableUserUrl, null, accessToken)
-          )
-        );
+
+        return this.adminApiService.postWithCcById(username, disableUserUrl, null, accessToken)
+
       })
     );
   }
@@ -156,12 +127,9 @@ export class HttpProviderService {
         return of(accessToken);
       }),
       mergeMap((accessToken: string) => {
-        return from(this.encrypt(username, authEncryption)).pipe(
-          map(usernameEncrypt => btoa(usernameEncrypt)),
-          mergeMap(usernameEncryptBase64 =>
-            this.adminApiService.postWithCcById(usernameEncryptBase64, abilityUserUrl, null, accessToken)
-          )
-        );
+
+        return this.adminApiService.postWithCcById(username, abilityUserUrl, null, accessToken)
+
       })
     );
   }
@@ -173,44 +141,25 @@ export class HttpProviderService {
         return of(accessToken);
       }),
       mergeMap((accessToken: string) => {
-        // Convertire la Promise restituita da encrypt in un Observable
-        const encryptedUsername$ = from(this.encrypt(username, authEncryption));
-        const encryptedRoles$ = from(this.encrypt(JSON.stringify(roles), authEncryption));
 
-        // Utilizzare combineLatest per attendere che entrambe le encryption siano completate
-        return combineLatest([encryptedUsername$, encryptedRoles$]).pipe(
-          map(([eUsername, eRoles]) => {
-            return { eUsername, eRoles };
-          }),
-          mergeMap(({ eUsername, eRoles }) =>
-            this.adminApiService.putWithCc(updatePersonRoleUrl, btoa(eUsername), eRoles, accessToken)
-          )
-        );
+          return this.adminApiService.putWithCc(updatePersonRoleUrl, username, roles, accessToken)
+
       })
     );
   }
 
   public getAllPeople(): Observable<any> {
-    //publicKeyUrl = encodeURIComponent(publicKeyUrl);
-    const Url = `${getPersonUrl}?publicKeyUrl=${encodeURIComponent(publicKeyUrl)}&allEntities=true`;
 
-    return from(this.adminApiService.get(Url)).pipe(
-      catchError(error => {
-        throw error;
-      })
-    );
+    const Url = `${getPersonUrl}?allEntities=true`;
+
+    return this.adminApiService.get(Url)
   }
 
   public getAllOrg(): Observable<any>{
-    //publicKeyUrl = encodeURIComponent(publicKeyUrl);
-    //const Url = `${getOrgUrl}?publicKeyUrl=${encodedPublicKey}&allEntities=true`;
-    const Url = `${getOrgUrl}?publicKeyUrl=${encodeURIComponent(publicKeyUrl)}&allEntities=true`;
 
-    return from(this.adminApiService.get(Url)).pipe(
-      catchError(error => {
-        throw error;
-      })
-    );
+    const Url = `${getOrgUrl}?allEntities=true`;
+
+    return this.adminApiService.get(Url)
   }
 
   //public async getPersonByEmail(email: string): Promise<Observable<any>> {
@@ -244,25 +193,19 @@ export class HttpProviderService {
         return of(accessToken);
       }),
       mergeMap((accessToken: string) => {
-        return from(this.encrypt(username, config.auth.authEncryption)).pipe(
-          mergeMap((username: string) => {
-            const decodedUsername = btoa(username)
-            return this.adminApiService.getByIDWithCc(getUserExistsUrl, decodedUsername, accessToken);
-          })
-        );
+
+        return this.adminApiService.getByIDWithCc(getUserExistsUrl, username, accessToken);
+
       })
     );
   }
 
 
   //GET BY ID
-  //public getPersonByID(id: number): Observable<any> {
-  //  return this.adminApiServie.getById(getPersonByIdUrl, id)
-  //}
-  public async getOrgByID(id: string): Promise<Observable<any>> {
 
-    id = btoa(await this.encrypt(id, orgEncryption));
-    const Url = `${getOrgByIdUrl}/${encodeURIComponent(id)}?publicKeyUrl=${encodeURIComponent(publicKeyUrl)}&allEntities=true`;
+  public getOrgByID(id: string): Observable<any> {
+
+    const Url = `${getOrgByIdUrl}/${encodeURIComponent(id)}?allEntities=true`;
     return from(this.adminApiService.get(Url)).pipe(
       catchError(error => {
         throw error;
@@ -271,32 +214,15 @@ export class HttpProviderService {
   }
 
   //POST
-  //public async addNewUser(model: any) : Promise<Observable<any>> {
-  //  return await this.adminApiService.post(addUtenteUrl, this.encrypt(model))
-  //}
 
-  public async addNewPU(model: any): Promise<Observable<any>> {
+  public addNewPU(model: any): Observable<any> {
 
-    const bcDto: BodyComboDto = {
-      Data1: model,
-      Data2: publicKeyUrl
-    }
-
-    const encryptedDto = await this.encrypt(JSON.stringify(bcDto), personEncryption);
-
-    return await this.adminApiService.postEncrypted(addPersonUserUrl, JSON.stringify(encryptedDto))
+    return this.adminApiService.post(addPersonUserUrl, JSON.stringify(model))
   }
 
-  public async addNewPerson(model: any): Promise<Observable<any>> {
-
-    const bcDto: BodyComboDto = {
-      Data1: model,
-      Data2: publicKeyUrl
-    }
-
-    const encryptedDto = await this.encrypt(JSON.stringify(bcDto), personEncryption);
-
-    return await this.adminApiService.postEncrypted(addPersonUrl, JSON.stringify(encryptedDto))
+  public addNewPerson(model: any): Observable<any> {
+    
+    return this.adminApiService.post(addPersonUrl, JSON.stringify(model))
   }
 
   //public addNewOrg(model: any): Observable<any> {
@@ -304,20 +230,17 @@ export class HttpProviderService {
   //}
 
   public forgotPwdByEmail(email: string): Observable<any> {
-  return this.adminApiService.postUrlEncoded(apiCredentials).pipe(
-    mergeMap((value: any) => {
-      const accessToken = value.body.access_token;
-      return of(accessToken);
-    }),
-    mergeMap((accessToken: string) => {
-      return from(this.encrypt(email, config.auth.authEncryption)).pipe(
-        mergeMap((emailEncrypt: string) => {
-          const decodedEmail = btoa(emailEncrypt)
-          return this.adminApiService.postWithCcById(decodedEmail, forgotPwdByEmailUrl, null, accessToken);
-        })
-      );
-    })
-  );
+    return this.adminApiService.postUrlEncoded(apiCredentials).pipe(
+      mergeMap((value: any) => {
+        const accessToken = value.body.access_token;
+        return of(accessToken);
+      }),
+      mergeMap((accessToken: string) => {
+
+        return this.adminApiService.postWithCcById(email, forgotPwdByEmailUrl, null, accessToken);
+
+      })
+    );
   }
 
 public sendEmailCreation(email: string): Observable<any> {
@@ -327,12 +250,9 @@ public sendEmailCreation(email: string): Observable<any> {
       return of(accessToken);
     }),
     mergeMap((accessToken: string) => {
-      return from(this.encrypt(email, config.auth.authEncryption)).pipe(
-        mergeMap((emailEncrypt: string) => {
-          const decodedEmail = btoa(emailEncrypt)
-          return this.adminApiService.postWithCcById(decodedEmail, sendEmailCreateUrl, null, accessToken);
-        })
-      );
+
+    return this.adminApiService.postWithCcById(email, sendEmailCreateUrl, null, accessToken);
+
     })
   );
 }
@@ -382,7 +302,7 @@ public sendEmailCreation(email: string): Observable<any> {
   }
   */
 
-  public loginEncrypted(model: any): Observable<any> {
+  public login(model: any): Observable<any> {
     return this.adminApiService.postUrlEncoded(apiCredentials).pipe(
       mergeMap((value: any) => {
         const accessToken = value.body.access_token;
@@ -390,13 +310,12 @@ public sendEmailCreation(email: string): Observable<any> {
         return of(accessToken);
       }),
       mergeMap((accessToken: string) => {
-        // Chiamata successiva con l'access token
         return this.adminApiService.postWithCc(loginUrl, model, accessToken);
       })
     );
   }
 
-  public createUserEncrypted(model: any): Observable<any> {
+  public createUser(model: any): Observable<any> {
     return this.adminApiService.postUrlEncoded(apiCredentials).pipe(
       mergeMap((value: any) => {
         const accessToken = value.body.access_token;
@@ -431,82 +350,37 @@ public sendEmailCreation(email: string): Observable<any> {
   //public updateUser(id: number, model : any) : Observable<any> {
   // return this.adminApiServie.put(updateUtenteUrl,id, model)
   //}
-  public async updatePerson(id: string, model: any): Promise<Observable<any>> {
+  public updatePerson(id: string, model: any): Observable<any> {
 
-    const bcDto: BodyComboDto = {
-      Data1: model,
-      Data2: publicKeyUrl
-    }
-
-    const encryptedDto = await this.encrypt(JSON.stringify(bcDto), personEncryption);
-
-    const eId = btoa(await this.encrypt(id, personEncryption));
-
-    return this.adminApiService.put(updatePersonUrl, eId, JSON.stringify(encryptedDto))
+    return this.adminApiService.put(updatePersonUrl, id, JSON.stringify(model))
   }
 
 
-  public async updateOrg(id: string, model: any): Promise<Observable<any>> {
-    const bcDto: BodyComboDto = {
-      Data1: model,
-      Data2: publicKeyUrl
-    }
+  public updateOrg(id: string, model: any): Observable<any> {
 
-    const encryptedDto = await this.encrypt(JSON.stringify(bcDto), orgEncryption);
-
-    const eId = btoa(await this.encrypt(id, orgEncryption));
-
-    return this.adminApiService.put(updateOrgUrl, eId, JSON.stringify(encryptedDto))
+    return this.adminApiService.put(updateOrgUrl, id, JSON.stringify(model))
   }
 
 
-  public async patchGDPRPerson(id: string): Promise<Observable<any>> {
+  public patchGDPRPerson(id: string): Observable<any> {
 
-    id = btoa(await this.encrypt(id, personEncryption));
-
-    return this.adminApiService.patch(patchPersonUrl, id, "IsGDPRTermsAccepted", true, publicKeyUrl)
+    return this.adminApiService.patch(patchPersonUrl, id, "IsGDPRTermsAccepted", true)
   }
 
 
-  public async patchHasUserPerson(id: string): Promise<Observable<any>> {
+  public patchHasUserPerson(id: string): Observable<any> {
 
-    id = btoa(await this.encrypt(id, personEncryption));
-
-    return this.adminApiService.patch(patchPersonUrl, id, "HasUser", true, publicKeyUrl)
+    return this.adminApiService.patch(patchPersonUrl, id, "HasUser", true)
   }
   //DELETE
-  //public deleteUser(id: number) : Observable<any> {
-  //  return this.adminApiServie.delete(deleteUtenteUrl, id)
-  //}
-  public async deletePerson(id: string): Promise<Observable<any>> {
-    const eId = btoa(await this.encrypt(id, personEncryption));
-    return this.adminApiService.deleteEncrypted(deletePersonUrl, eId, publicKeyUrl)
+
+  public deletePerson(id: string): Observable<any> {
+
+    return this.adminApiService.deleteEncrypted(deletePersonUrl, id)
   }
 
   public forcedDeletePerson(id: string): Observable<any> {
     return this.adminApiService.deleteFisic(forcedDeletePersonUrl, id)
   }
-  //public deleteOrg(id: string): Observable<any> {
-  //  return this.adminApiService.delete(deleteOrgUrl, id)
-  //}
-
-  //Filter
-  /*public filterPeople(endUrl: string) {
-    return this.adminApiServie.getFiltered(personFilterUrl, endUrl)
-  }*/
-
-  /*public filterPeople(first_name:string, last_name:string) {
-
-      if(!(first_name==null)) {
-        tempFilterUrl = "name=" + first_name
-        if(!(last_name==null)){
-          tempFilterUrl = tempFilterUrl + "&"
-        }
-      }
-      if(!(last_name==null)) {
-        tempFilterUrl = tempFilterUrl +"last_name=" + last_name
-      }
-    return this.adminApiServie.getFiltered(personFilterUrl, tempFilterUrl)
-  }*/
 
 }

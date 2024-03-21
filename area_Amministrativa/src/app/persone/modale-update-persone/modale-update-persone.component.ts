@@ -102,9 +102,9 @@ export class ModaleUpdatePersoneComponent {
     else return false;
   }
 
-  async onUpdateClick() {
+  onUpdateClick() {
 
-    this.auth.testIsAuthenticated(async (authenticated: boolean) => {
+    this.auth.testIsAuthenticated((authenticated: boolean) => {
       if (authenticated) {
         if (this.updatePersonForm.valid) {
 
@@ -139,7 +139,7 @@ export class ModaleUpdatePersoneComponent {
           };
 
 
-          (await this.httpApi.updatePerson(this.data.person.Id, updatePerson)).pipe(
+          this.httpApi.updatePerson(this.data.person.Id, updatePerson).pipe(
             tap(() => {
               console.log("riuscito");
               this.toastr.success("Person updated successfully", "Success");

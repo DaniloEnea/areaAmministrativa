@@ -96,7 +96,7 @@ export interface SendUser {
     }
 
     onCreateUserClick(): void {
-      this.auth.testIsAuthenticated(async (authenticated: boolean) => {
+      this.auth.testIsAuthenticated((authenticated: boolean) => {
         if (authenticated) {
           if (this.createUserForm.valid) {
 
@@ -146,10 +146,9 @@ export interface SendUser {
     // funzione per creare l'utenza
     async createUser(model: any) {
       try {
-        const createUserEncrypt =  await this.httpApi.encrypt(JSON.stringify(model), config.auth.authEncryption);
-        this.httpApi.createUserEncrypted(createUserEncrypt).subscribe({
-          next: async (encryptedResponse) => {
-            (await this.httpApi.patchHasUserPerson(this.data.Id)).subscribe({
+        this.httpApi.createUser(model).subscribe({
+          next: (Response) => {
+            (this.httpApi.patchHasUserPerson(this.data.Id)).subscribe({
               next: () => {
                 this.toastr.success("Create user successful", "Success");
                 this.sendEmailCreateUser();

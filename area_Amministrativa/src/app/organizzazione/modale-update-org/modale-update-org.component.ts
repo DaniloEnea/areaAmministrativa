@@ -161,7 +161,7 @@ export class ModaleUpdateOrgComponent {
 
 
   onUpdateClick(){
-    this.auth.testIsAuthenticated(async (authenticated: boolean) => {
+    this.auth.testIsAuthenticated((authenticated: boolean) => {
       if (authenticated) {
         if (this.updateOrgForm.valid) {
           console.log(this.data.org.Id)
@@ -189,7 +189,7 @@ export class ModaleUpdateOrgComponent {
 
           console.log(updateOrg);
           // post for create new user
-          (await this.httpApi.updateOrg(this.data.org.Id, updateOrg)).subscribe({
+          this.httpApi.updateOrg(this.data.org.Id, updateOrg).subscribe({
             next: (response: any) => {
               this.toastr.success("Data updated successfully", "Success");
               setTimeout(() => {

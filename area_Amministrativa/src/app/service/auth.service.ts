@@ -22,6 +22,7 @@ export class AuthService {
   jwtHelper = new JwtHelperService();
 
   public isAuthenticated(): boolean {
+    localStorage.removeItem("accessToken");
     const token = localStorage.getItem('accessToken');
 
     localStorage.setItem('ROLE', this.getRoleFromJwt());

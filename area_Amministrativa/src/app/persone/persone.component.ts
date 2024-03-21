@@ -192,9 +192,7 @@ export class PersoneComponent implements OnInit {
     this.httpApi.getAllPeople().subscribe({
       next: (data: any) => {
         if (data != null && data.body != null) {
-          var decryptedData = this.httpApi.decrypt(data.body)
-
-          var resultData = decryptedData;
+          var resultData = data.body;
           if (resultData) {
             this.PeopleList = resultData;
 
@@ -212,9 +210,9 @@ export class PersoneComponent implements OnInit {
                   this.progressLoading = 99;
                   this.httpApi.getAllOrg().subscribe(
                     {
-                      next: async (orgData: any) => {
+                      next: (orgData: any) => {
                         if (orgData != null && orgData.body != null) {
-                          const orgDTOList: OrganizationDTO[] = this.httpApi.decrypt(orgData.body);
+                          const orgDTOList: OrganizationDTO[] =orgData.body;
 
                           var associatedOrg: OrganizationDTO | undefined;
 
@@ -315,7 +313,7 @@ export class PersoneComponent implements OnInit {
     }
   }
 
-  async disableUser(username: string) {
+  disableUser(username: string) {
     this.httpApi.disableUser(username).subscribe({
       next: value => {
         this.hideDisableUser[username] = true;
@@ -327,7 +325,7 @@ export class PersoneComponent implements OnInit {
     });
   }
 
-  async abilityUser(username: string) {
+  abilityUser(username: string) {
     this.httpApi.abilityUser(username).subscribe({
       next: value => {
         this.hideDisableUser[username] = false;

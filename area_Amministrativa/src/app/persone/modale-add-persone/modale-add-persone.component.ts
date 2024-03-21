@@ -7,7 +7,6 @@ import { ToastrService } from "ngx-toastr";
 import { AuthService } from "../../service/auth.service";
 import { Observable, from } from 'rxjs';
 import { SearchCountryField, CountryISO, PhoneNumberFormat } from 'ngx-intl-tel-input';
-import { EncryptionService } from '../../service/encryption.service';
 
 
 export interface Roles {
@@ -46,7 +45,7 @@ export class ModaleAddPersoneComponent {
   PhoneNumberFormat = PhoneNumberFormat;
 	preferredCountries: CountryISO[] = [CountryISO.UnitedStates, CountryISO.UnitedKingdom];
 
-  constructor(public auth: AuthService, public encryptionService: EncryptionService, public dialogRef: MatDialogRef<ModaleAddPersoneComponent>,
+  constructor(public auth: AuthService, public dialogRef: MatDialogRef<ModaleAddPersoneComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { person: PersonDTO1, roles: Roles },
     private formBuilder: FormBuilder,
     private httpApi: HttpProviderService, private toastr: ToastrService) {
@@ -58,7 +57,7 @@ export class ModaleAddPersoneComponent {
       orgObservable.subscribe({
         next: (data: any) => {
 
-          const decryptedData = this.httpApi.decrypt(data.body);
+          const decryptedData = data.body;
 
           if (decryptedData != null) {
             this.organizations = decryptedData;
@@ -176,7 +175,7 @@ export class ModaleAddPersoneComponent {
         const PersonObservable = from(this.httpApi.getAllPeople())
         PersonObservable.subscribe({
           next: (data: any) => {
-            var decryptedData = this.httpApi.decrypt(data.body)
+            var decryptedData = data.body
             
             const ppDTOList: PersonDTO1[] = decryptedData;
 
@@ -218,11 +217,11 @@ export class ModaleAddPersoneComponent {
   }
 
   onAddClick(): void {
-    this.auth.testIsAuthenticated(async (authenticated: boolean) => {
+    this.auth.testIsAuthenticated((authenticated: boolean) => {
       if (authenticated) {
         if (this.newPersonForm.valid) {
           this.getOrgByLogin().subscribe({
-            next: async (orgId: string) => {
+            next: (orgId: string) => {
               if (this.newPersonForm.value.Role_SA == true) {
                 this.rolesSelected.push("ROLE_SA")
                 this.RoleSa = true;
@@ -263,8 +262,7 @@ export class ModaleAddPersoneComponent {
                 console.log(newPerson);
                 // post for create new user
                 try {
-                  const response = await this.httpApi.addNewPU(newPerson);
-                  const value = await response;
+                  const response = this.httpApi.addNewPU(newPerson);
                   this.httpApi.sendEmailCreation(this.newPersonForm.value.email).subscribe(
                     {
                       next: value => {
@@ -287,8 +285,7 @@ export class ModaleAddPersoneComponent {
                 }
               } else {
                 try {
-                  const response = await this.httpApi.addNewPerson(newPerson);
-                  const value = await response;
+                  const response = this.httpApi.addNewPerson(newPerson);
                   this.toastr.success("Data updated successfully", "Success");
                   setTimeout(() => {
                     window.location.reload();

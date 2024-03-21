@@ -11,7 +11,6 @@ import {ToastrService} from "ngx-toastr";
 import {AuthService} from "../service/auth.service";
 import {MatDialog} from '@angular/material/dialog';
 import {ModaleSendEmailPwdComponent} from '../modale-send-email-pwd/modale-send-email-pwd.component';
-import {EncryptionService} from "../service/encryption.service";
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import config from '../conf_url.json'
 
@@ -40,7 +39,7 @@ export class AreaLoginComponent {
   loading: boolean = false;
   loginForm: FormGroup;
   constructor(private formBuilder: FormBuilder, private httpApi: HttpProviderService, private dialog: MatDialog,
-    private router: Router, private toastr: ToastrService, private authService: AuthService, private encryptDecryptService: EncryptionService) {
+    private router: Router, private toastr: ToastrService, private authService: AuthService) {
 
     if (authService.isAuthenticated() == true) {
       this.router.navigate([('')]);
@@ -69,21 +68,20 @@ export class AreaLoginComponent {
 
       try {
         // Cripta le credenziali di login
-        const loginEncrypt = await this.httpApi.encrypt(JSON.stringify(newLogin), config.auth.authEncryption);
+        
         this.loading = true;
         // Invia le credenziali di login criptate
-        this.httpApi.loginEncrypted(loginEncrypt).subscribe({
-          next: async (encryptedResponse) => {
-            // Decifra la risposta
-            const decryptedResponse = await this.httpApi.decrypt(encryptedResponse);
-            console.log(decryptedResponse);
+        this.httpApi.login(newLogin).subscribe({
+          next: (Response) => {
 
-            localStorage.setItem("accessToken", decryptedResponse.accessToken);
+            console.log(Response);
+
+            localStorage.setItem("accessToken", Response.accessToken);
 
             if (this.authService.isAuthenticated()) {
               this.loading = false;
               this.toastr.success("Login successful", "Success");
-              await this.router.navigate([('')]);
+              this.router.navigate([('')]);
             } else {
               this.loading = false;
               this.toastr.error("Unauthorized", "Error");

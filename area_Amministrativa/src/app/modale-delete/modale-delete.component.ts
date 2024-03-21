@@ -20,10 +20,10 @@ export class ModaleDeleteComponent {
 
   // delete for call DELETE API
   confirmForm() {
-    this.auth.testIsAuthenticated(async (authenticated: boolean) => {
+    this.auth.testIsAuthenticated((authenticated: boolean) => {
       if (authenticated) {
         if (this.data.HasUser) {
-          await this.deletePU() // delete with user
+          this.deletePU() // delete with user
         }
         else {
           this.deletePerson()
@@ -40,8 +40,8 @@ export class ModaleDeleteComponent {
   }
 
 
-  async deletePU() {
-    (await this.httpApi.deletePerson(this.data.Id)).subscribe({
+  deletePU() {
+    (this.httpApi.deletePerson(this.data.Id)).subscribe({
       next: (value: any) => {
         this.toastr.success("Deleted succesfully", "Success")
       },

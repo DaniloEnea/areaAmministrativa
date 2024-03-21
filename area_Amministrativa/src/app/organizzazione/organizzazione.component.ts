@@ -116,7 +116,7 @@ export class OrganizzazioneComponent {
       (this.httpApi.getAllOrg()).subscribe({
         next: (data: any) => {
           if (data != null && data.body != null) {
-            this.resultData = this.httpApi.decrypt(data.body);
+            this.resultData = data.body;
 
               this.progressLoading = 99;
 
@@ -124,7 +124,7 @@ export class OrganizzazioneComponent {
               (this.httpApi.getAllPeople()).subscribe({
                 next: (data2: any) => {
                   if (data2 != null && data2.body != null) {
-                    const retrieveData = this.httpApi.decrypt(data2.body);
+                    const retrieveData = data2.body;
                     if (retrieveData) {
                       this.OrgList = this.resultData;
                       this.getOrgIfCrmMgr(this.resultData, retrieveData);

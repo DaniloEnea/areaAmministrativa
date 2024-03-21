@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {catchError, map, Observable, throwError} from "rxjs";
-import { EncryptionService } from './encryption.service';
 import {BodyDtoEncrypt} from "../dto/body-dto-encrypt";
 
 
@@ -14,30 +13,11 @@ export class AdminApiService {
   bearerToken: string = ""
 
 
-  constructor(private http: HttpClient, private encryptionService: EncryptionService) { }
+  constructor(private http: HttpClient) { }
 
-  public decrypt(encryptedObj: string): any {
-    // Decrypt the encrypted form data
-    const decryptedString = this.encryptionService.decryptRSASplit(encryptedObj);
-
-    if (decryptedString) {
-      try {
-        // Parse the decrypted JSON string
-        const decryptedFormValue = JSON.parse(decryptedString);
-        return decryptedFormValue;
-      } catch (error) {
-        console.error('Error parsing decrypted JSON:', error);
-        return null;
-      }
-    } else {
-      // Handle decryption failure
-      console.error('Error decrypting form data');
-      return null;
-    }
-  }
 
   /*  ALL METHOD API  */
-  async get(url: string): Promise<any> {
+  get(url: string): any{
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
@@ -47,15 +27,15 @@ export class AdminApiService {
     };
 
     try {
-      const response = await this.http.get(url, httpOptions).toPromise();
+      const response = this.http.get(url, httpOptions);
       return this.ReturnResponseData(response);
     } catch (error) {
       this.handleError(error);
-      throw error; // Rilancia l'errore per gestirlo nell'ambito in cui è stata chiamata la funzione
+      throw error;
     }
   }
 
-  async getByEmail(url: string, email: string): Promise<Observable<any>> {
+  getByEmail(url: string, email: string): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
@@ -65,7 +45,7 @@ export class AdminApiService {
     try {
 
       url = `${url}/${email}`;
-      const response = await this.http.get(url, httpOptions).toPromise();
+      const response = this.http.get(url, httpOptions);
       return this.ReturnResponseData(response);
     } catch (error) {
       this.handleError(error);
@@ -87,24 +67,6 @@ export class AdminApiService {
       map((response : any) => this.ReturnResponseData(response)),
       catchError(this.handleError)
     );
-  }
-
-  async postEncrypted(url: string, body: string): Promise<any> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      }),
-      observe: "response" as 'body',
-      responseType: 'text' as 'json'
-    };
-
-    try {
-      const response = await this.http.post(url, body, httpOptions).toPromise();
-      return this.ReturnResponseData(response);
-    } catch (error) {
-      this.handleError(error);
-      throw error; // Rilancia l'errore per gestirlo nell'ambito in cui è stata chiamata la funzione
-    }
   }
 
   postWithCc(url: string, model: any, accessToken: string): Observable<any> {
@@ -218,26 +180,6 @@ export class AdminApiService {
     );
   }
 
-  async putEncrypted(url: string, id: string, body: string): Promise<any> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      }),
-      observe: "response" as 'body',
-      responseType: 'text' as 'json'
-    };
-
-
-    const putUrl = `${url}/${id}`;
-
-    try {
-      const response = await this.http.put(putUrl, body, httpOptions).toPromise();
-      return this.ReturnResponseData(response);
-    } catch (error) {
-      this.handleError(error);
-      throw error; // Rilancia l'errore per gestirlo nell'ambito in cui è stata chiamata la funzione
-    }
-  }
 
  getCc(url: string, accessToken: string, tokenQueryParam: string): Observable<any> {
     const fullUrl = `${url}?token=${tokenQueryParam}`;
@@ -329,7 +271,7 @@ export class AdminApiService {
     }
 
   //PATCH operations
-  patch(url: string, id: string, propertyname: string, newvalue: boolean, publickey: string): Observable<any> {
+  patch(url: string, id: string, propertyname: string, newvalue: boolean): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
@@ -337,7 +279,7 @@ export class AdminApiService {
       observe: "response" as 'body',
       responseType: 'text' as 'json'
     };
-    url = `${url}/${id}?propertyName=${propertyname}&newValue=${newvalue}&publicKeyUrl=${publickey}`;
+    url = `${url}/${id}?propertyName=${propertyname}&newValue=${newvalue}`;
 
 
     return this.http.patch(url, null, httpOptions).pipe(
@@ -346,7 +288,7 @@ export class AdminApiService {
   }
 
   // DELETE operations
-  deleteEncrypted(url: string, id: string, publicKeyUrl: string): Observable<any> {
+  deleteEncrypted(url: string, id: string): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
@@ -354,7 +296,7 @@ export class AdminApiService {
       observe: "response" as 'body',
       responseType: 'text' as 'json'
     };
-    const deleteUrl = `${url}/${id}?logicalDelete=false&publicKeyUrl=${publicKeyUrl}`;
+    const deleteUrl = `${url}/${id}?logicalDelete=false`;
     return this.http.delete(deleteUrl, httpOptions).pipe(
       catchError(this.handleError)
     );
@@ -375,7 +317,7 @@ export class AdminApiService {
   }
 
     // GET BY ID operations
-    getById(url: string, id: string): Promise<Observable<any>> {
+    getById(url: string, id: string):Observable<any> {
       const httpOptions = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json'
@@ -386,7 +328,7 @@ export class AdminApiService {
 
       try {
         url = `${url}/${id}?valid=true`;
-        const response = this.http.get(url, httpOptions).toPromise();
+        const response = this.http.get(url, httpOptions);
         return this.ReturnResponseData(response);
       } catch (error) {
         this.handleError(error);

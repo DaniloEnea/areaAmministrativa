@@ -133,18 +133,17 @@ export class CreateUserEmailComponent {
     this.route.queryParams.subscribe(params => {
       this.resetButtonDisabled = true;
       this.http.getAllPeople().subscribe({
-        next: async (data: any) => {
+        next: (data: any) => {
           if (data != null && data.body != null) {
-
-            var decryptedData: PersonDTO[] = this.http.decrypt(data.body)
-            var result = decryptedData.find(person => person.Email === params['email']);
+            var retriveData: PersonDTO[] = data.body
+            var result = retriveData.find(person => person.Email === params['email']);
             if (result) {
-              (await this.http.patchGDPRPerson(result.Id)).subscribe({
+              this.http.patchGDPRPerson(result.Id).subscribe({
                 next: () => {
                   this.http.resetPwdByEmail(changePassDto).subscribe({
                     next: () => {
                       this.showSuccess = true;
-                      this.successMessage = "Your password has been reset.";
+                      this.successMessage = "Your password has been changed.";
 
                       this.LoadedData = true;
 
