@@ -6,16 +6,9 @@ import config from '../conf_url.json'
 // PATH API
 let apiCredentials = config.auth.apiCredentials
 
-//GET PUBLIC KEY
-let orgEncryption = config.orgEncryption
-let personEncryption = config.personEncryption
-let authEncryption = config.auth.authEncryption
-let publicKeyUrl = config.publicKeyUrl
-
 //get
 let getUtenteUrl = config.auth.getUtenteUrl
 let getPersonUrl = config.getPersonUrl
-let getPersonByEmailUrl = config.getPersonByEmailUrl
 let getOrgUrl = config.getOrgUrl
 
 //add
@@ -38,14 +31,11 @@ let patchPersonUrl = config.patchPersonUrl
 //delete
 let deletePersonUrl = config.deletePersonUrl
 let forcedDeletePersonUrl = config.forcedDeletePersonUrl
-let deleteOrgUrl = config.deleteOrgUrl
 
 //login
 let loginUrl = config.auth.loginUrl
 let getDecryptedMessage = config.auth.getDecryptedMessage
 
-//reset password
-let resetPwdUrl = config.auth.resetPwdUrl
 
 //forgot password
 let forgotPwdByEmailUrl = config.auth.forgotPwdByEmailUrl

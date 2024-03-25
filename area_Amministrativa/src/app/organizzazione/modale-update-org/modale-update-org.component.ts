@@ -42,18 +42,18 @@ export class ModaleUpdateOrgComponent {
     });
   }
 
-  get name() { return this.updateOrgForm.get('name'); }
-  get vatNumber() { return this.updateOrgForm.get('vatNumber'); }
-  get streetAddress() { return this.updateOrgForm.get('streetAddress'); }
-  get city() { return this.updateOrgForm.get('city'); }
-  get province_State() { return this.updateOrgForm.get('province_State'); }
-  get country() { return this.updateOrgForm.get('country'); }
-  get zipCode() { return this.updateOrgForm.get('zipCode'); }
-  get webSite() { return this.updateOrgForm.get('webSite'); }
-  get emailAddress() { return this.updateOrgForm.get('emailAddress'); }
-  get emailDomain() { return this.updateOrgForm.get('emailDomain'); }
-  get pec() { return this.updateOrgForm.get('pec'); }
-  get billingCode() { return this.updateOrgForm.get('billingCode'); }
+  get name() { return this.updateOrgForm.get('Name'); }
+  get vatNumber() { return this.updateOrgForm.get('VATNumber'); }
+  get streetAddress() { return this.updateOrgForm.get('StreetAddress'); }
+  get city() { return this.updateOrgForm.get('City'); }
+  get province_State() { return this.updateOrgForm.get('Province_State'); }
+  get country() { return this.updateOrgForm.get('Country'); }
+  get zipCode() { return this.updateOrgForm.get('ZipCode'); }
+  get webSite() { return this.updateOrgForm.get('WebSite'); }
+  get emailAddress() { return this.updateOrgForm.get('EmailAddress'); }
+  get emailDomain() { return this.updateOrgForm.get('EmailDomain'); }
+  get pec() { return this.updateOrgForm.get('PEC'); }
+  get billingCode() { return this.updateOrgForm.get('BillingCode'); }
 
   // @ts-ignore
   getEmailAddressError() {

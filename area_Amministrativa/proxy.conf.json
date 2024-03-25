@@ -1,0 +1,39 @@
+{
+  "/OrganizationManager": {
+    "target": "https://localhost:7017",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/OrganizationManager": ""
+    }
+  },
+  "/PeopleManager": {
+    "target": "https://localhost:7131",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/PeopleManager": ""
+    }
+  },
+  "/Auth": {
+    "target": "https://localhost:9000",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/Auth": ""
+    }
+  },
+  "/Oauth": {
+    "target": "http://localhost:8282",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/Oauth": ""
+    }
+  }
+}
+

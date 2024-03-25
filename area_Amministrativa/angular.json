@@ -72,6 +72,9 @@
           //  "sslKey": ".src/assets/keystore/authServer.key",
           //  "sslCert": ".src/assets/certificates/authServer.pem"
           //},
+          "options": {
+            "proxyConfig": "proxy.conf.json"
+          },
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
