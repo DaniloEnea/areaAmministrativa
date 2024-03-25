@@ -57,7 +57,7 @@ export class AreaLoginComponent {
     return this.hide ? 'visibility_off' : 'visibility';
   }
 
-  async submit() {
+  submit() {
     if (this.loginForm.valid) {
 
 
@@ -74,10 +74,18 @@ export class AreaLoginComponent {
         this.httpApi.login(newLogin).subscribe({
           next: (Response) => {
 
+            
+
             console.log(Response);
 
-            localStorage.setItem("accessToken", Response.accessToken);
+            const cleanResponse = Response.replace(/\\/g, ''); // Rimuove tutti i caratteri di escape
+            const responseObj = JSON.parse(cleanResponse);
 
+            const accessToken = responseObj.accessToken;
+
+            localStorage.setItem("accessToken", accessToken);
+
+            console.log(sessionStorage)
             if (this.authService.isAuthenticated()) {
               this.loading = false;
               this.toastr.success("Login successful", "Success");

@@ -17,18 +17,18 @@ export class ModaleDetailsPersoneComponent {
     private httpApi: HttpProviderService) {
 
     this.detailsPersonForm = this.formBuilder.group({
-      firstName: [this.data.person.FirstName],
-      lastName: [this.data.person.LastName],
-      cf: [this.data.person.CF],
-      organizationName: [this.data.person.OrganizationName],
-      workRole: [this.data.person.WorkRole], // Imposta il valore di default
-      phone: [this.data.person.Phone],
-      email: [this.data.person.Email],
-      email_2: [this.data.person.SecondEmail],
-      isGDPRTermsAccepted: [this.data.person.IsGDPRTermsAccepted],
-      isOtherProcessingPurposesAccepted: [this.data.person.IsOtherProcessingPurposesAccepted],
-      isServiceProcessingPurposesAccepted: [this.data.person.IsServiceProcessingPurposesAccepted],
-      roles: [this.data.person.Roles]
+      firstName: [this.data.person.firstName],
+      lastName: [this.data.person.lastName],
+      cf: [this.data.person.cf],
+      organizationName: [this.data.person.organizationName],
+      workRole: [this.data.person.workRole], // Imposta il valore di default
+      phone: [this.data.person.phone],
+      email: [this.data.person.email],
+      email_2: [this.data.person.secondEmail],
+      isGDPRTermsAccepted: [this.data.person.isGDPRTermsAccepted],
+      isOtherProcessingPurposesAccepted: [this.data.person.isOtherProcessingPurposesAccepted],
+      isServiceProcessingPurposesAccepted: [this.data.person.isServiceProcessingPurposesAccepted],
+      roles: [this.data.person.roles]
     });
   }
 

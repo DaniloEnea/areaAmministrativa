@@ -136,9 +136,9 @@ export class CreateUserEmailComponent {
         next: (data: any) => {
           if (data != null && data.body != null) {
             var retriveData: PersonDTO[] = data.body
-            var result = retriveData.find(person => person.Email === params['email']);
+            var result = retriveData.find(person => person.email === params['email']);
             if (result) {
-              this.http.patchGDPRPerson(result.Id).subscribe({
+              this.http.patchGDPRPerson(result.id).subscribe({
                 next: () => {
                   this.http.resetPwdByEmail(changePassDto).subscribe({
                     next: () => {

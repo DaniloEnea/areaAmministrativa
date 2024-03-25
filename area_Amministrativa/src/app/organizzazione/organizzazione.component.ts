@@ -12,43 +12,24 @@ import { Router } from '@angular/router';
 import { from } from 'rxjs';
 
 export interface OrganizationDTO {
-  Id: string;
-  Name: string;
-  VATNumber: string;
-  StreetAddress: string;
-  City: string;
-  Province_State: string;
-  Country: string;
-  ZipCode: string;
-  AdditionalInformation: string;
-  WebSite: string;
-  EmailAddress: string;
-  EmailDomain: string;
-  PEC: string;
-  BillingCode: string;
-  IsSupplier: boolean;
-  IsCustomer: boolean;
-  IsValid: boolean;
-  IsDeleted: boolean;
-}
-export interface OrganizationDTO1 {
-  Name: string;
-  VatNumber: string;
-  StreetAddress: string;
-  City: string;
-  Province_State: string;
-  Country: string;
-  ZipCode: string;
-  AdditionalInformation: string;
-  WebSite: string;
-  EmailAddress: string;
-  EmailDomain: string;
-  PEC: string;
-  BillingCode: string;
-  IsSupplier: boolean;
-  IsCustomer: boolean;
-  IsValid: boolean;
-  IsDeleted: boolean;
+  id: string;
+  name: string;
+  vatNumber: string;
+  streetAddress: string;
+  city: string;
+  province_State: string;
+  country: string;
+  zipCode: string;
+  additionalInformation: string;
+  webSite: string;
+  emailAddress: string;
+  emailDomain: string;
+  pec: string;
+  billingCode: string;
+  isSupplier: boolean;
+  isCustomer: boolean;
+  isValid: boolean;
+  isDeleted: boolean;
 }
 
 @Component({
@@ -94,7 +75,7 @@ export class OrganizzazioneComponent {
       const searchText = JSON.parse(filter);
 
       return (
-        data.Name.toLowerCase().startsWith(searchText.name)
+        data.name.toLowerCase().startsWith(searchText.name)
       );
     };
   }
@@ -171,11 +152,11 @@ export class OrganizzazioneComponent {
       const ppDTOList: PersonDTO1[] = retrieveData;
       const orgDTOList: OrganizationDTO[] = resultData;
 
-      const CrmOrg = ppDTOList.find(pp => pp.Email === this.usernamefilter);
+      const CrmOrg = ppDTOList.find(pp => pp.email === this.usernamefilter);
       console.log(CrmOrg)
 
       if (CrmOrg != null) {
-        this.OrgList = orgDTOList.filter(og => og.Id == CrmOrg.OrganizationId);
+        this.OrgList = orgDTOList.filter(og => og.id == CrmOrg.organizationId);
         this.OrgList = this.OrgList;
         
       }

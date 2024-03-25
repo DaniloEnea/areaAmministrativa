@@ -179,10 +179,10 @@ export class ModaleAddPersoneComponent {
             
             const ppDTOList: PersonDTO1[] = decryptedData;
 
-            const CrmOrg = ppDTOList.find(pp => pp.Email === this.auth.getUsernameFromJwt());
+            const CrmOrg = ppDTOList.find(pp => pp.email === this.auth.getUsernameFromJwt());
             if (CrmOrg) {
-              this.organizationId = CrmOrg.OrganizationId;
-              observer.next(CrmOrg.OrganizationId);
+              this.organizationId = CrmOrg.organizationId;
+              observer.next(CrmOrg.organizationId);
               observer.complete();
             } else {
               observer.next("");
@@ -240,18 +240,18 @@ export class ModaleAddPersoneComponent {
               }
 
               const newPerson: PersonDTO2 = {
-                FirstName: this.newPersonForm.value.firstName,
-                LastName: this.newPersonForm.value.lastName,
-                CF: this.newPersonForm.value.cf,
-                OrganizationId: this.organizationId,
-                WorkRole: this.newPersonForm.value.workRole,
-                Phone: this.newPersonForm.value.phone.internationalNumber,
-                Email: this.newPersonForm.value.email,
-                SecondEmail: this.newPersonForm.value.secondEmail,
-                IsGDPRTermsAccepted: this.newPersonForm.value.isGDPRTermsAccepted,
-                IsOtherProcessingPurposesAccepted: this.newPersonForm.value.isOtherProcessingPurposesAccepted,
-                IsServiceProcessingPurposesAccepted: this.newPersonForm.value.isServiceProcessingPurposesAccepted,
-                Roles:
+                firstName: this.newPersonForm.value.firstName,
+                lastName: this.newPersonForm.value.lastName,
+                cf: this.newPersonForm.value.cf,
+                organizationId: this.organizationId,
+                workRole: this.newPersonForm.value.workRole,
+                phone: this.newPersonForm.value.phone.internationalNumber,
+                email: this.newPersonForm.value.email,
+                secondEmail: this.newPersonForm.value.secondEmail,
+                isGDPRTermsAccepted: this.newPersonForm.value.isGDPRTermsAccepted,
+                isOtherProcessingPurposesAccepted: this.newPersonForm.value.isOtherProcessingPurposesAccepted,
+                isServiceProcessingPurposesAccepted: this.newPersonForm.value.isServiceProcessingPurposesAccepted,
+                roles:
                   this.rolesSelected
 
               };

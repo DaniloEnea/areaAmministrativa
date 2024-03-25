@@ -51,17 +51,17 @@ export class ModaleUpdatePersoneComponent {
 
     this.updatePersonForm = this.formBuilder.group({
       //id: ['3fa85f64-5717-4562-b3fc-2c963f66afa6'],
-      firstName: [this.data.person.FirstName, Validators.required],
-      lastName: [this.data.person.LastName, Validators.required],
+      firstName: [this.data.person.firstName, Validators.required],
+      lastName: [this.data.person.lastName, Validators.required],
       //organizationId: ['3fa85f64-5717-4562-b3fc-2c963f66afa6'],
-      cf: [this.data.person.CF, Validators.required],
-      workRole: [this.data.person.WorkRole, Validators.required],
-      phone: [this.data.person.Phone, Validators.required],
-      email: [this.data.person.Email, Validators.required],
-      secondEmail: new FormControl(this.data.person.SecondEmail, [Validators.email]),
-      isGDPRTermsAccepted: [this.data.person.IsGDPRTermsAccepted],
-      isOtherProcessingPurposesAccepted: [this.data.person.IsOtherProcessingPurposesAccepted],
-      isServiceProcessingPurposesAccepted: [this.data.person.IsServiceProcessingPurposesAccepted],
+      cf: [this.data.person.cf, Validators.required],
+      workRole: [this.data.person.workRole, Validators.required],
+      phone: [this.data.person.phone, Validators.required],
+      email: [this.data.person.email, Validators.required],
+      secondEmail: new FormControl(this.data.person.secondEmail, [Validators.email]),
+      isGDPRTermsAccepted: [this.data.person.isGDPRTermsAccepted],
+      isOtherProcessingPurposesAccepted: [this.data.person.isOtherProcessingPurposesAccepted],
+      isServiceProcessingPurposesAccepted: [this.data.person.isServiceProcessingPurposesAccepted],
       wantToUpdateUser: [false],
       Role_SA: [this.roleCheck("ROLE_SA")],
       Role_Admin: [this.roleCheck("ROLE_ADMIN")]
@@ -88,16 +88,16 @@ export class ModaleUpdatePersoneComponent {
   }
 
   checkIfSameUser(): boolean {
-    if (this.data.person.Email === this.auth.getUsernameFromJwt()) {
+    if (this.data.person.email === this.auth.getUsernameFromJwt()) {
       return true;
     }
     return false;
   }
 
   roleCheck(role: string): boolean {
-    console.log(this.data.person.Roles)
-    if (this.data.person.Roles != null) {
-      return this.data.person.Roles.includes(role);
+    console.log(this.data.person.roles)
+    if (this.data.person.roles != null) {
+      return this.data.person.roles.includes(role);
     }
     else return false;
   }
@@ -121,25 +121,25 @@ export class ModaleUpdatePersoneComponent {
           console.log(this.rolesSelected)
 
           const updatePerson: PersonDTO = {
-            Id: this.data.person.Id,
-            FirstName: this.updatePersonForm.value.firstName,
-            LastName: this.updatePersonForm.value.lastName,
-            OrganizationId: this.data.person.OrganizationId,
-            WorkRole: this.updatePersonForm.value.workRole,
-            Phone: this.updatePersonForm.value.phone.internationalNumber,
-            Email: this.updatePersonForm.value.email,
-            SecondEmail: this.updatePersonForm.value.secondEmail,
-            HasUser: this.data.person.HasUser,
-            IsGDPRTermsAccepted: this.updatePersonForm.value.isGDPRTermsAccepted,
-            IsOtherProcessingPurposesAccepted: this.updatePersonForm.value.isOtherProcessingPurposesAccepted,
-            IsServiceProcessingPurposesAccepted: this.updatePersonForm.value.isServiceProcessingPurposesAccepted,
-            IsDeleted: false,
-            IsValid: true,
-            CF: this.updatePersonForm.value.cf
+            id: this.data.person.id,
+            firstName: this.updatePersonForm.value.firstName,
+            lastName: this.updatePersonForm.value.lastName,
+            organizationId: this.data.person.organizationId,
+            workRole: this.updatePersonForm.value.workRole,
+            phone: this.updatePersonForm.value.phone.internationalNumber,
+            email: this.updatePersonForm.value.email,
+            secondEmail: this.updatePersonForm.value.secondEmail,
+            hasUser: this.data.person.hasUser,
+            isGDPRTermsAccepted: this.updatePersonForm.value.isGDPRTermsAccepted,
+            isOtherProcessingPurposesAccepted: this.updatePersonForm.value.isOtherProcessingPurposesAccepted,
+            isServiceProcessingPurposesAccepted: this.updatePersonForm.value.isServiceProcessingPurposesAccepted,
+            isDeleted: false,
+            isValid: true,
+            cf: this.updatePersonForm.value.cf
           };
 
 
-          this.httpApi.updatePerson(this.data.person.Id, updatePerson).pipe(
+          this.httpApi.updatePerson(this.data.person.id, updatePerson).pipe(
             tap(() => {
               console.log("riuscito");
               this.toastr.success("Person updated successfully", "Success");

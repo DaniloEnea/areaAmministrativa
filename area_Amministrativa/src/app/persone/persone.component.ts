@@ -22,60 +22,60 @@ export interface UserDTO {
 }
 
 export interface PersonDTO {
-  Id: string;
-  FirstName: string;
-  LastName: string;
-  OrganizationId: string;
-  WorkRole: string;
-  Phone: string;
-  Email: string;
-  SecondEmail: string;
-  CF: string;
-  HasUser: boolean;
-  IsGDPRTermsAccepted: boolean;
-  IsServiceProcessingPurposesAccepted: boolean;
-  IsOtherProcessingPurposesAccepted: boolean;
-  IsValid: boolean;
-  IsDeleted: boolean;
+  id: string;
+  firstName: string;
+  lastName: string;
+  organizationId: string;
+  workRole: string;
+  phone: string;
+  email: string;
+  secondEmail: string;
+  cf: string;
+  hasUser: boolean;
+  isGDPRTermsAccepted: boolean;
+  isServiceProcessingPurposesAccepted: boolean;
+  isOtherProcessingPurposesAccepted: boolean;
+  isValid: boolean;
+  isDeleted: boolean;
 }
 export interface PersonDTO1 {
-  Id: string;
-  FirstName: string;
-  LastName: string;
-  OrganizationId: string;
-  OrganizationName: string;
-  WorkRole: string;
-  Phone: string;
-  Email: string;
-  SecondEmail: string;
-  CF: string;
-  HasUser: boolean;
-  IsGDPRTermsAccepted: boolean;
-  IsServiceProcessingPurposesAccepted: boolean;
-  IsOtherProcessingPurposesAccepted: boolean;
-  Roles: string[];
+  id: string;
+  firstName: string;
+  lastName: string;
+  organizationId: string;
+  organizationName: string;
+  workRole: string;
+  phone: string;
+  email: string;
+  secondEmail: string;
+  cf: string;
+  hasUser: boolean;
+  isGDPRTermsAccepted: boolean;
+  isServiceProcessingPurposesAccepted: boolean;
+  isOtherProcessingPurposesAccepted: boolean;
+  roles: string[];
 }
 
 export interface PersonDTO2 {
-  FirstName: string;
-  LastName: string;
-  WorkRole: string;
-  Phone: string;
-  Email: string;
-  SecondEmail: string;
-  CF: string;
-  OrganizationId: string;
-  IsGDPRTermsAccepted: boolean;
-  IsServiceProcessingPurposesAccepted: boolean;
-  IsOtherProcessingPurposesAccepted: boolean;
-  Roles: string[];
+  firstName: string;
+  lastName: string;
+  workRole: string;
+  phone: string;
+  email: string;
+  secondEmail: string;
+  cf: string;
+  organizationId: string;
+  isGDPRTermsAccepted: boolean;
+  isServiceProcessingPurposesAccepted: boolean;
+  isOtherProcessingPurposesAccepted: boolean;
+  roles: string[];
 }
 
 export interface User {
-  Email: string;
-  Password: string;
-  Id: string;
-  Roles: string[];
+  email: string;
+  password: string;
+  id: string;
+  roles: string[];
 }
 
 @Component({
@@ -161,9 +161,9 @@ export class PersoneComponent implements OnInit {
       const searchText = JSON.parse(filter);
 
       return (
-        data.FirstName.toLowerCase().startsWith(searchText.FirstName) &&
-        data.LastName.toLowerCase().startsWith(searchText.LastName) &&
-        (!searchText.OrganizationName || data.OrganizationName.toLowerCase().startsWith(searchText.OrganizationName))
+        data.firstName.toLowerCase().startsWith(searchText.FirstName) &&
+        data.lastName.toLowerCase().startsWith(searchText.LastName) &&
+        (!searchText.OrganizationName || data.organizationName.toLowerCase().startsWith(searchText.OrganizationName))
       );
     };
   }
@@ -199,7 +199,7 @@ export class PersoneComponent implements OnInit {
             this.getPeopleIfAdmin(this.PeopleList)
 
             if (orgId != null) {
-              this.PeopleList = this.PeopleList.filter(orgs => orgs.OrganizationId === orgId);
+              this.PeopleList = this.PeopleList.filter(orgs => orgs.organizationId === orgId);
             }
             this.progressLoading = 66;
             this.httpApi.getAllUsers().subscribe({
@@ -217,30 +217,30 @@ export class PersoneComponent implements OnInit {
                           var associatedOrg: OrganizationDTO | undefined;
 
                           if (!this.IsSA) {
-                            associatedOrg = orgDTOList.find(org => org.Id === this.orgIdFilter);
+                            associatedOrg = orgDTOList.find(org => org.id === this.orgIdFilter);
                           }
 
                           this.PeopleList.forEach((person: PersonDTO1) => {
-                            person.Roles = ['No user linked'];
-                            person.OrganizationName = 'No org';
+                            person.roles = ['No user linked'];
+                            person.organizationName = 'No org';
 
                             if (this.IsSA) {
-                              associatedOrg = orgDTOList.find(org => org.Id === person.OrganizationId);
+                              associatedOrg = orgDTOList.find(org => org.id === person.organizationId);
                             }
 
-                            if (person.HasUser) {
-                              const associatedUser = userDTOList.find(user => user.username === person.Email);
+                            if (person.hasUser) {
+                              const associatedUser = userDTOList.find(user => user.username === person.email);
 
                               if (associatedUser) {
                                 console.log(associatedUser.roles);
                                 this.hideCreateUser[associatedUser.username] = true;
                                 this.hideDisableUser[associatedUser.username] = !associatedUser.enabled;
-                                person.Roles = associatedUser.roles.map(role => role.role);
+                                person.roles = associatedUser.roles.map(role => role.role);
                               }
                             }
 
                             if (associatedOrg) {
-                              person.OrganizationName = associatedOrg.Name;
+                              person.organizationName = associatedOrg.name;
                             }
 
                           });
@@ -291,17 +291,17 @@ export class PersoneComponent implements OnInit {
     if (orgId != null) {
       this.IsSA = false;
       this.orgIdFilter = orgId;
-      this.PeopleList = this.PeopleList.filter(orgs => orgs.OrganizationId === orgId);
+      this.PeopleList = this.PeopleList.filter(orgs => orgs.organizationId === orgId);
     }
     else if (this.auth.checkIsSA() === false) {
       this.IsSA = false;
       const ppDTOList: PersonDTO1[] = resultData;
 
-      const CrmOrg = ppDTOList.find(pp => pp.Email === this.usernamefilter);
+      const CrmOrg = ppDTOList.find(pp => pp.email === this.usernamefilter);
 
       if (CrmOrg) {
-        this.orgIdFilter = CrmOrg?.OrganizationId
-        this.PeopleList = this.PeopleList.filter(orgs => orgs.OrganizationId === CrmOrg.OrganizationId);
+        this.orgIdFilter = CrmOrg?.organizationId
+        this.PeopleList = this.PeopleList.filter(orgs => orgs.organizationId === CrmOrg.organizationId);
       }
       else {
         this.toastr.error("No org data found", 'Error');

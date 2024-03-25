@@ -22,8 +22,7 @@ export class AdminApiService {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
       }),
-      observe: "response" as 'body',
-      responseType: "text" as 'json'
+      observe: "response" as 'body'
     };
 
     try {
@@ -293,8 +292,7 @@ export class AdminApiService {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
       }),
-      observe: "response" as 'body',
-      responseType: 'text' as 'json'
+      observe: "response" as 'body'
     };
     const deleteUrl = `${url}/${id}?logicalDelete=false`;
     return this.http.delete(deleteUrl, httpOptions).pipe(
@@ -322,8 +320,7 @@ export class AdminApiService {
         headers: new HttpHeaders({
           'Content-Type': 'application/json'
         }),
-        observe: 'response' as 'body',
-        responseType: "text" as 'json'
+        observe: 'response' as 'body'
       };
 
       try {
@@ -336,39 +333,6 @@ export class AdminApiService {
       }
     }
 
-  //public checkUserExists(url: string, id: string, ): Observable<boolean> {
-  //  const httpOptions = {
-  //    headers: new HttpHeaders({
-  //      'Content-Type': 'application/json'
-  //    }),
-  //    observe: 'response' as 'body',
-  //    responseType: "text" as 'json'
-  //  };
-
-  //  url = `${url}/${id}?valid=true`;
-  //  return this.http.get<boolean>(url, httpOptions)
-  //    .pipe(
-  //      catchError((error) => {
-  //        console.error('Error checking user existence:', error);
-  //        return new Observable<boolean>((observer) => {
-  //          observer.next(false);
-  //        });
-  //      })
-  //    );
-  //}
-
-    /*getFiltered(url:string, endUrl: string): Observable<any>{
-      const httpOptions = {
-        headers: new HttpHeaders({
-          'Content-Type': 'application/json'
-        }),
-        observe: 'response' as 'body'
-      };
-      const getUrl = `${url}?${endUrl}`;
-      console.log(getUrl);
-      return this.http.get(getUrl, httpOptions).pipe(
-        catchError(this.handleError));
-    }*/
 
 
   // functions
